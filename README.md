@@ -1,4 +1,8 @@
 <h1 align="center">
+<a href="https://alien-project.org" target="_blank">Test for git, this fork is for amd gpu using</a>
+</h1>
+
+<h1 align="center">
 <a href="https://alien-project.org" target="_blank">ALIEN - Explore worlds of artificial life</a>
 </h1>
 
