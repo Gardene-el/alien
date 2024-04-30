@@ -1,8 +1,8 @@
 #pragma once
 
 #include <atomic>
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -10,21 +10,18 @@
 #include <GL/gl.h>
 
 #include "Base/Definitions.h"
-
-#include "EngineInterface/Definitions.h"
-#include "EngineInterface/SimulationParameters.h"
-#include "EngineInterface/GpuSettings.h"
-#include "EngineInterface/RawStatisticsData.h"
-#include "EngineInterface/OverlayDescriptions.h"
-#include "EngineInterface/Settings.h"
-#include "EngineInterface/SelectionShallowData.h"
-#include "EngineInterface/ShallowUpdateSelectionData.h"
-#include "EngineInterface/MutationType.h"
-#include "EngineInterface/StatisticsHistory.h"
-
-#include "EngineGpuKernels/Definitions.h"
-
 #include "Definitions.h"
+#include "EngineGpuKernels/Definitions.h"
+#include "EngineInterface/Definitions.h"
+#include "EngineInterface/GpuSettings.h"
+#include "EngineInterface/MutationType.h"
+#include "EngineInterface/OverlayDescriptions.h"
+#include "EngineInterface/RawStatisticsData.h"
+#include "EngineInterface/SelectionShallowData.h"
+#include "EngineInterface/Settings.h"
+#include "EngineInterface/ShallowUpdateSelectionData.h"
+#include "EngineInterface/SimulationParameters.h"
+#include "EngineInterface/StatisticsHistory.h"
 
 struct ExceptionData
 {
@@ -37,6 +34,7 @@ struct DataTO;
 class EngineWorker
 {
     friend class EngineWorkerGuard;
+
 public:
     void newSimulation(uint64_t timestep, GeneralSettings const& generalSettings, SimulationParameters const& parameters);
     void clear();
@@ -77,7 +75,7 @@ public:
     void calcTimesteps(uint64_t timesteps);
     void applyCataclysm(int power);
 
-    void beginShutdown(); //caller should wait for termination of thread
+    void beginShutdown();  //caller should wait for termination of thread
     void endShutdown();
 
     int getTpsRestriction() const;
@@ -113,7 +111,7 @@ public:
     void testOnly_mutate(uint64_t cellId, MutationType mutationType);
 
 private:
-    DataTO provideTO(); 
+    DataTO provideTO();
     void resetTimeIntervalStatistics();
     void updateStatistics(bool afterMinDuration = false);
     void processJobs();
@@ -123,7 +121,7 @@ private:
     void measureTPS();
     void slowdownTPS();
 
-    CudaSimulationFacade _simulationCudaFacade;
+    SimulationFacade _SimulationFacadeValue;
 
     //settings
     Settings _settings;
@@ -157,7 +155,7 @@ private:
     std::optional<std::chrono::steady_clock::time_point> _measureTimepoint;
     std::optional<std::chrono::steady_clock::time_point> _slowDownTimepoint;
     std::optional<std::chrono::microseconds> _slowDownOvershot;
-  
+
     //internals
     void* _cudaResource;
     AccessDataTOCache _dataTOCache;

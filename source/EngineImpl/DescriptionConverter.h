@@ -2,13 +2,13 @@
 
 #include <unordered_map>
 
-#include "EngineInterface/Definitions.h"
+#include "Definitions.h"
+#include "EngineGpuKernels/TOs.h"
 #include "EngineInterface/ArraySizes.h"
+#include "EngineInterface/Definitions.h"
 #include "EngineInterface/Descriptions.h"
 #include "EngineInterface/OverlayDescriptions.h"
 #include "EngineInterface/SimulationParameters.h"
-#include "EngineGpuKernels/TOs.cuh"
-#include "Definitions.h"
 
 class DescriptionConverter
 {
@@ -29,24 +29,19 @@ public:
 private:
     void addAdditionalDataSizeForCell(CellDescription const& cell, uint64_t& additionalDataSize) const;
 
-	struct CreateClusterReturnData
+    struct CreateClusterReturnData
     {
         ClusterDescription cluster;
         std::unordered_map<int, int> cellTOIndexToCellDescIndex;
-	};
-    CreateClusterReturnData scanAndCreateClusterDescription(
-        DataTO const& dataTO,
-        int startCellIndex,
-        std::unordered_set<int>& freeCellIndices) const;
+    };
+    CreateClusterReturnData scanAndCreateClusterDescription(DataTO const& dataTO, int startCellIndex, std::unordered_set<int>& freeCellIndices) const;
     CellDescription createCellDescription(DataTO const& dataTO, int cellIndex) const;
 
-	void addCell(
-        DataTO const& dataTO, CellDescription const& cellToAdd, std::unordered_map<uint64_t, int>& cellIndexTOByIds) const;
+    void addCell(DataTO const& dataTO, CellDescription const& cellToAdd, std::unordered_map<uint64_t, int>& cellIndexTOByIds) const;
     void addParticle(DataTO const& dataTO, ParticleDescription const& particleDesc) const;
 
-	void setConnections(
-        DataTO const& dataTO, CellDescription const& cellToAdd, std::unordered_map<uint64_t, int> const& cellIndexByIds) const;
+    void setConnections(DataTO const& dataTO, CellDescription const& cellToAdd, std::unordered_map<uint64_t, int> const& cellIndexByIds) const;
 
 private:
-	SimulationParameters _parameters;
+    SimulationParameters _parameters;
 };
