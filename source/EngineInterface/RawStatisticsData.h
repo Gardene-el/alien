@@ -6,6 +6,8 @@
 
 struct TimestepStatistics
 {
+    double externalEnergy=0.0f;
+
     ColorVector<int> numCells = {0, 0, 0, 0, 0, 0, 0};
     ColorVector<int> numSelfReplicators = {0, 0, 0, 0, 0, 0, 0};
     ColorVector<int> numViruses = {0, 0, 0, 0, 0, 0, 0};

@@ -79,3 +79,7 @@ __global__ void cudaUpdateHistogramData_substep3(SimulationData data, Simulation
         statistics.incNumCells(cell->color, slot);
     }
 }
+
+__global__ void cudaUpdateCustomStatistics_substep2(SimulationData data, SimulationStatistics statistics){
+    statistics.setExternalEnergy(data.externalEnergy);
+}

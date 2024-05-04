@@ -13,3 +13,5 @@ __global__ void cudaUpdateTimestepStatistics_substep3(SimulationData data, Simul
 __global__ void cudaUpdateHistogramData_substep1(SimulationData data, SimulationStatistics statistics);
 __global__ void cudaUpdateHistogramData_substep2(SimulationData data, SimulationStatistics statistics);
 __global__ void cudaUpdateHistogramData_substep3(SimulationData data, SimulationStatistics statistics);
+
+__global__ void cudaUpdateCustomStatistics_substep2(SimulationData data, SimulationStatistics statistics);

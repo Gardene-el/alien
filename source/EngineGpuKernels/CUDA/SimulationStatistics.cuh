@@ -97,6 +97,8 @@ public:
     __inline__ __device__ void maxValue(int value) { atomicMax(&_data->histogram.maxValue, value); }
     __inline__ __device__ int getMaxValue() const { return _data->histogram.maxValue; }
 
+    __inline__ __device__ void setExternalEnergy(double *externalEnergy)  {  _data->timeline.timestep.externalEnergy=*externalEnergy; }
+
 private:
     RawStatisticsData* _data;
 };
