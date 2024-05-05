@@ -13,7 +13,7 @@ struct DataPoint
 
 struct DataPointCollection
 {
-    double time; //could be a time step or real-time
+    double time;  //could be a time step or real-time
 
     DataPoint numCells;
     DataPoint numSelfReplicators;
@@ -22,6 +22,8 @@ struct DataPointCollection
     DataPoint numParticles;
     DataPoint averageGenomeCells;
     DataPoint totalEnergy;
+
+    DataPoint externalEnergy;
 
     DataPoint numCreatedCells;
     DataPoint numAttacks;

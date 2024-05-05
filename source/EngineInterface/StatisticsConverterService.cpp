@@ -4,6 +4,15 @@
 
 namespace
 {
+    DataPoint getDataPointForExternalEnergy(double const& value)
+    {
+        DataPoint result;
+        for (int i = 0; i < MAX_COLORS; ++i) {
+            result.values[i] = value;
+        }
+        return result;
+    }
+
     template <typename T>
     DataPoint getDataPointForTimestepProperty(ColorVector<T> const& values)
     {
@@ -74,6 +83,8 @@ DataPointCollection StatisticsConverterService::convert(
     result.numParticles = getDataPointForTimestepProperty(data.timestep.numParticles);
     result.averageGenomeCells = getDataPointForAverageGenomeNodes(data.timestep.numGenomeCells, data.timestep.numSelfReplicators);
     result.totalEnergy = getDataPointForTimestepProperty(data.timestep.totalEnergy);
+    result.externalEnergy = getDataPointForExternalEnergy(data.timestep.externalEnergy);
+
 
     auto deltaTimesteps = lastTimestep ? toDouble(timestep) - toDouble(*lastTimestep) : 1.0;
     if (deltaTimesteps < NEAR_ZERO) {
