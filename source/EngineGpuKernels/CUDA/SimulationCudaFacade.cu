@@ -421,7 +421,6 @@ void _SimulationCudaFacade::updateStatistics()
 {
     _statisticsKernels->updateStatistics(_settings.gpuSettings, getSimulationDataIntern(), *_cudaSimulationStatistics);
     syncAndCheck();
-
     {
         std::lock_guard lock(_mutexForStatistics);
         _statisticsData = _cudaSimulationStatistics->getStatistics();

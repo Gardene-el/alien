@@ -182,6 +182,12 @@ void _StatisticsWindow::processTimelineStatistics()
                 ImGui::TableSetColumnIndex(1);
                 AlienImGui::Text("Viruses");
 
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                processPlot(row++, &DataPointCollection::externalEnergy);
+                ImGui::TableSetColumnIndex(1);
+                AlienImGui::Text("External energy");
+
                 ImPlot::PopColormap();
 
                 ImGui::EndTable();

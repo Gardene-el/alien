@@ -10,6 +10,7 @@ namespace
         for (int i = 0; i < MAX_COLORS; ++i) {
             result.values[i] = value;
         }
+        result.summedValues = value;
         return result;
     }
 
@@ -84,7 +85,6 @@ DataPointCollection StatisticsConverterService::convert(
     result.averageGenomeCells = getDataPointForAverageGenomeNodes(data.timestep.numGenomeCells, data.timestep.numSelfReplicators);
     result.totalEnergy = getDataPointForTimestepProperty(data.timestep.totalEnergy);
     result.externalEnergy = getDataPointForExternalEnergy(data.timestep.externalEnergy);
-
 
     auto deltaTimesteps = lastTimestep ? toDouble(timestep) - toDouble(*lastTimestep) : 1.0;
     if (deltaTimesteps < NEAR_ZERO) {
