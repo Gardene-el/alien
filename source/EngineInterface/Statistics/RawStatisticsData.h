@@ -1,12 +1,12 @@
 #pragma once
 
-#include "EngineInterface/EngineConstants.h"
 #include "EngineInterface/Colors.h"
+#include "EngineInterface/EngineConstants.h"
 
 
 struct TimestepStatistics
 {
-    double externalEnergy=0.0f;
+    double externalEnergy = 0.0f;
 
     ColorVector<int> numCells = {0, 0, 0, 0, 0, 0, 0};
     ColorVector<int> numSelfReplicators = {0, 0, 0, 0, 0, 0, 0};
@@ -16,7 +16,6 @@ struct TimestepStatistics
     ColorVector<uint64_t> numGenomeCells = {0, 0, 0, 0, 0, 0, 0};
     ColorVector<float> totalEnergy = {0, 0, 0, 0, 0, 0, 0};
 };
-
 struct AccumulatedStatistics
 {
     ColorVector<uint64_t> numCreatedCells = {0, 0, 0, 0, 0, 0, 0};
@@ -34,7 +33,6 @@ struct AccumulatedStatistics
     ColorVector<uint64_t> numReconnectorRemoved = {0, 0, 0, 0, 0, 0, 0};
     ColorVector<uint64_t> numDetonations = {0, 0, 0, 0, 0, 0, 0};
 };
-
 struct TimelineStatistics
 {
     TimestepStatistics timestep;

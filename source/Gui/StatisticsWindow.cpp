@@ -77,10 +77,16 @@ void _StatisticsWindow::processIntern()
             ImGui::EndChild();
             ImGui::EndTabItem();
         }
-
         if (ImGui::BeginTabItem("Histograms")) {
             if (ImGui::BeginChild("##histograms", ImVec2(0, 0), false)) {
                 processHistograms();
+            }
+            ImGui::EndChild();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("DensityMap")) {
+            if (ImGui::BeginChild("##heatmap", ImVec2(0, 0), false)) {
+                processHeatmap();
             }
             ImGui::EndChild();
             ImGui::EndTabItem();
@@ -291,6 +297,7 @@ void _StatisticsWindow::processTimelineStatistics()
                 ImPlot::PopColormap();
                 ImGui::EndTable();
             }
+            ImGui::EndTabItem();
         }
     }
     ImGui::EndTabBar();
@@ -370,6 +377,41 @@ void _StatisticsWindow::processHistograms()
     ImPlot::PopStyleColor(2);
 }
 
+void _StatisticsWindow::processHeatmap()
+{
+    ImGui::Spacing();
+
+    int value = 0;
+    ImGui::InputInt("CalcPerTimeStep", &value);
+    if (!_lastStatisticsData) {
+        return;
+    }
+    if (ImGui::BeginTabBar("##HearMap")) {
+        if (ImGui::BeginTabItem("Cell Density Map")) {
+
+            std::array<float, 9> heatmap_data;
+            for (auto& value : heatmap_data) {
+                value = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+            }
+
+            ImPlot::SetNextPlotLimits(0, 1, 0, 1, ImGuiCond_Always);
+            if (ImPlot::BeginPlot(
+                    "##Perlin", NULL, NULL, ImVec2(-1, -1), ImPlotFlags_CanvasOnly /*, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations*/)) {
+                //ImPlot::SetupAxes(NULL, NULL, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
+                //ImPlot::SetPlotFlags(ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMenus);
+                ImPlot::PlotHeatmap("##T", heatmap_data.data(), 3, 3, 0.f, 1.f, NULL);
+                ImPlot::EndPlot();
+            }
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Cell Activities")) {
+            ImGui::EndTabItem();
+        }
+    }
+
+    ImGui::EndTabBar();
+}
 void _StatisticsWindow::processPlot(int row, DataPoint DataPointCollection::*valuesPtr, int fracPartDecimals)
 {
     auto isCollapsed = _collapsedPlotIndices.contains(row);

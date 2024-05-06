@@ -1,10 +1,9 @@
 #pragma once
 
+#include "AlienWindow.h"
+#include "Definitions.h"
 #include "EngineInterface/Definitions.h"
 #include "EngineInterface/Statistics/RawStatisticsData.h"
-
-#include "Definitions.h"
-#include "AlienWindow.h"
 #include "TimelineLiveStatistics.h"
 
 struct ImPlotPoint;
@@ -18,6 +17,8 @@ public:
 private:
     void processIntern() override;
     void processTimelines();
+    void processHeatmap();
+
 
     void processTimelineStatistics();
 
@@ -46,7 +47,7 @@ private:
     std::string _startingPath;
 
     int _plotType = 0;  //0 = accumulated, 1 = by color, 2...8 = specific color
-    int _mode = 0;  //0 = real-time, 1 = entire history
+    int _mode = 0;      //0 = real-time, 1 = entire history
     static auto constexpr MinPlotHeight = 80.0f;
     float _plotHeight = MinPlotHeight;
 
@@ -57,4 +58,3 @@ private:
 
     TimelineLiveStatistics _liveStatistics;
 };
-
