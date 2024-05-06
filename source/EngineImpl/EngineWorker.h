@@ -16,12 +16,12 @@
 #include "EngineInterface/GpuSettings.h"
 #include "EngineInterface/MutationType.h"
 #include "EngineInterface/OverlayDescriptions.h"
-#include "EngineInterface/RawStatisticsData.h"
 #include "EngineInterface/SelectionShallowData.h"
 #include "EngineInterface/Settings.h"
 #include "EngineInterface/ShallowUpdateSelectionData.h"
 #include "EngineInterface/SimulationParameters.h"
-#include "EngineInterface/StatisticsHistory.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
+#include "EngineInterface/Statistics/StatisticsHistory.h"
 
 struct ExceptionData
 {

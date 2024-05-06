@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "EngineInterface/Settings.h"
-#include "EngineInterface/RawStatisticsData.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
 
 #include "Definitions.cuh"
 #include "Macros.cuh"

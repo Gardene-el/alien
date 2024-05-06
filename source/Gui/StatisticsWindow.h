@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EngineInterface/Definitions.h"
-#include "EngineInterface/RawStatisticsData.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
 
 #include "Definitions.h"
 #include "AlienWindow.h"

@@ -3,10 +3,9 @@
 #include "Base/NumberGenerator.h"
 #include "EngineInterface/DescriptionEditService.h"
 #include "EngineInterface/Descriptions.h"
-#include "EngineInterface/SimulationController.h"
 #include "EngineInterface/GenomeDescriptionService.h"
-#include "EngineInterface/RawStatisticsData.h"
-
+#include "EngineInterface/SimulationController.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
 #include "IntegrationTestFramework.h"
 
 class StatisticsTests : public IntegrationTestFramework

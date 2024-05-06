@@ -7,7 +7,7 @@
 #include "GarbageCollectorKernelsLauncher.cuh"
 #include "DebugKernels.cuh"
 #include "MaxAgeBalancer.cuh"
-#include "SimulationStatistics.cuh"
+#include "Statistics/SimulationStatistics.cuh"
 
 _SimulationKernelsLauncher::_SimulationKernelsLauncher()
 {

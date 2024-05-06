@@ -1,11 +1,12 @@
 #include "TimelineLiveStatistics.h"
 
 #include <cmath>
+
 #include <imgui.h>
 
 #include "Base/Definitions.h"
-#include "EngineInterface/RawStatisticsData.h"
-#include "EngineInterface/StatisticsConverterService.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
+#include "EngineInterface/Statistics/StatisticsConverterService.h"
 
 
 DataPoint DataPoint::operator+(DataPoint const& other) const

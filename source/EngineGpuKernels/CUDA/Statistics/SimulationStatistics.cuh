@@ -1,9 +1,9 @@
 #pragma once
 
-#include "EngineInterface/RawStatisticsData.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
 
-#include "Base.cuh"
-#include "Definitions.cuh"
+#include "../Base.cuh"
+#include "../Definitions.cuh"
 
 class SimulationStatistics
 {

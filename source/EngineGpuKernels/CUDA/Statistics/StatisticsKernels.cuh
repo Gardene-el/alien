@@ -3,7 +3,7 @@
 #include "cuda_runtime_api.h"
 #include "sm_60_atomic_functions.h"
 
-#include "SimulationData.cuh"
+#include "../SimulationData.cuh"
 #include "SimulationStatistics.cuh"
 
 __global__ void cudaUpdateTimestepStatistics_substep1(SimulationData data, SimulationStatistics statistics);

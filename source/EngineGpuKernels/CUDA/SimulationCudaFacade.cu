@@ -24,10 +24,10 @@
 #include "GarbageCollectorKernels.cuh"
 #include "ConstantMemory.cuh"
 #include "CudaMemoryManager.cuh"
-#include "SimulationStatistics.cuh"
+#include "Statistics/SimulationStatistics.cuh"
 #include "Objects.cuh"
 #include "Map.cuh"
-#include "StatisticsKernels.cuh"
+#include "Statistics/StatisticsKernels.cuh"
 #include "EditKernels.cuh"
 #include "RenderingKernels.cuh"
 #include "SimulationData.cuh"
@@ -35,11 +35,11 @@
 #include "DataAccessKernelsLauncher.cuh"
 #include "RenderingKernelsLauncher.cuh"
 #include "EditKernelsLauncher.cuh"
-#include "StatisticsKernelsLauncher.cuh"
+#include "Statistics/StatisticsKernelsLauncher.cuh"
 #include "SelectionResult.cuh"
 #include "RenderingData.cuh"
 #include "TestKernelsLauncher.cuh"
-#include "StatisticsService.cuh"
+#include "Statistics/StatisticsService.cuh"
 
 namespace
 {

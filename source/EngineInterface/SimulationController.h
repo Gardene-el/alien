@@ -1,13 +1,14 @@
 #pragma once
+#include "Statistics/DataPointCollection.h"
+#include "Statistics/StatisticsHistory.h"
+
 #include "Definitions.h"
+#include "MutationType.h"
 #include "OverlayDescriptions.h"
 #include "SelectionShallowData.h"
 #include "Settings.h"
 #include "ShallowUpdateSelectionData.h"
 #include "SimulationController.h"
-#include "MutationType.h"
-#include "DataPointCollection.h"
-#include "StatisticsHistory.h"
 
 class _SimulationController
 {

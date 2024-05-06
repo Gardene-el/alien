@@ -2,9 +2,9 @@
 
 #include "EngineInterface/GpuSettings.h"
 
-#include "Base.cuh"
-#include "Definitions.cuh"
-#include "Macros.cuh"
+#include "../Base.cuh"
+#include "../Definitions.cuh"
+#include "../Macros.cuh"
 
 class _StatisticsKernelsLauncher
 {

@@ -1,6 +1,6 @@
 #include <optional>
 
-#include "EngineInterface/DataPointCollection.h"
+#include "EngineInterface/Statistics/DataPointCollection.h"
 
 class StatisticsConverterService
 {

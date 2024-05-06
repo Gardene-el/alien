@@ -1,13 +1,22 @@
 
 add_library(EngineInterface
+
+    Statistics/DataPointCollection.cpp
+    Statistics/DataPointCollection.h
+    Statistics/RawStatisticsData.h
+    Statistics/StatisticsConverterService.cpp
+    Statistics/StatisticsConverterService.h
+    Statistics/StatisticsHistory.cpp
+    Statistics/StatisticsHistory.h
+
     ArraySizes.h
     AuxiliaryData.h
     AuxiliaryDataParserService.cpp
     AuxiliaryDataParserService.h
     CellFunctionConstants.h
     Colors.h
-    DataPointCollection.cpp
-    DataPointCollection.h
+
+
     Definitions.h
     DescriptionEditService.cpp
     DescriptionEditService.h
@@ -30,7 +39,6 @@ add_library(EngineInterface
     PreviewDescriptionService.h
     PreviewDescriptions.h
     RadiationSource.h
-    RawStatisticsData.h
     SelectionShallowData.h
     SerializerService.cpp
     SerializerService.h
@@ -48,10 +56,7 @@ add_library(EngineInterface
     SimulationParametersSpotValues.h
     SpaceCalculator.cpp
     SpaceCalculator.h
-    StatisticsConverterService.cpp
-    StatisticsConverterService.h
-    StatisticsHistory.cpp
-    StatisticsHistory.h
+
     ZoomLevels.h)
 
 target_link_libraries(EngineInterface Boost::boost)

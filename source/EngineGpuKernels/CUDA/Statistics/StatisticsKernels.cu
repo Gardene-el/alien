@@ -1,6 +1,6 @@
 ﻿#include "StatisticsKernels.cuh"
 
-#include "GenomeDecoder.cuh"
+#include "../GenomeDecoder.cuh"
 
 __global__ void cudaUpdateTimestepStatistics_substep1(SimulationData data, SimulationStatistics statistics)
 {

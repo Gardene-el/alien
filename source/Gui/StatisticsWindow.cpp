@@ -14,7 +14,7 @@
 #include "EngineInterface/Colors.h"
 #include "EngineInterface/SerializerService.h"
 #include "EngineInterface/SimulationController.h"
-#include "EngineInterface/StatisticsHistory.h"
+#include "EngineInterface/Statistics/StatisticsHistory.h"
 #include "Fonts/IconsFontAwesome5.h"
 #include "GenericFileDialogs.h"
 #include "MessageDialog.h"

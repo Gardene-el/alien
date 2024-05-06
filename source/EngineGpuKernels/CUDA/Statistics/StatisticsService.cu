@@ -1,8 +1,8 @@
 #include "StatisticsService.cuh"
 
-#include "EngineInterface/StatisticsConverterService.h"
+#include "EngineInterface/Statistics/StatisticsConverterService.h"
 
-#include "Base.cuh"
+#include "../Base.cuh"
 
 namespace 
 {

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Base/Definitions.h"
+#include "Statistics/StatisticsHistory.h"
 
-#include "Definitions.h"
 #include "AuxiliaryData.h"
+#include "Base/Definitions.h"
+#include "Definitions.h"
 #include "Descriptions.h"
-#include "StatisticsHistory.h"
 
 struct DeserializedSimulation
 {
@@ -16,9 +16,9 @@ struct DeserializedSimulation
 
 struct SerializedSimulation
 {
-    std::string mainData;  //binary
+    std::string mainData;       //binary
     std::string auxiliaryData;  //JSON
-    std::string statistics;  //CSV
+    std::string statistics;     //CSV
 };
 
 class SerializerService

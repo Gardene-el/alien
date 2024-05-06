@@ -12,12 +12,12 @@
 #include <vector_types.h>
 #include <GL/gl.h>
 
-#include "EngineInterface/RawStatisticsData.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
 #include "EngineInterface/Settings.h"
 #include "EngineInterface/SelectionShallowData.h"
 #include "EngineInterface/ShallowUpdateSelectionData.h"
 #include "EngineInterface/MutationType.h"
-#include "EngineInterface/StatisticsHistory.h"
+#include "EngineInterface/Statistics/StatisticsHistory.h"
 
 #include "Definitions.cuh"
 

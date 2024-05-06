@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EngineInterface/RawStatisticsData.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
 
 struct DataPoint
 {

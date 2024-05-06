@@ -1,5 +1,16 @@
 
 add_library(EngineGpuKernels
+    ../Definitions.h
+    ../TOs.h
+
+    Statistics/SimulationStatistics.cuh
+    Statistics/StatisticsService.cu
+    Statistics/StatisticsService.cuh
+    Statistics/StatisticsKernelsLauncher.cu
+    Statistics/StatisticsKernelsLauncher.cuh
+    Statistics/StatisticsKernels.cu
+    Statistics/StatisticsKernels.cuh
+
     Array.cuh
     AttackerProcessor.cuh
     Base.cuh
@@ -21,7 +32,8 @@ add_library(EngineGpuKernels
     DebugKernels.cu
     DebugKernels.cuh
     Definitions.cuh
-    ../Definitions.h
+
+
     DensityMap.cuh
     DetonatorProcessor.cuh
     EditKernels.cu
@@ -74,20 +86,15 @@ add_library(EngineGpuKernels
     SimulationKernels.cuh
     SimulationKernelsLauncher.cu
     SimulationKernelsLauncher.cuh
-    SimulationStatistics.cuh
     SpotCalculator.cuh
-    StatisticsService.cu
-    StatisticsService.cuh
-    StatisticsKernelsLauncher.cu
-    StatisticsKernelsLauncher.cuh
-    StatisticsKernels.cu
-    StatisticsKernels.cuh
+    
+
     TestKernels.cu
+    
     TestKernels.cuh
     TestKernelsLauncher.cu
     TestKernelsLauncher.cuh
     TransmitterProcessor.cuh
-    ../TOs.h
     Util.cuh
     )
 

@@ -1,7 +1,7 @@
 #include <optional>
 
-#include "EngineInterface/StatisticsHistory.h"
-#include "Definitions.cuh"
+#include "EngineInterface/Statistics/StatisticsHistory.h"
+#include "../Definitions.cuh"
 
 class _StatisticsService
 {

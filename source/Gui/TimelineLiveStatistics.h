@@ -1,19 +1,19 @@
 #pragma once
 
-#include <vector>
 #include <optional>
+#include <vector>
 
 #include "EngineInterface/Colors.h"
 #include "EngineInterface/Definitions.h"
-#include "EngineInterface/RawStatisticsData.h"
-#include "EngineInterface/DataPointCollection.h"
+#include "EngineInterface/Statistics/DataPointCollection.h"
+#include "EngineInterface/Statistics/RawStatisticsData.h"
 
 struct TimelineLiveStatistics
 {
     static double constexpr MaxLiveHistory = 240.0;  //in seconds
 
-    double timepoint = 0;  //in seconds
-    float history = 10.0f;   //in seconds
+    double timepoint = 0;   //in seconds
+    float history = 10.0f;  //in seconds
 
     std::vector<DataPointCollection> dataPointCollectionHistory;
     std::optional<TimelineStatistics> lastData;

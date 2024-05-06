@@ -3,8 +3,8 @@
 #include <mutex>
 #include <vector>
 
-#include "DataPointCollection.h"
-#include "Definitions.h"
+#include "EngineInterface/Definitions.h"
+#include "EngineInterface/Statistics/DataPointCollection.h"
 
 using StatisticsHistoryData = std::vector<DataPointCollection>;
 
