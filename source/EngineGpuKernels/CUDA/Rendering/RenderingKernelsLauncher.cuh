@@ -4,11 +4,11 @@
 #include "EngineInterface/ShallowUpdateSelectionData.h"
 #include "EngineInterface/Settings.h"
 
-#include "Base.cuh"
-#include "DataAccessKernels.cuh"
-#include "Definitions.cuh"
-#include "GarbageCollectorKernelsLauncher.cuh"
-#include "Macros.cuh"
+#include "../Base.cuh"
+#include "../DataAccessKernels.cuh"
+#include "../Definitions.cuh"
+#include "../GarbageCollectorKernelsLauncher.cuh"
+#include "../Macros.cuh"
 
 class _RenderingKernelsLauncher
 {

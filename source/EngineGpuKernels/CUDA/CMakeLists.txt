@@ -3,20 +3,6 @@ add_library(EngineGpuKernels
     ../Definitions.h
     ../TOs.h
 
-    Statistics/SimulationStatistics.cuh
-    Statistics/StatisticsService.cu
-    Statistics/StatisticsService.cuh
-    Statistics/StatisticsKernelsLauncher.cu
-    Statistics/StatisticsKernelsLauncher.cuh
-    Statistics/StatisticsKernels.cu
-    Statistics/StatisticsKernels.cuh
-
-    Statistics/SimulationMapStatistics.cuh
-    Statistics/StatisticsDataCache.cu
-    Statistics/StatisticsDataCache.cuh
-    Statistics/CustomStatisticsKernels.cu
-    Statistics/CustomStatisticsKernels.cuh
-
     Array.cuh
     AttackerProcessor.cuh
     Base.cuh
@@ -38,7 +24,6 @@ add_library(EngineGpuKernels
     DebugKernels.cu
     DebugKernels.cuh
     Definitions.cuh
-
 
     DensityMap.cuh
     DetonatorProcessor.cuh
@@ -76,12 +61,7 @@ add_library(EngineGpuKernels
     Physics.cuh
     PreprocessedCellFunctionData.cuh
     ReconnectorProcessor.cuh
-    RenderingData.cu
-    RenderingData.cuh
-    RenderingKernels.cu
-    RenderingKernels.cuh
-    RenderingKernelsLauncher.cu
-    RenderingKernelsLauncher.cuh
+
     SelectionResult.cuh
     SensorProcessor.cuh
     SimulationCudaFacade.cu
@@ -94,14 +74,34 @@ add_library(EngineGpuKernels
     SimulationKernelsLauncher.cuh
     SpotCalculator.cuh
     
-
     TestKernels.cu
-    
     TestKernels.cuh
     TestKernelsLauncher.cu
     TestKernelsLauncher.cuh
     TransmitterProcessor.cuh
     Util.cuh
+
+    Statistics/SimulationStatistics.cuh
+    Statistics/StatisticsService.cu
+    Statistics/StatisticsService.cuh
+    Statistics/StatisticsKernelsLauncher.cu
+    Statistics/StatisticsKernelsLauncher.cuh
+    Statistics/StatisticsKernels.cu
+    Statistics/StatisticsKernels.cuh
+
+    Statistics/SimulationMapStatistics.cuh
+    Statistics/StatisticsDataCache.cu
+    Statistics/StatisticsDataCache.cuh
+    Statistics/CustomStatisticsKernels.cu
+    Statistics/CustomStatisticsKernels.cuh
+
+    Rendering/RenderingData.cu
+    Rendering/RenderingData.cuh
+    Rendering/RenderingKernels.cu
+    Rendering/RenderingKernels.cuh
+    Rendering/RenderingKernelsLauncher.cu
+    Rendering/RenderingKernelsLauncher.cuh
+
     )
 
 target_link_libraries(EngineGpuKernels Base)

@@ -3,12 +3,12 @@
 #include "EngineInterface/Colors.h"
 #include "EngineInterface/ZoomLevels.h"
 
-#include "TOs.cuh"
-#include "Base.cuh"
-#include "GarbageCollectorKernels.cuh"
-#include "ObjectFactory.cuh"
-#include "Map.cuh"
-#include "SimulationData.cuh"
+#include "../TOs.cuh"
+#include "../Base.cuh"
+#include "../GarbageCollectorKernels.cuh"
+#include "../ObjectFactory.cuh"
+#include "../Map.cuh"
+#include "../SimulationData.cuh"
 #include "RenderingData.cuh"
 
 #include <cuda_runtime_api.h>

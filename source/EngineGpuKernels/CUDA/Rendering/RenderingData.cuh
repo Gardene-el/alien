@@ -2,8 +2,8 @@
 
 #include <atomic>
 
-#include "Base.cuh"
-#include "Definitions.cuh"
+#include "../Base.cuh"
+#include "../Definitions.cuh"
 
 struct RenderingData
 {
