@@ -19,6 +19,7 @@
 #include "EngineInterface/MutationType.h"
 #include "EngineInterface/Statistics/StatisticsHistory.h"
 
+
 #include "Definitions.cuh"
 
 struct cudaGraphicsResource;
@@ -122,6 +123,9 @@ private:
     StatisticsService _statisticsService;
     StatisticsHistory _statisticsHistory;
     std::shared_ptr<SimulationStatistics> _cudaSimulationStatistics;
+
+    //std::optional<StatisticsDataCache> _statisticsDataCache;
+    std::shared_ptr<SimulationMapStatistics> _cudaSimulationCustomStatistics;
 
     SimulationKernelsLauncher _simulationKernels;
     DataAccessKernelsLauncher _dataAccessKernels;

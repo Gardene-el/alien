@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "Statistics/StatisticsParameters.h"
+
 #include "CellFunctionConstants.h"
 #include "SimulationParametersSpotValues.h"
 #include "RadiationSource.h"
@@ -30,6 +32,10 @@ struct SimulationParameters
 {
     //feature list
     Features features;
+
+    //statistics 
+    StatisticsParameters statisticsParameters;
+
 
     //particle sources
     int numParticleSources = 0;

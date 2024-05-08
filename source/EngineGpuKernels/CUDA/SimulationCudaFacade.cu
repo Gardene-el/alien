@@ -3,6 +3,7 @@
 #include <functional>
 #include <iostream>
 #include <list>
+#include <memory>
 
 #include <cuda_runtime.h>
 #include <cuda_gl_interop.h>
@@ -40,6 +41,7 @@
 #include "RenderingData.cuh"
 #include "TestKernelsLauncher.cuh"
 #include "Statistics/StatisticsService.cuh"
+#include "Statistics/SimulationMapStatistics.cuh"
 
 namespace
 {
@@ -64,10 +66,14 @@ _SimulationCudaFacade::_SimulationCudaFacade(uint64_t timestep, Settings const& 
     _cudaSimulationStatistics = std::make_shared<SimulationStatistics>();
     _statisticsService = std::make_shared<_StatisticsService>();
 
+    _cudaSimulationCustomStatistics=std::make_shared<SimulationMapStatistics>();
+
     _cudaSimulationData->init({settings.generalSettings.worldSizeX, settings.generalSettings.worldSizeY}, timestep);
     _cudaRenderingData->init();
     _cudaSimulationStatistics->init();
     _cudaSelectionResult->init();
+
+    _cudaSimulationCustomStatistics->init({settings.generalSettings.worldSizeX, settings.generalSettings.worldSizeY},20);
 
     _simulationKernels = std::make_shared<_SimulationKernelsLauncher>();
     _dataAccessKernels = std::make_shared<_DataAccessKernelsLauncher>();
@@ -90,6 +96,7 @@ _SimulationCudaFacade::~_SimulationCudaFacade()
     _cudaRenderingData->free();
     _cudaSimulationStatistics->free();
     _cudaSelectionResult->free();
+    _cudaSimulationCustomStatistics->free();
 
     CudaMemoryManager::getInstance().freeMemory(_cudaAccessTO->cells);
     CudaMemoryManager::getInstance().freeMemory(_cudaAccessTO->particles);

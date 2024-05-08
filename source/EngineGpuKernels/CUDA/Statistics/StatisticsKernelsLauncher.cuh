@@ -10,6 +10,6 @@ class _StatisticsKernelsLauncher
 {
 public:
     void updateStatistics(GpuSettings const& gpuSettings, SimulationData const& data, SimulationStatistics const& simulationStatistics);
-
+    void updateCustomStatistics(GpuSettings const& gpuSettings, SimulationData const& data, SimulationStatistics const& simulationStatistics);
 private:
 };

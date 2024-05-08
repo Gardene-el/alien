@@ -5,7 +5,7 @@
 #include "Object.cuh"
 #include "SimulationData.cuh"
 #include "CellFunctionProcessor.cuh"
-#include "SimulationStatistics.cuh"
+#include "Statistics/SimulationStatistics.cuh"
 
 class MuscleProcessor
 {

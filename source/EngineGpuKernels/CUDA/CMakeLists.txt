@@ -11,6 +11,12 @@ add_library(EngineGpuKernels
     Statistics/StatisticsKernels.cu
     Statistics/StatisticsKernels.cuh
 
+    Statistics/SimulationMapStatistics.cuh
+    Statistics/StatisticsDataCache.cu
+    Statistics/StatisticsDataCache.cuh
+    Statistics/CustomStatisticsKernels.cu
+    Statistics/CustomStatisticsKernels.cuh
+
     Array.cuh
     AttackerProcessor.cuh
     Base.cuh

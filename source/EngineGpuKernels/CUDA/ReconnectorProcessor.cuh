@@ -8,7 +8,7 @@
 #include "Object.cuh"
 #include "ParticleProcessor.cuh"
 #include "SimulationData.cuh"
-#include "SimulationStatistics.cuh"
+#include "Statistics/SimulationStatistics.cuh"
 
 class ReconnectorProcessor
 {

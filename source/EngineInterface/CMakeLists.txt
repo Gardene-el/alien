@@ -3,11 +3,15 @@ add_library(EngineInterface
 
     Statistics/DataPointCollection.cpp
     Statistics/DataPointCollection.h
+    Statistics/MapStatistics.h
     Statistics/RawStatisticsData.h
     Statistics/StatisticsConverterService.cpp
     Statistics/StatisticsConverterService.h
     Statistics/StatisticsHistory.cpp
     Statistics/StatisticsHistory.h
+    Statistics/StatisticsParameters.h
+    Statistics/StatisticsParameters.cpp
+
 
     ArraySizes.h
     AuxiliaryData.h

@@ -4,7 +4,7 @@
 
 #include "CellFunctionProcessor.cuh"
 #include "SimulationCudaFacade.cuh"
-#include "SimulationStatistics.cuh"
+#include "Statistics/SimulationStatistics.cuh"
 #include "CellConnectionProcessor.cuh"
 #include "MutationProcessor.cuh"
 #include "GenomeDecoder.cuh"

@@ -2,6 +2,7 @@
 
 #include "EngineInterface/Statistics/RawStatisticsData.h"
 
+
 #include "../Base.cuh"
 #include "../Definitions.cuh"
 
@@ -97,6 +98,9 @@ public:
     __inline__ __device__ void maxValue(int value) { atomicMax(&_data->histogram.maxValue, value); }
     __inline__ __device__ int getMaxValue() const { return _data->histogram.maxValue; }
 
+
+
+    __inline__ __device__ void resetCustomData(){};
     __inline__ __device__ void addExternalEnergy(double externalEnergy)  {  atomicAdd(&(_data->timeline.timestep.externalEnergy), externalEnergy);}
 
 private:

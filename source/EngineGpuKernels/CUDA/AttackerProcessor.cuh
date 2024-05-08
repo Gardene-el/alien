@@ -8,7 +8,7 @@
 #include "ConstantMemory.cuh"
 #include "SimulationData.cuh"
 #include "SpotCalculator.cuh"
-#include "SimulationStatistics.cuh"
+#include "Statistics/SimulationStatistics.cuh"
 #include "ObjectFactory.cuh"
 #include "ParticleProcessor.cuh"
 

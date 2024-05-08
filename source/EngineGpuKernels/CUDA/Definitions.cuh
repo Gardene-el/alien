@@ -18,6 +18,9 @@ struct DataTO;
 struct SimulationParameters;
 struct GpuSettings;
 class SimulationStatistics;
+class SimulationMapStatistics;
+
+struct StatisticsDataCache;
 
 class _SimulationKernelsLauncher;
 using SimulationKernelsLauncher = std::shared_ptr<_SimulationKernelsLauncher>;

@@ -7,7 +7,7 @@
 #include "Base.cuh"
 #include "CellConnectionProcessor.cuh"
 #include "CellFunctionProcessor.cuh"
-#include "SimulationStatistics.cuh"
+#include "Statistics/SimulationStatistics.cuh"
 
 class NerveProcessor
 {

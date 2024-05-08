@@ -2,7 +2,7 @@
 
 #include "EngineInterface/Colors.h"
 #include "EngineInterface/EngineConstants.h"
-
+#include "MapStatistics.h"
 
 struct TimestepStatistics
 {
@@ -43,6 +43,15 @@ struct HistogramData
 {
     int maxValue = 0;
     int numCellsByColorBySlot[MAX_COLORS][MAX_HISTOGRAM_SLOTS];
+};
+
+struct MapStatisticsData{
+    int presentTimestep;
+    int timestepRate;
+    int2 mapSize;
+    int slotSize;
+
+    int* cellsMap; 
 };
 
 struct RawStatisticsData
