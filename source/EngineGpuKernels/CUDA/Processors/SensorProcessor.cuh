@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Object.cuh"
-#include "SimulationData.cuh"
+#include "../Base/Object.cuh"
+#include "../SimulationData.cuh"
 #include "CellFunctionProcessor.cuh"
 
 class SensorProcessor

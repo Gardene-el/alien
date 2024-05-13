@@ -3,8 +3,8 @@
 #include "EngineInterface/Settings.h"
 #include "EngineInterface/Statistics/RawStatisticsData.h"
 
-#include "Definitions.cuh"
-#include "Macros.cuh"
+#include "Base/Definitions.cuh"
+#include "Base/Macros.cuh"
 
 class _SimulationKernelsLauncher
 {

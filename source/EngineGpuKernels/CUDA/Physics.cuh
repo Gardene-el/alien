@@ -3,8 +3,8 @@
 #include <cuda_runtime.h>
 #include <vector_types.h>
 
-#include "Math.cuh"
-#include "Object.cuh"
+#include "Base/Math.cuh"
+#include "Base/Object.cuh"
 
 
 class Physics

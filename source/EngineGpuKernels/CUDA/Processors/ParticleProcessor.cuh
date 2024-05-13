@@ -3,10 +3,10 @@
 #include "cuda_runtime_api.h"
 #include "sm_60_atomic_functions.h"
 
-#include "Base.cuh"
-#include "Map.cuh"
+#include "Base/Base.cuh"
+#include "Base/Map.cuh"
 #include "ConstantMemory.cuh"
-#include "ObjectFactory.cuh"
+#include "Base/ObjectFactory.cuh"
 #include "SpotCalculator.cuh"
 
 class ParticleProcessor

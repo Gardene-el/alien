@@ -6,9 +6,9 @@
 #include "EngineInterface/CellFunctionConstants.h"
 
 #include "TOs.cuh"
-#include "Base.cuh"
-#include "ObjectFactory.cuh"
-#include "Map.cuh"
+#include "Base/Base.cuh"
+#include "Base/ObjectFactory.cuh"
+#include "Base/Map.cuh"
 #include "Physics.cuh"
 #include "CellConnectionProcessor.cuh"
 #include "GenomeDecoder.cuh"

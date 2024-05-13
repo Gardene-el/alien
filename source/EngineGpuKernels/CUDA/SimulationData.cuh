@@ -6,12 +6,12 @@
 #include "EngineInterface/GpuSettings.h"
 #include "EngineInterface/Colors.h"
 
-#include "Base.cuh"
-#include "CudaNumberGenerator.cuh"
+#include "Base/Base.cuh"
+#include "Base/CudaNumberGenerator.cuh"
 #include "PreprocessedCellFunctionData.cuh"
-#include "Definitions.cuh"
-#include "Objects.cuh"
-#include "Map.cuh"
+#include "Base/Definitions.cuh"
+#include "Base/Objects.cuh"
+#include "Base/Map.cuh"
 #include "Operations.cuh"
 
 struct SimulationData

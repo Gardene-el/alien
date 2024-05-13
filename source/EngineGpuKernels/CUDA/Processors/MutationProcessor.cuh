@@ -5,7 +5,7 @@
 
 #include "CellConnectionProcessor.cuh"
 #include "GenomeDecoder.cuh"
-#include "CudaShapeGenerator.cuh"
+#include "Base/CudaShapeGenerator.cuh"
 
 class MutationProcessor
 {

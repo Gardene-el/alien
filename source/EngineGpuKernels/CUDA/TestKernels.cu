@@ -1,6 +1,6 @@
 #include "TestKernels.cuh"
 
-#include "MutationProcessor.cuh"
+#include "Processors/MutationProcessor.cuh"
 
 __global__ void cudaTestMutate(SimulationData data, uint64_t cellId, MutationType mutationType)
 {

@@ -4,9 +4,9 @@
 #include "EngineInterface/ShallowUpdateSelectionData.h"
 #include "EngineInterface/InspectedEntityIds.h"
 
-#include "Base.cuh"
-#include "Definitions.cuh"
-#include "Macros.cuh"
+#include "Base/Base.cuh"
+#include "Base/Definitions.cuh"
+#include "Base/Macros.cuh"
 
 class _DataAccessKernelsLauncher
 {

@@ -5,12 +5,12 @@
 #include "EngineInterface/GenomeConstants.h"
 
 #include "Base.cuh"
-#include "ConstantMemory.cuh"
-#include "TOs.cuh"
+#include "../ConstantMemory.cuh"
+#include "../TOs.cuh" 
 #include "Map.cuh"
 #include "Object.cuh"
-#include "Physics.cuh"
-#include "SimulationData.cuh"
+#include "../Physics.cuh"
+#include "../SimulationData.cuh"
 
 class ObjectFactory
 {

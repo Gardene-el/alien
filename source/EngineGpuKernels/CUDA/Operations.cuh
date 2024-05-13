@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "Base.cuh"
-#include "Definitions.cuh"
+#include "Base/Base.cuh"
+#include "Base/Definitions.cuh"
 
 struct AddConnectionPairOperation {
     bool addTokens;

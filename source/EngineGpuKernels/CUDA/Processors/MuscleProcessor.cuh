@@ -2,10 +2,10 @@
 
 #include "EngineInterface/CellFunctionConstants.h"
 
-#include "Object.cuh"
-#include "SimulationData.cuh"
+#include "../Base/Object.cuh"
+#include "../SimulationData.cuh"
 #include "CellFunctionProcessor.cuh"
-#include "Statistics/SimulationStatistics.cuh"
+#include "../Statistics/SimulationStatistics.cuh"
 
 class MuscleProcessor
 {

@@ -2,7 +2,7 @@
 
 #include "DataAccessKernels.cuh"
 #include "EditKernels.cuh"
-#include "GarbageCollectorKernelsLauncher.cuh"
+#include "Base/GarbageCollectorKernelsLauncher.cuh"
 
 _EditKernelsLauncher::_EditKernelsLauncher()
 {

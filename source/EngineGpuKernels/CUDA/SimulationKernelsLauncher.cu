@@ -4,7 +4,7 @@
 
 #include "SimulationKernels.cuh"
 #include "FlowFieldKernels.cuh"
-#include "GarbageCollectorKernelsLauncher.cuh"
+#include "Base/GarbageCollectorKernelsLauncher.cuh"
 #include "DebugKernels.cuh"
 #include "MaxAgeBalancer.cuh"
 #include "Statistics/SimulationStatistics.cuh"

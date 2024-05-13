@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "Math.cuh"
-#include "Map.cuh"
+#include "Base/Math.cuh"
+#include "Base/Map.cuh"
 #include "SimulationData.cuh"
 
 __global__ void cudaApplyFlowFieldSettings(SimulationData data);

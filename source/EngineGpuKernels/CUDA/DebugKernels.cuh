@@ -4,7 +4,7 @@
 #include "sm_60_atomic_functions.h"
 
 #include "SimulationData.cuh"
-#include "ParticleProcessor.cuh"
+#include "Processors/ParticleProcessor.cuh"
 
 
 __global__ void DEBUG_checkAngles(SimulationData data);

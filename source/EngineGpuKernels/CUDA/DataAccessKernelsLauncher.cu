@@ -1,7 +1,7 @@
 ﻿#include "DataAccessKernelsLauncher.cuh"
 
 #include "DataAccessKernels.cuh"
-#include "GarbageCollectorKernelsLauncher.cuh"
+#include "Base/GarbageCollectorKernelsLauncher.cuh"
 #include "EditKernelsLauncher.cuh"
 #include "DebugKernels.cuh"
 

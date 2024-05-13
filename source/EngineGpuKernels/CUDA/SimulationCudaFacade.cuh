@@ -20,7 +20,7 @@
 #include "EngineInterface/Statistics/StatisticsHistory.h"
 
 
-#include "Definitions.cuh"
+#include "Base/Definitions.cuh"
 
 struct cudaGraphicsResource;
 

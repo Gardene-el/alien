@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Definitions.cuh"
+#include "Base/Definitions.cuh"
 #include "EngineInterface/GpuSettings.h"
 #include "EngineInterface/MutationType.h"
 

@@ -8,13 +8,13 @@
 #include "sm_60_atomic_functions.h"
 
 #include "TOs.cuh"
-#include "Base.cuh"
-#include "Map.cuh"
-#include "ObjectFactory.cuh"
-#include "GarbageCollectorKernels.cuh"
+#include "Base/Base.cuh"
+#include "Base/Map.cuh"
+#include "Base/ObjectFactory.cuh"
+#include "Base/GarbageCollectorKernels.cuh"
 #include "SelectionResult.cuh"
-#include "CellConnectionProcessor.cuh"
-#include "CellProcessor.cuh"
+#include "Processors/CellConnectionProcessor.cuh"
+#include "Processors/CellProcessor.cuh"
 
 #include "SimulationData.cuh"
 

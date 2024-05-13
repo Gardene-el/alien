@@ -3,67 +3,52 @@ add_library(EngineGpuKernels
     ../Definitions.h
     ../TOs.h
 
-    Array.cuh
-    AttackerProcessor.cuh
-    Base.cuh
-    CellComputationProcessor.cuh
-    CellConnectionProcessor.cuh
-    CellFunctionProcessor.cuh
-    CellProcessor.cuh
-    ClusterProcessor.cuh
+    Base/Array.cuh
+    Base/Base.cuh
+    Base/CudaMemoryManager.cuh
+    Base/CudaNumberGenerator.cuh
+    Base/CudaShapeGenerator.cuh
+    Base/Definitions.cuh
+    Base/HashMap.cuh
+    Base/HashSet.cuh
+    Base/List.cuh
+    Base/Macros.cuh
+    Base/Map.cuh
+    Base/Math.cuh
+    Base/Object.cuh
+    Base/Objects.cu
+    Base/Objects.cuh
+    Base/ObjectFactory.cuh
+    Base/Util.cuh
+    Base/GarbageCollectorKernels.cu
+    Base/GarbageCollectorKernels.cuh
+    Base/GarbageCollectorKernelsLauncher.cu
+    Base/GarbageCollectorKernelsLauncher.cuh
+
     ConstantMemory.cu
     ConstantMemory.cuh
-    ConstructorProcessor.cuh
-    CudaMemoryManager.cuh
-    CudaNumberGenerator.cuh
-    CudaShapeGenerator.cuh
     DataAccessKernels.cu
     DataAccessKernels.cuh
     DataAccessKernelsLauncher.cu
     DataAccessKernelsLauncher.cuh
     DebugKernels.cu
     DebugKernels.cuh
-    Definitions.cuh
-
     DensityMap.cuh
-    DetonatorProcessor.cuh
     EditKernels.cu
     EditKernels.cuh
     EditKernelsLauncher.cu
     EditKernelsLauncher.cuh
     FlowFieldKernels.cu
     FlowFieldKernels.cuh
-    GarbageCollectorKernels.cu
-    GarbageCollectorKernels.cuh
-    GarbageCollectorKernelsLauncher.cu
-    GarbageCollectorKernelsLauncher.cuh
+
     GenomeDecoder.cuh
-    HashMap.cuh
-    HashSet.cuh
-    InjectorProcessor.cuh
-    List.cuh
-    Macros.cuh
-    Map.cuh
     MapSectionCollector.cuh
-    Math.cuh
     MaxAgeBalancer.cu
     MaxAgeBalancer.cuh
-    MuscleProcessor.cuh
-    MutationProcessor.cuh
-    NerveProcessor.cuh
-    NeuronProcessor.cuh
-    Object.cuh
-    Objects.cu
-    Objects.cuh
-    ObjectFactory.cuh
     Operations.cuh
-    ParticleProcessor.cuh
     Physics.cuh
     PreprocessedCellFunctionData.cuh
-    ReconnectorProcessor.cuh
-
     SelectionResult.cuh
-    SensorProcessor.cuh
     SimulationCudaFacade.cu
     SimulationCudaFacade.cuh
     SimulationData.cu
@@ -73,13 +58,28 @@ add_library(EngineGpuKernels
     SimulationKernelsLauncher.cu
     SimulationKernelsLauncher.cuh
     SpotCalculator.cuh
-    
     TestKernels.cu
     TestKernels.cuh
     TestKernelsLauncher.cu
     TestKernelsLauncher.cuh
-    TransmitterProcessor.cuh
-    Util.cuh
+
+    Processors/AttackerProcessor.cuh
+    Processors/CellComputationProcessor.cuh
+    Processors/CellConnectionProcessor.cuh
+    Processors/CellFunctionProcessor.cuh
+    Processors/CellProcessor.cuh
+    Processors/ClusterProcessor.cuh
+    Processors/ConstructorProcessor.cuh
+    Processors/DetonatorProcessor.cuh
+    Processors/InjectorProcessor.cuh
+    Processors/MuscleProcessor.cuh
+    Processors/MutationProcessor.cuh
+    Processors/NerveProcessor.cuh
+    Processors/NeuronProcessor.cuh
+    Processors/ParticleProcessor.cuh
+    Processors/ReconnectorProcessor.cuh
+    Processors/SensorProcessor.cuh
+    Processors/TransmitterProcessor.cuh
 
     Statistics/SimulationStatistics.cuh
     Statistics/StatisticsService.cu

@@ -8,7 +8,7 @@
 #include "CellConnectionProcessor.cuh"
 #include "MutationProcessor.cuh"
 #include "GenomeDecoder.cuh"
-#include "CudaShapeGenerator.cuh"
+#include "Base/CudaShapeGenerator.cuh"
 
 class ConstructorProcessor
 {

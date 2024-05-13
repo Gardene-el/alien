@@ -3,7 +3,7 @@
 #include "cuda_runtime_api.h"
 #include "sm_60_atomic_functions.h"
 
-#include "SimulationData.cuh"
+#include "../SimulationData.cuh"
 #include "Object.cuh"
 
 __global__ void cudaPreparePointerArraysForCleanup(SimulationData data);

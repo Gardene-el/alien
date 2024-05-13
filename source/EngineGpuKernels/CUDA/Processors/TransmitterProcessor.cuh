@@ -2,11 +2,11 @@
 
 #include "EngineInterface/CellFunctionConstants.h"
 
-#include "Object.cuh"
+#include "../Base/Object.cuh"
 #include "CellFunctionProcessor.cuh"
-#include "ConstantMemory.cuh"
-#include "SimulationData.cuh"
-#include "Statistics/SimulationStatistics.cuh"
+#include "../ConstantMemory.cuh"
+#include "../SimulationData.cuh"
+#include "../Statistics/SimulationStatistics.cuh"
 
 class TransmitterProcessor
 {

@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "Base.cuh"
-#include "CudaMemoryManager.cuh"
-#include "Array.cuh"
-#include "Object.cuh"
+#include "Base/Base.cuh"
+#include "Base/CudaMemoryManager.cuh"
+#include "Base/Array.cuh"
+#include "Base/Object.cuh"
 
 class DensityMap
 {

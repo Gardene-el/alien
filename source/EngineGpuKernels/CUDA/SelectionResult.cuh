@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "EngineInterface/SelectionShallowData.h"
-#include "Definitions.cuh"
-#include "Object.cuh"
+#include "Base/Definitions.cuh"
+#include "Base/Object.cuh"
 
 class SelectionResult
 {

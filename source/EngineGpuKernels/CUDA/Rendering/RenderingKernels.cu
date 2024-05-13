@@ -2,7 +2,7 @@
 
 #include <boost/mpl/min_max.hpp>
 
-#include "../CellFunctionProcessor.cuh"
+#include "../Processors/CellFunctionProcessor.cuh"
 #include "../SpotCalculator.cuh"
 
 namespace

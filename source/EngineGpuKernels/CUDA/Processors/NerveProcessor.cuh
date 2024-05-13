@@ -4,7 +4,7 @@
 #include "sm_60_atomic_functions.h"
 
 #include "TOs.cuh"
-#include "Base.cuh"
+#include "Base/Base.cuh"
 #include "CellConnectionProcessor.cuh"
 #include "CellFunctionProcessor.cuh"
 #include "Statistics/SimulationStatistics.cuh"

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "TOs.cuh"
-#include "Base.cuh"
-#include "Map.cuh"
-#include "ObjectFactory.cuh"
-#include "SpotCalculator.cuh"
+#include "../TOs.cuh"
+#include "../Base/Base.cuh"
+#include "../Base/Map.cuh"
+#include "../Base/ObjectFactory.cuh"
+#include "../SpotCalculator.cuh"
 
 class CellFunctionProcessor
 {

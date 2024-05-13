@@ -5,10 +5,10 @@
 #include "CellFunctionProcessor.cuh"
 #include "ConstantMemory.cuh"
 #include "EngineInterface/CellFunctionConstants.h"
-#include "Object.cuh"
+#include "../Base/Object.cuh"
 #include "ParticleProcessor.cuh"
-#include "SimulationData.cuh"
-#include "Statistics/SimulationStatistics.cuh"
+#include "../SimulationData.cuh"
+#include "../Statistics/SimulationStatistics.cuh"
 
 class DetonatorProcessor
 {
