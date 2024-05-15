@@ -2,9 +2,9 @@
 
 #include "EngineInterface/GpuSettings.h"
 
-#include "Definitions.cuh"
-#include "Macros.cuh"
-#include "Base.cuh"
+#include "../Base/Definitions.cuh"
+#include "../Base/Macros.cuh"
+#include "../Base/Base.cuh"
 #include "GarbageCollectorKernels.cuh"
 
 class _GarbageCollectorKernelsLauncher

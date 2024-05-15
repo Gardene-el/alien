@@ -22,11 +22,11 @@
 #include "DataAccessKernels.cuh"
 #include "TOs.cuh"
 #include "Base/Base.cuh"
-#include "Base/GarbageCollectorKernels.cuh"
+#include "GarbageCollectorKernels.cuh"
 #include "ConstantMemory.cuh"
 #include "Base/CudaMemoryManager.cuh"
-#include "Base/Objects.cuh"
-#include "Base/Map.cuh"
+#include "Simulation/Objects.cuh"
+#include "Simulation/Map.cuh"
 #include "EditKernels.cuh"
 #include "SimulationData.cuh"
 #include "SimulationKernelsLauncher.cuh"
@@ -76,7 +76,7 @@ _SimulationCudaFacade::_SimulationCudaFacade(uint64_t timestep, Settings const& 
     _cudaSimulationStatistics->init();
     _cudaSelectionResult->init();
 
-    _cudaSimulationCustomStatistics->init({settings.generalSettings.worldSizeX, settings.generalSettings.worldSizeY},20);
+    _cudaSimulationCustomStatistics->init({settings.generalSettings.worldSizeX, settings.generalSettings.worldSizeY},100);
 
     _simulationKernels = std::make_shared<_SimulationKernelsLauncher>();
     _dataAccessKernels = std::make_shared<_DataAccessKernelsLauncher>();
@@ -430,6 +430,7 @@ RawStatisticsData _SimulationCudaFacade::getRawStatistics()
 void _SimulationCudaFacade::updateStatistics()
 {
     _statisticsKernels->updateStatistics(_settings.gpuSettings, getSimulationDataIntern(), *_cudaSimulationStatistics);
+    _statisticsKernels->updateCustomStatistics(_settings.gpuSettings, getSimulationDataIntern(), *_cudaSimulationStatistics, *_cudaSimulationCustomStatistics);
     syncAndCheck();
     {
         std::lock_guard lock(_mutexForStatistics);

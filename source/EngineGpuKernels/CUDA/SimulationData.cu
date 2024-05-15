@@ -1,7 +1,7 @@
 ﻿#include "SimulationData.cuh"
 
 #include "ConstantMemory.cuh"
-#include "Base/GarbageCollectorKernels.cuh"
+#include "GarbageCollectorKernels.cuh"
 
 void SimulationData::init(int2 const& worldSize_, uint64_t timestep_)
 {

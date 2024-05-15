@@ -126,6 +126,7 @@ private:
 
     //std::optional<StatisticsDataCache> _statisticsDataCache;
     std::shared_ptr<SimulationMapStatistics> _cudaSimulationCustomStatistics;
+    std::optional<MapStatisticsData>  _mapStatisticsData;
 
     SimulationKernelsLauncher _simulationKernels;
     DataAccessKernelsLauncher _dataAccessKernels;

@@ -2,10 +2,12 @@
 
 #include "cuda_runtime_api.h"
 
-#include "Base.cuh"
+#include "../Base/Base.cuh"
+#include "../Base/Math.cuh"
+#include "../Base/Array.cuh"
+
 #include "Object.cuh"
-#include "Math.cuh"
-#include "Array.cuh"
+
 
 class BaseMap
 {

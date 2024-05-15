@@ -4,7 +4,7 @@
 #include "EngineInterface/CellFunctionConstants.h"
 #include "EngineInterface/GenomeConstants.h"
 
-#include "Base.cuh"
+#include "../Base/Base.cuh"
 #include "../ConstantMemory.cuh"
 #include "../TOs.cuh" 
 #include "Map.cuh"

@@ -3,7 +3,8 @@
 #include "Base/Base.cuh"
 #include "Base/CudaMemoryManager.cuh"
 #include "Base/Array.cuh"
-#include "Base/Object.cuh"
+
+#include "Simulation/Object.cuh"
 
 class DensityMap
 {

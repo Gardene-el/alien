@@ -1,9 +1,9 @@
 ﻿#include "DataAccessKernelsLauncher.cuh"
 
 #include "DataAccessKernels.cuh"
-#include "Base/GarbageCollectorKernelsLauncher.cuh"
+#include "GarbageCollectorKernelsLauncher.cuh"
 #include "EditKernelsLauncher.cuh"
-#include "DebugKernels.cuh"
+#include "../DebugKernels.cuh"
 
 _DataAccessKernelsLauncher::_DataAccessKernelsLauncher()
 {

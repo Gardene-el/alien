@@ -1,6 +1,6 @@
 ﻿#include "EditKernels.cuh"
 
-#include "Processors/MutationProcessor.cuh"
+#include "../Processors/MutationProcessor.cuh"
 
 __global__ void cudaColorSelectedCells(SimulationData data, unsigned char color, bool includeClusters)
 {

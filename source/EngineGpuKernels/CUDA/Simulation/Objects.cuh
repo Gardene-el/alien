@@ -2,9 +2,9 @@
 
 #include "EngineInterface/GpuSettings.h"
 
-#include "Base.cuh"
-#include "Definitions.cuh"
-#include "Array.cuh"
+#include "../Base/Base.cuh"
+#include "../Base/Definitions.cuh"
+#include "../Base/Array.cuh"
 
 struct Objects
 {

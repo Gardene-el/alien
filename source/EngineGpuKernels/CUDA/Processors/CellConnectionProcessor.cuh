@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "Base/Base.cuh"
-#include "Base/Definitions.cuh"
-#include "SimulationData.cuh"
-#include "ConstantMemory.cuh"
-#include "SpotCalculator.cuh"
-#include "Base/ObjectFactory.cuh"
+#include "../Base/Base.cuh"
+#include "../Base/Definitions.cuh"
+#include "../SimulationData.cuh"
+#include "../ConstantMemory.cuh"
+#include "../SpotCalculator.cuh"
+#include "../Simulation/ObjectFactory.cuh"
 #include "ParticleProcessor.cuh"
 
 class CellConnectionProcessor

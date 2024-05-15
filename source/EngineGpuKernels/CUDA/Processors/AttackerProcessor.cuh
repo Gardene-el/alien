@@ -3,13 +3,13 @@
 
 #include "EngineInterface/CellFunctionConstants.h"
 
-#include "../Base/Object.cuh"
+#include "../Simulation/Object.cuh"
 #include "CellFunctionProcessor.cuh"
 #include "../ConstantMemory.cuh"
 #include "../SimulationData.cuh"
 #include "../SpotCalculator.cuh"
 #include "../Statistics/SimulationStatistics.cuh"
-#include "../Base/ObjectFactory.cuh"
+#include "../Simulation/ObjectFactory.cuh"
 #include "ParticleProcessor.cuh"
 
 class AttackerProcessor

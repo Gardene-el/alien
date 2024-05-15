@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Base/Base.cuh"
+#include "../Base/Base.cuh"
 #include "Base/Definitions.cuh"
 
 struct AddConnectionPairOperation {

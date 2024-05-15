@@ -5,10 +5,11 @@
 #include "EngineInterface/Settings.h"
 
 #include "../Base/Base.cuh"
-#include "../DataAccessKernels.cuh"
 #include "../Base/Definitions.cuh"
-#include "../Base/GarbageCollectorKernelsLauncher.cuh"
 #include "../Base/Macros.cuh"
+
+#include "../DataAccessKernels.cuh"
+#include "../GarbageCollectorKernelsLauncher.cuh"
 
 class _RenderingKernelsLauncher
 {

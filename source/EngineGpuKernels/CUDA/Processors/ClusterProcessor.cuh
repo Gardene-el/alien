@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../Base/Object.cuh"
+#include "../Simulation/Object.cuh"
 #include "SimulationData.cuh"
 #include "Physics.cuh"
 #include "SpotCalculator.cuh"

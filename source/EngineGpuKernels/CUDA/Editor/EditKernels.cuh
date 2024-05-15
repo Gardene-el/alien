@@ -7,16 +7,16 @@
 #include "cuda_runtime_api.h"
 #include "sm_60_atomic_functions.h"
 
-#include "TOs.cuh"
-#include "Base/Base.cuh"
-#include "Base/Map.cuh"
-#include "Base/ObjectFactory.cuh"
-#include "Base/GarbageCollectorKernels.cuh"
-#include "SelectionResult.cuh"
-#include "Processors/CellConnectionProcessor.cuh"
-#include "Processors/CellProcessor.cuh"
+#include "../TOs.cuh"
+#include "../Base/Base.cuh"
+#include "../Simulation/Map.cuh"
+#include "../Simulation/ObjectFactory.cuh"
+#include "GarbageCollectorKernels.cuh"
+#include "../SelectionResult.cuh"
+#include "../Processors/CellConnectionProcessor.cuh"
+#include "../Processors/CellProcessor.cuh"
 
-#include "SimulationData.cuh"
+#include "../SimulationData.cuh"
 
 __global__ void cudaColorSelectedCells(SimulationData data, unsigned char color, bool includeClusters);
 __global__ void cudaPrepareForUpdate(SimulationData data);

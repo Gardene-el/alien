@@ -2,8 +2,8 @@
 
 #include "../TOs.cuh"
 #include "../Base/Base.cuh"
-#include "../Base/Map.cuh"
-#include "../Base/ObjectFactory.cuh"
+#include "../Simulation/Map.cuh"
+#include "../Simulation/ObjectFactory.cuh"
 #include "../SpotCalculator.cuh"
 
 class CellFunctionProcessor

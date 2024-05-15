@@ -5,9 +5,9 @@
 
 #include "../TOs.cuh"
 #include "../Base/Base.cuh"
-#include "../Base/GarbageCollectorKernels.cuh"
-#include "../Base/ObjectFactory.cuh"
-#include "../Base/Map.cuh"
+#include "../GarbageCollectorKernels.cuh"
+#include "../Simulation/ObjectFactory.cuh"
+#include "../Simulation/Map.cuh"
 #include "../SimulationData.cuh"
 #include "RenderingData.cuh"
 

@@ -4,7 +4,7 @@
 #include <vector_types.h>
 
 #include "Base/Math.cuh"
-#include "Base/Object.cuh"
+#include "Simulation/Object.cuh"
 
 
 class Physics

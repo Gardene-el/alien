@@ -10,8 +10,8 @@
 #include "Base/CudaNumberGenerator.cuh"
 #include "PreprocessedCellFunctionData.cuh"
 #include "Base/Definitions.cuh"
-#include "Base/Objects.cuh"
-#include "Base/Map.cuh"
+#include "Simulation/Objects.cuh"
+#include "Simulation/Map.cuh"
 #include "Operations.cuh"
 
 struct SimulationData

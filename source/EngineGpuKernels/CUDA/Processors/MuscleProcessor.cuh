@@ -2,7 +2,7 @@
 
 #include "EngineInterface/CellFunctionConstants.h"
 
-#include "../Base/Object.cuh"
+#include "../Simulation/Object.cuh"
 #include "../SimulationData.cuh"
 #include "CellFunctionProcessor.cuh"
 #include "../Statistics/SimulationStatistics.cuh"

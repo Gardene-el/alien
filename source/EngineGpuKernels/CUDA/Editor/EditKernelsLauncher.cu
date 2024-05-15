@@ -2,8 +2,7 @@
 
 #include "DataAccessKernels.cuh"
 #include "EditKernels.cuh"
-#include "Base/GarbageCollectorKernelsLauncher.cuh"
-
+#include "GarbageCollectorKernelsLauncher.cuh"
 _EditKernelsLauncher::_EditKernelsLauncher()
 {
     CudaMemoryManager::getInstance().acquireMemory<int>(1, _cudaRolloutResult);

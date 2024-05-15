@@ -4,8 +4,8 @@
 #include "EngineInterface/GenomeConstants.h"
 
 #include "CellConnectionProcessor.cuh"
-#include "GenomeDecoder.cuh"
-#include "Base/CudaShapeGenerator.cuh"
+#include "../GenomeDecoder.cuh"
+#include "../Base/CudaShapeGenerator.cuh"
 
 class MutationProcessor
 {

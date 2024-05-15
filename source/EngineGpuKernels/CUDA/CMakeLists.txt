@@ -13,31 +13,36 @@ add_library(EngineGpuKernels
     Base/HashSet.cuh
     Base/List.cuh
     Base/Macros.cuh
-    Base/Map.cuh
     Base/Math.cuh
-    Base/Object.cuh
-    Base/Objects.cu
-    Base/Objects.cuh
-    Base/ObjectFactory.cuh
     Base/Util.cuh
-    Base/GarbageCollectorKernels.cu
-    Base/GarbageCollectorKernels.cuh
-    Base/GarbageCollectorKernelsLauncher.cu
-    Base/GarbageCollectorKernelsLauncher.cuh
+
+    Simulation/Object.cuh
+    Simulation/Objects.cu
+    Simulation/Objects.cuh
+    Simulation/ObjectFactory.cuh
+    Simulation/Map.cuh
+
+    Editor/DataAccessKernels.cu
+    Editor/DataAccessKernels.cuh
+    Editor/DataAccessKernelsLauncher.cu
+    Editor/DataAccessKernelsLauncher.cuh
+    Editor/EditKernels.cu
+    Editor/EditKernels.cuh
+    Editor/EditKernelsLauncher.cu
+    Editor/EditKernelsLauncher.cuh
+    Editor/GarbageCollectorKernels.cu
+    Editor/GarbageCollectorKernels.cuh
+    Editor/GarbageCollectorKernelsLauncher.cu
+    Editor/GarbageCollectorKernelsLauncher.cuh
+    Editor/Operations.cuh
 
     ConstantMemory.cu
     ConstantMemory.cuh
-    DataAccessKernels.cu
-    DataAccessKernels.cuh
-    DataAccessKernelsLauncher.cu
-    DataAccessKernelsLauncher.cuh
+
     DebugKernels.cu
     DebugKernels.cuh
     DensityMap.cuh
-    EditKernels.cu
-    EditKernels.cuh
-    EditKernelsLauncher.cu
-    EditKernelsLauncher.cuh
+
     FlowFieldKernels.cu
     FlowFieldKernels.cuh
 
@@ -45,7 +50,6 @@ add_library(EngineGpuKernels
     MapSectionCollector.cuh
     MaxAgeBalancer.cu
     MaxAgeBalancer.cuh
-    Operations.cuh
     Physics.cuh
     PreprocessedCellFunctionData.cuh
     SelectionResult.cuh
@@ -88,7 +92,6 @@ add_library(EngineGpuKernels
     Statistics/StatisticsKernelsLauncher.cuh
     Statistics/StatisticsKernels.cu
     Statistics/StatisticsKernels.cuh
-
     Statistics/SimulationMapStatistics.cuh
     Statistics/StatisticsDataCache.cu
     Statistics/StatisticsDataCache.cuh

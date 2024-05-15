@@ -5,7 +5,7 @@
 #include "EngineInterface/CellFunctionConstants.h"
 #include "EngineInterface/GenomeConstants.h"
 #include "Base/Base.cuh"
-#include "Base/Object.cuh"
+#include "Simulation/Object.cuh"
 
 class GenomeDecoder
 {

@@ -17,6 +17,7 @@ void _StatisticsKernelsLauncher::updateStatistics(GpuSettings const& gpuSettings
     void _StatisticsKernelsLauncher::updateCustomStatistics(GpuSettings const& gpuSettings, SimulationData const& data, SimulationStatistics const& simulationStatistics,SimulationMapStatistics const&simulationMapStatistics){
         
     KERNEL_CALL_1_1(cudaUpdateHeatmap_substep1, data, simulationStatistics);
-
+    printf("updateCustomStatistics");
     KERNEL_CALL(cudaUpdateHeatmap_substep2, data, simulationMapStatistics);
+    KERNEL_CALL_1_1(cudaUpdateHeatmap_substep3,data, simulationMapStatistics);
     }

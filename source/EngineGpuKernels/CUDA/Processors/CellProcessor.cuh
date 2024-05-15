@@ -5,15 +5,15 @@
 
 #include "EngineInterface/CellFunctionConstants.h"
 
-#include "TOs.cuh"
-#include "Base/Base.cuh"
-#include "Base/ObjectFactory.cuh"
-#include "Base/Map.cuh"
-#include "Physics.cuh"
+#include "../TOs.cuh"
+#include "../Base/Base.cuh"
+#include "../Simulation/ObjectFactory.cuh"
+#include "../Simulation/Map.cuh"
+#include "../Physics.cuh"
 #include "CellConnectionProcessor.cuh"
-#include "GenomeDecoder.cuh"
+#include "../GenomeDecoder.cuh"
 #include "ParticleProcessor.cuh"
-#include "SpotCalculator.cuh"
+#include "../SpotCalculator.cuh"
 
 class CellProcessor
 {

@@ -3,8 +3,8 @@
 #include "EngineInterface/GpuSettings.h"
 #include "EngineInterface/ShallowUpdateSelectionData.h"
 
-#include "Base/Base.cuh"
-#include "Base/Definitions.cuh"
+#include "../Base/Base.cuh"
+#include "../Base/Definitions.cuh"
 
 class _EditKernelsLauncher
 {

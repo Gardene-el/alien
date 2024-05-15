@@ -5,7 +5,7 @@
 #include "EngineInterface/EngineConstants.h"
 #include "EngineInterface/CellFunctionConstants.h"
 
-#include "Base.cuh"
+#include "../Base/Base.cuh"
 
 struct Particle
 {

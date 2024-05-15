@@ -5,7 +5,7 @@
 #include "CellFunctionProcessor.cuh"
 #include "ConstantMemory.cuh"
 #include "EngineInterface/CellFunctionConstants.h"
-#include "../Base/Object.cuh"
+#include "../Simulation/Object.cuh"
 #include "ParticleProcessor.cuh"
 #include "../SimulationData.cuh"
 #include "../Statistics/SimulationStatistics.cuh"
