@@ -3,20 +3,19 @@
 #include <stdexcept>
 
 #include <ImFileDialog.h>
-#include <GLFW/glfw3.h> // Will drag system OpenGL headers
-
 #include <imgui.h>
 #include <imgui_freetype.h>
 #include <implot.h>
 
+#include <GLFW/glfw3.h>  // Will drag system OpenGL headers
+
+#include "Fonts/AlienIconFont.h"
+#include "Fonts/Cousine-Regular.h"
 #include "Fonts/DroidSans.h"
 #include "Fonts/DroidSansBold.h"
-#include "Fonts/Cousine-Regular.h"
-#include "Fonts/AlienIconFont.h"
 #include "Fonts/FontAwesomeSolid.h"
 #include "Fonts/IconsFontAwesome5.h"
 #include "Fonts/Reef.h"
-
 #include "WindowController.h"
 
 void StyleRepository::setup()
@@ -32,9 +31,13 @@ void StyleRepository::setup()
     configMerge.FontBuilderFlags = ImGuiFreeTypeBuilderFlags_LightHinting;
 
     ImGuiIO& io = ImGui::GetIO();
+    const char* font_path = "resources\\SmileySans-Oblique.ttf";
+    io.Fonts->FontBuilderIO = ImGuiFreeType::GetBuilderForFreeType();
+    io.Fonts->FontBuilderFlags = ImGuiFreeTypeBuilderFlags_LightHinting;
 
     //default font (small with icons)
-    io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 16.0f * scaleFactor);
+    // io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 16.0f * scaleFactor);
+    io.Fonts->AddFontFromFileTTF(font_path, 16.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     {
         static const ImWchar rangesIcons[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
         io.Fonts->AddFontFromMemoryCompressedTTF(
@@ -42,19 +45,27 @@ void StyleRepository::setup()
     }
 
     //small bold font
-    _smallBoldFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 16.0f * scaleFactor);
+    // _smallBoldFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 16.0f * scaleFactor);
+    _smallBoldFont = io.Fonts->AddFontFromFileTTF(font_path, 16.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
     //medium bold font
-    _mediumBoldFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 24.0f * scaleFactor);
+    // _mediumBoldFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 24.0f * scaleFactor);
+    _mediumBoldFont = io.Fonts->AddFontFromFileTTF(font_path, 24.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+
 
     //medium font
-    _mediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 24.0f * scaleFactor);
+    // _mediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 24.0f * scaleFactor);
+    _mediumFont = io.Fonts->AddFontFromFileTTF(font_path, 24.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+
 
     //large font
-    _largeFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 48.0f * scaleFactor);
+    // _largeFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 48.0f * scaleFactor);
+    _largeFont = io.Fonts->AddFontFromFileTTF(font_path, 48.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+
 
     //icon font
-    _iconFont = io.Fonts->AddFontFromMemoryCompressedTTF(AlienIconFont_compressed_data, AlienIconFont_compressed_size, 24.0f * scaleFactor);
+    // _iconFont = io.Fonts->AddFontFromMemoryCompressedTTF(AlienIconFont_compressed_data, AlienIconFont_compressed_size, 24.0f * scaleFactor);
+    _iconFont = io.Fonts->AddFontFromFileTTF(font_path, 24.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     {
         static const ImWchar rangesIcons[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
         io.Fonts->AddFontFromMemoryCompressedTTF(
@@ -63,13 +74,17 @@ void StyleRepository::setup()
     }
 
     //monospace medium font
-    _monospaceMediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(Cousine_Regular_compressed_data, Cousine_Regular_compressed_size, 14.0f * scaleFactor);
+    // _monospaceMediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(Cousine_Regular_compressed_data, Cousine_Regular_compressed_size, 14.0f * scaleFactor);
+    _monospaceMediumFont = io.Fonts->AddFontFromFileTTF(font_path, 14.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
     //monospace large font
-    _monospaceLargeFont = io.Fonts->AddFontFromMemoryCompressedTTF(Cousine_Regular_compressed_data, Cousine_Regular_compressed_size, 128.0f * scaleFactor);
-
-    _reefMediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(Reef_compressed_data, Reef_compressed_size, 24.0f * scaleFactor);
-    _reefLargeFont = io.Fonts->AddFontFromMemoryCompressedTTF(Reef_compressed_data, Reef_compressed_size, 64.0f * scaleFactor);
+    // _monospaceLargeFont = io.Fonts->AddFontFromMemoryCompressedTTF(Cousine_Regular_compressed_data, Cousine_Regular_compressed_size, 128.0f * scaleFactor);
+    _monospaceLargeFont = io.Fonts->AddFontFromFileTTF(font_path, 128.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    // _reefMediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(Reef_compressed_data, Reef_compressed_size, 24.0f * scaleFactor);
+    _reefMediumFont = io.Fonts->AddFontFromFileTTF(font_path, 24.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    // _reefLargeFont = io.Fonts->AddFontFromMemoryCompressedTTF(Reef_compressed_data, Reef_compressed_size, 64.0f * scaleFactor);
+    _reefLargeFont = io.Fonts->AddFontFromFileTTF(font_path, 64.0f * scaleFactor, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    io.Fonts->Build();
 }
 
 ImFont* StyleRepository::getIconFont() const
