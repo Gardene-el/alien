@@ -30,7 +30,7 @@ include_directories(
 if (MSVC)
     # Suppress `warning C4005: 'FOO': macro redefinition`
     add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-wd4005>)
-    
+    add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
     # Treat warnings as errors
     add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-WX>)
 else()
