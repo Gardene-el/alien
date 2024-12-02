@@ -161,5 +161,5 @@ target_link_libraries(alien OpenSSL::SSL OpenSSL::Crypto)
 include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends ..)
 
 if (MSVC)
-    target_compile_options(alien PRIVATE "/MP")
+    target_compile_options(alien PRIVATE "/MP" "/utf-8")
 endif()
