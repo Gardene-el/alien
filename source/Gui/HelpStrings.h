@@ -87,8 +87,9 @@ namespace Const
         " Input channel #0: value > threshold triggers creation of a bond to a cell in the vicinity, value < -threshold triggers destruction of a bond\n\n" ICON_FA_CHEVRON_RIGHT
         " Output channel #0: 0 (no connection created/removed) or 1 (connection created/removed)";
 
-    std::string const DetonatorTooltip = "A detonator cell will be activated if it receives an input on channel #0 with abs(value) > threshold. Then its counter "
-                                         "is decreasing after each executing until it reaches 0. After that the detonator cell will explode and the surrounding cells are highly accelerated.";
+    std::string const DetonatorTooltip =
+        "A detonator cell will be activated if it receives an input on channel #0 with abs(value) > threshold. Then its counter "
+        "is decreasing after each executing until it reaches 0. After that the detonator cell will explode and the surrounding cells are highly accelerated.";
 
     std::string const CellFunctionTooltip =
         "Cells can possess a specific function that enables them to, for example, perceive their environment, process information, or "
@@ -509,11 +510,10 @@ namespace Const
     std::vector<std::string> const ActivationFunctions = {"Sigmoid", "Binary step", "Identity", "Absolute value", "Gaussian"};
 
     std::string const BrowserWorkspaceTooltip =
-        "There are three different workspaces where you can find and possibly upload simulations and genomes:\n\n" ICON_FA_CHEVRON_RIGHT " alien-project: This "
-        "workspace contains simulations that come along with the released versions. They cover a wide range and exploit different "
-        "features.\n\n" ICON_FA_CHEVRON_RIGHT " Public: All logged-in users can share their simulations and genomes with the public. The files stored here are "
-        "visible to all users.\n\n" ICON_FA_CHEVRON_RIGHT " Private: Each user account has its own private space. The simulations and genomes are only visible to "
-        "the logged-in user.";
+        "这里有三类空间你可以找到，在一些空间中你能上传模拟器和基因组:\n\n" ICON_FA_CHEVRON_RIGHT
+        " ALIEN项目: 这个空间包含了随发布版本一起发布的模拟器。它们涵盖了广泛的范围并利用了不同的功能。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 公开: 所有已登录的用户可以在这里分享他们的模拟器和基因组。保存在此的文件对所有的用户都是可浏览的。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 个人: 每一个用户账号都有一个自己的个人空间。上传在此的模拟器和基因组仅对该已登录的用户可浏览。";
 
     std::string const ParameterRadiationAbsorptionLowGenomeComplexityPenaltyTooltip =
         "When this parameter is increased, cells with fewer genome complexity will absorb less energy from an incoming energy particle.";

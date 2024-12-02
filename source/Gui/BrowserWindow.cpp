@@ -59,18 +59,18 @@ namespace
 }
 
 BrowserWindow::BrowserWindow()
-    : AlienWindow("Browser", "windows.browser", true)
+    : AlienWindow("浏览器", "windows.browser", true)
 {}
 
 namespace
 {
     std::unordered_map<NetworkResourceType, std::string> const networkResourceTypeToString = {
-        {NetworkResourceType_Simulation, std::string("simulations")},
-        {NetworkResourceType_Genome, std::string("genomes")}};
+        {NetworkResourceType_Simulation, std::string("模拟器")},
+        {NetworkResourceType_Genome, std::string("基因组")}};
     std::unordered_map<WorkspaceType, std::string> const workspaceTypeToString = {
-        {WorkspaceType_Public, std::string("public")},
-        {WorkspaceType_AlienProject, std::string("alien-project")},
-        {WorkspaceType_Private, std::string("private")}};
+        {WorkspaceType_Public, std::string("公开")},
+        {WorkspaceType_AlienProject, std::string("ALIEN项目")},
+        {WorkspaceType_Private, std::string("私有")}};
 }
 
 void BrowserWindow::initIntern(SimulationFacade simulationFacade, PersisterFacade persisterFacade)
@@ -224,7 +224,7 @@ void BrowserWindow::processBackground()
 
 void BrowserWindow::processToolbar()
 {
-    std::string resourceTypeString = _currentWorkspace.resourceType == NetworkResourceType_Simulation ? "simulation" : "genome";
+    std::string resourceTypeString = _currentWorkspace.resourceType == NetworkResourceType_Simulation ? "模拟器" : "基因组";
     auto isOwnerForSelectedItem = isOwner(_selectedTreeTO);
 
     //refresh button
@@ -233,7 +233,7 @@ void BrowserWindow::processToolbar()
         onRefresh();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Refresh");
+    AlienImGui::Tooltip("刷新");
 
     //login button
     ImGui::SameLine();
@@ -242,7 +242,7 @@ void BrowserWindow::processToolbar()
         LoginDialog::get().open();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Login or register");
+    AlienImGui::Tooltip("登录或注册");
 
     //logout button
     ImGui::SameLine();
@@ -252,7 +252,7 @@ void BrowserWindow::processToolbar()
         onRefresh();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Logout");
+    AlienImGui::Tooltip("登出");
 
     //separator
     ImGui::SameLine();
@@ -270,9 +270,9 @@ void BrowserWindow::processToolbar()
         UploadSimulationDialog::get().open(_currentWorkspace.resourceType, prefix);
     }
     AlienImGui::Tooltip(
-        "Upload your current " + resourceTypeString
-        + " to the server and made visible in the browser. You can choose whether you want to share it with other users or whether it should only be visible "
-          "in your private workspace.\nIf you have already selected a folder, your " + resourceTypeString + " will be uploaded there.");
+        "上传你当前的 " + resourceTypeString + "至ALIEN的服务器并使其在浏览器中可预览。"
+        + "你可以决定是否想要将其分享给其他用户（公开空间）或者只在你的私人空间可预览。" + "\n如果你当前选择了一个文件夹，你的" + resourceTypeString
+        + "将被上传至该文件夹。");
 
     //edit button
     ImGui::SameLine();
@@ -281,7 +281,7 @@ void BrowserWindow::processToolbar()
         onEditResource(_selectedTreeTO);
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Change name or description");
+    AlienImGui::Tooltip("改变名称或描述");
 
     //replace button
     ImGui::SameLine();
@@ -290,7 +290,7 @@ void BrowserWindow::processToolbar()
         onReplaceResource(_selectedTreeTO->getLeaf());
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Replace the selected " + resourceTypeString + " with the one that is currently open. The name, description and reactions will be preserved.");
+    AlienImGui::Tooltip("将所选的" + resourceTypeString + "替换成当前你所查看的。名字、描述和反应将保持原样。");
 
     //move to other workspace button
     ImGui::SameLine();
@@ -299,7 +299,7 @@ void BrowserWindow::processToolbar()
         onMoveResource(_selectedTreeTO);
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Change visibility: public " ICON_FA_LONG_ARROW_ALT_RIGHT " private and private " ICON_FA_LONG_ARROW_ALT_RIGHT " public");
+    AlienImGui::Tooltip("改变可视性: 公开 " ICON_FA_LONG_ARROW_ALT_RIGHT " 私有 或者 私有 " ICON_FA_LONG_ARROW_ALT_RIGHT " 公开");
 
     //delete button
     ImGui::SameLine();
@@ -308,7 +308,7 @@ void BrowserWindow::processToolbar()
         onDeleteResource(_selectedTreeTO);
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Delete selected " + resourceTypeString);
+    AlienImGui::Tooltip("删除所选的 " + resourceTypeString);
 
     //separator
     ImGui::SameLine();
@@ -319,14 +319,14 @@ void BrowserWindow::processToolbar()
     if (AlienImGui::ToolbarButton(ICON_FA_EXPAND_ARROWS_ALT)) {
         onExpandFolders();
     }
-    AlienImGui::Tooltip("Expand all folders");
+    AlienImGui::Tooltip("打开所有文件夹");
 
     //collapse button
     ImGui::SameLine();
     if (AlienImGui::ToolbarButton(ICON_FA_COMPRESS_ARROWS_ALT)) {
         onCollapseFolders();
     }
-    AlienImGui::Tooltip("Collapse all folders");
+    AlienImGui::Tooltip("关闭所有文件夹");
 
 #ifdef _WIN32
     //separator
@@ -338,7 +338,7 @@ void BrowserWindow::processToolbar()
     if (AlienImGui::ToolbarButton(ICON_FA_COMMENTS)) {
         openWeblink(Const::DiscordURL);
     }
-    AlienImGui::Tooltip("Open ALIEN Discord server");
+    AlienImGui::Tooltip("打开ALIEN项目的Discord服务器");
 #endif
 
     AlienImGui::Separator();
@@ -353,7 +353,7 @@ void BrowserWindow::processWorkspace()
             false,
             ImGuiWindowFlags_HorizontalScrollbar)) {
         if (ImGui::BeginTabBar("##Type", ImGuiTabBarFlags_FittingPolicyResizeDown)) {
-            if (ImGui::BeginTabItem("Simulations", nullptr, ImGuiTabItemFlags_None)) {
+            if (ImGui::BeginTabItem("模拟器", nullptr, ImGuiTabItemFlags_None)) {
                 if (_currentWorkspace.resourceType != NetworkResourceType_Simulation) {
                     _currentWorkspace.resourceType = NetworkResourceType_Simulation;
                     _selectedTreeTO = nullptr;
@@ -361,7 +361,7 @@ void BrowserWindow::processWorkspace()
                 processSimulationList();
                 ImGui::EndTabItem();
             }
-            if (ImGui::BeginTabItem("Genomes", nullptr, ImGuiTabItemFlags_None)) {
+            if (ImGui::BeginTabItem("基因组", nullptr, ImGuiTabItemFlags_None)) {
                 if (_currentWorkspace.resourceType != NetworkResourceType_Genome) {
                     _currentWorkspace.resourceType = NetworkResourceType_Genome;
                     _selectedTreeTO = nullptr;
@@ -386,13 +386,13 @@ void BrowserWindow::processWorkspaceSelectionAndFilter()
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         auto userName = NetworkService::get().getLoggedInUserName();
-        auto privateWorkspaceString = userName.has_value() ? *userName + "'s private workspace" : "Private workspace (need to login)";
+        auto privateWorkspaceString = userName.has_value() ? *userName + "的个人空间" : "个人空间（需要登录以使用）";
         auto workspaceType_reordered = 2 - _currentWorkspace.workspaceType;  //change the order for display
         if (AlienImGui::Switcher(
                 AlienImGui::SwitcherParameters()
                     .textWidth(48.0f)
                     .tooltip(Const::BrowserWorkspaceTooltip)
-                    .values({privateWorkspaceString, std::string("alien-project's workspace"), std::string("Public workspace")}),
+                    .values({privateWorkspaceString, std::string("alien项目空间"), std::string("公开空间")}),
                 workspaceType_reordered)) {
             _selectedTreeTO = nullptr;
         }
@@ -401,7 +401,7 @@ void BrowserWindow::processWorkspaceSelectionAndFilter()
         AlienImGui::VerticalSeparator();
 
         ImGui::TableSetColumnIndex(1);
-        if (AlienImGui::InputText(AlienImGui::InputTextParameters().hint("Filter").textWidth(0), _filter)) {
+        if (AlienImGui::InputText(AlienImGui::InputTextParameters().hint("过滤条件").textWidth(0), _filter)) {
             for (NetworkResourceType resourceType = 0; resourceType < NetworkResourceType_Count; ++resourceType) {
                 for (WorkspaceType workspaceType = 0; workspaceType < WorkspaceType_Count; ++workspaceType) {
                     createTreeTOs(_workspaces.at(WorkspaceId{resourceType, workspaceType}));
@@ -524,18 +524,18 @@ void BrowserWindow::processStatusBar()
     auto numSimulations = toInt(simulations.size());
     auto numGenomes = toInt(genomes.size());
 
-    statusItems.emplace_back(std::to_string(numSimulations) + " simulations found");
-    statusItems.emplace_back(std::to_string(numGenomes) + " genomes found");
-    statusItems.emplace_back(std::to_string(_userTOs.size()) + " simulators found");
+    statusItems.emplace_back("已找到的模拟器数量" + std::to_string(numSimulations));
+    statusItems.emplace_back("已找到的基因组数量" + std::to_string(numGenomes));
+    statusItems.emplace_back("已找到的模拟器用户数量" + std::to_string(_userTOs.size()));
 
     if (auto userName = NetworkService::get().getLoggedInUserName()) {
-        statusItems.emplace_back("Logged in as " + *userName + " @ " + NetworkService::get().getServerAddress());
+        statusItems.emplace_back("以" + *userName + "的身份登入 @ " + NetworkService::get().getServerAddress());
     } else {
-        statusItems.emplace_back("Not logged in to " + NetworkService::get().getServerAddress());
+        statusItems.emplace_back("没有登录" + NetworkService::get().getServerAddress());
     }
 
     if (!NetworkService::get().getLoggedInUserName()) {
-        statusItems.emplace_back("In order to share and upvote simulations you need to log in.");
+        statusItems.emplace_back("如需分享或点赞模拟器，你应当登入。");
     }
 
     AlienImGui::StatusBar(statusItems);
@@ -549,21 +549,21 @@ void BrowserWindow::processSimulationList()
         | ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollX;
 
     if (ImGui::BeginTable("Browser", 11, flags, ImVec2(0, -scale(WorkspaceBottomSpace)), 0.0f)) {
-        ImGui::TableSetupColumn("Simulation", ImGuiTableColumnFlags_WidthFixed, scale(210.0f), NetworkResourceColumnId_SimulationName);
-        ImGui::TableSetupColumn("Description", ImGuiTableColumnFlags_WidthFixed, scale(200.0f), NetworkResourceColumnId_Description);
-        ImGui::TableSetupColumn("Reactions", ImGuiTableColumnFlags_WidthFixed, scale(140.0f), NetworkResourceColumnId_Likes);
+        ImGui::TableSetupColumn("模拟名称", ImGuiTableColumnFlags_WidthFixed, scale(210.0f), NetworkResourceColumnId_SimulationName);
+        ImGui::TableSetupColumn("描述", ImGuiTableColumnFlags_WidthFixed, scale(200.0f), NetworkResourceColumnId_Description);
+        ImGui::TableSetupColumn("反应", ImGuiTableColumnFlags_WidthFixed, scale(140.0f), NetworkResourceColumnId_Likes);
         ImGui::TableSetupColumn(
-            "Timestamp",
+            "时间戳",
             ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_PreferSortDescending,
             scale(135.0f),
             NetworkResourceColumnId_Timestamp);
-        ImGui::TableSetupColumn("User name", ImGuiTableColumnFlags_WidthFixed, scale(120.0f), NetworkResourceColumnId_UserName);
-        ImGui::TableSetupColumn("Downloads", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_NumDownloads);
-        ImGui::TableSetupColumn("Width", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Width);
-        ImGui::TableSetupColumn("Height", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Height);
-        ImGui::TableSetupColumn("Objects", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Particles);
-        ImGui::TableSetupColumn("File size", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_FileSize);
-        ImGui::TableSetupColumn("Version", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Version);
+        ImGui::TableSetupColumn("用户名称", ImGuiTableColumnFlags_WidthFixed, scale(120.0f), NetworkResourceColumnId_UserName);
+        ImGui::TableSetupColumn("下载次数", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_NumDownloads);
+        ImGui::TableSetupColumn("模拟宽度", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Width);
+        ImGui::TableSetupColumn("模拟高度", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Height);
+        ImGui::TableSetupColumn("对象数量", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Particles);
+        ImGui::TableSetupColumn("文件大小", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_FileSize);
+        ImGui::TableSetupColumn("版本号", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Version);
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableHeadersRow();
 
@@ -656,19 +656,19 @@ void BrowserWindow::processGenomeList()
         | ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollX;
 
     if (ImGui::BeginTable("Browser", 9, flags, ImVec2(0, -scale(WorkspaceBottomSpace)), 0.0f)) {
-        ImGui::TableSetupColumn("Genome", ImGuiTableColumnFlags_WidthFixed, scale(210.0f), NetworkResourceColumnId_SimulationName);
-        ImGui::TableSetupColumn("Description", ImGuiTableColumnFlags_WidthFixed, scale(200.0f), NetworkResourceColumnId_Description);
-        ImGui::TableSetupColumn("Reactions", ImGuiTableColumnFlags_WidthFixed, scale(140.0f), NetworkResourceColumnId_Likes);
+        ImGui::TableSetupColumn("基因组名称", ImGuiTableColumnFlags_WidthFixed, scale(210.0f), NetworkResourceColumnId_SimulationName);
+        ImGui::TableSetupColumn("描述", ImGuiTableColumnFlags_WidthFixed, scale(200.0f), NetworkResourceColumnId_Description);
+        ImGui::TableSetupColumn("反应", ImGuiTableColumnFlags_WidthFixed, scale(140.0f), NetworkResourceColumnId_Likes);
         ImGui::TableSetupColumn(
-            "Timestamp",
+            "时间戳",
             ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_PreferSortDescending,
             scale(135.0f),
             NetworkResourceColumnId_Timestamp);
-        ImGui::TableSetupColumn("User name", ImGuiTableColumnFlags_WidthFixed, scale(120.0f), NetworkResourceColumnId_UserName);
-        ImGui::TableSetupColumn("Downloads", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_NumDownloads);
-        ImGui::TableSetupColumn("Cells", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Particles);
-        ImGui::TableSetupColumn("File size", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_FileSize);
-        ImGui::TableSetupColumn("Version", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Version);
+        ImGui::TableSetupColumn("用户名称", ImGuiTableColumnFlags_WidthFixed, scale(120.0f), NetworkResourceColumnId_UserName);
+        ImGui::TableSetupColumn("下载次数", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_NumDownloads);
+        ImGui::TableSetupColumn("细胞数量", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Particles);
+        ImGui::TableSetupColumn("文件大小", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_FileSize);
+        ImGui::TableSetupColumn("版本号", ImGuiTableColumnFlags_WidthFixed, 0.0f, NetworkResourceColumnId_Version);
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableHeadersRow();
 
@@ -814,7 +814,7 @@ void BrowserWindow::processReactionList(NetworkResourceTreeTO const& treeTO)
         auto& leaf = treeTO->getLeaf();
 
         auto isAddReaction = AlienImGui::ActionButton(AlienImGui::ActionButtonParameters().buttonText(ICON_FA_PLUS));
-        AlienImGui::Tooltip("Add a reaction", false);
+        AlienImGui::Tooltip("添加一个反应", false);
         if (isAddReaction) {
             _activateEmojiPopup = true;
             _emojiPopupTO = treeTO;
@@ -1040,7 +1040,7 @@ void BrowserWindow::processEmojiWindow()
         _activateEmojiPopup = false;
     }
     if (ImGui::BeginPopup("emoji")) {
-        ImGui::Text("Choose a reaction");
+        ImGui::Text("选择一个反应");
         ImGui::Spacing();
         ImGui::Spacing();
         if (_showAllEmojis) {
@@ -1068,7 +1068,7 @@ void BrowserWindow::processEmojiWindow()
                 }
                 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + scale(8.0f));
 
-                if (AlienImGui::Button("More", ImGui::GetContentRegionAvail().x)) {
+                if (AlienImGui::Button("更多", ImGui::GetContentRegionAvail().x)) {
                     _showAllEmojis = true;
                 }
             }
@@ -1110,7 +1110,7 @@ void BrowserWindow::processEmojiButton(int emojiType)
 void BrowserWindow::processDownloadButton(BrowserLeaf const& leaf)
 {
     auto isDownload = AlienImGui::ActionButton(AlienImGui::ActionButtonParameters().buttonText(ICON_FA_DOWNLOAD));
-    AlienImGui::Tooltip("Download", false);
+    AlienImGui::Tooltip("下载", false);
     if (isDownload) {
         onDownloadResource(leaf);
     }
@@ -1259,7 +1259,7 @@ void BrowserWindow::onReplaceResource(BrowserLeaf const& leaf)
             .downloadCache = getSimulationCache(),
             .data = data});
     };
-    GenericMessageDialog::get().yesNo("Delete", "Do you really want to replace the content of the selected item?", func);
+    GenericMessageDialog::get().yesNo("删除", "你真的想要替换所选的物件吗?", func);
 }
 
 void BrowserWindow::onEditResource(NetworkResourceTreeTO const& treeTO)
@@ -1313,9 +1313,8 @@ void BrowserWindow::onDeleteResource(NetworkResourceTreeTO const& treeTO)
     auto& currentWorkspace = _workspaces.at(_currentWorkspace);
     auto rawTOs = NetworkResourceService::get().getMatchingRawTOs(treeTO, currentWorkspace.rawTOs);
 
-    auto message = treeTO->isLeaf() ? "Do you really want to delete the selected item?" : "Do you really want to delete the selected folder?";
-    GenericMessageDialog::get().yesNo("Delete", message, [rawTOs = rawTOs, this]() {
-
+    auto message = treeTO->isLeaf() ? "你真的想要删除所选的物件吗?" : "你真的想要删除所选的文件夹吗？";
+    GenericMessageDialog::get().yesNo("删除", message, [rawTOs = rawTOs, this]() {
         //remove resources form workspace
         for (WorkspaceType workspaceType = 0; workspaceType < WorkspaceType_Count; ++workspaceType) {
             auto& workspace = _workspaces.at(WorkspaceId{_currentWorkspace.resourceType, workspaceType});
@@ -1438,7 +1437,7 @@ std::string BrowserWindow::getUserNamesToEmojiType(std::string const& resourceId
                 },
                 [](auto const& errors) { GenericMessageDialog::get().information("Error", errors); });
         }
-        return "Loading...";
+        return "加载中...";
     }
 
     return boost::algorithm::join(userNames, ", ");
