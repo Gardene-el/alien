@@ -31,7 +31,7 @@ void TemporalControlWindow::onSnapshot()
 }
 
 TemporalControlWindow::TemporalControlWindow()
-    : AlienWindow("Temporal control", "windows.temporal control", true)
+    : AlienWindow("时间控制器", "windows.temporal control", true)
 {
 }
 
@@ -68,7 +68,7 @@ void TemporalControlWindow::processIntern()
 
 void TemporalControlWindow::processTpsInfo()
 {
-    ImGui::Text("Time steps per second");
+    ImGui::Text("平均每秒运行的步数");
 
     ImGui::PushFont(StyleRepository::get().getLargeFont());
     ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor /*0xffa07050*/);
@@ -79,7 +79,7 @@ void TemporalControlWindow::processTpsInfo()
 
 void TemporalControlWindow::processTotalTimestepsInfo()
 {
-    ImGui::Text("Total time steps");
+    ImGui::Text("总计运行的步数");
 
     ImGui::PushFont(StyleRepository::get().getLargeFont());
     ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
@@ -90,7 +90,7 @@ void TemporalControlWindow::processTotalTimestepsInfo()
 
 void TemporalControlWindow::processRealTimeInfo()
 {
-    ImGui::Text("Real-time");
+    ImGui::Text("真实时间");
 
     ImGui::PushFont(StyleRepository::get().getLargeFont());
     ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
@@ -101,7 +101,7 @@ void TemporalControlWindow::processRealTimeInfo()
 
 void TemporalControlWindow::processTpsRestriction()
 {
-    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Slow down"), _slowDown);
+    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("降速至"), _slowDown);
     ImGui::SameLine(scale(LeftColumnWidth) - (ImGui::GetWindowWidth() - ImGui::GetContentRegionAvail().x));
     ImGui::BeginDisabled(!_slowDown);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
@@ -115,7 +115,7 @@ void TemporalControlWindow::processTpsRestriction()
     ImGui::EndDisabled();
 
     auto syncSimulationWithRendering = _simulationFacade->isSyncSimulationWithRendering();
-    if (AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Sync with rendering"), syncSimulationWithRendering)) {
+    if (AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("与渲染同步"), syncSimulationWithRendering)) {
         _simulationFacade->setSyncSimulationWithRendering(syncSimulationWithRendering);
     }
 
@@ -132,11 +132,11 @@ void TemporalControlWindow::processRunButton()
 {
     ImGui::BeginDisabled(_simulationFacade->isSimulationRunning());
     auto result = AlienImGui::ToolbarButton(ICON_FA_PLAY);
-    AlienImGui::Tooltip("Run");
+    AlienImGui::Tooltip("运行");
     if (result) {
         _history.clear();
         _simulationFacade->runSimulation();
-        printOverlayMessage("Run");
+        printOverlayMessage("运行");
     }
     ImGui::EndDisabled();
 }
@@ -145,10 +145,10 @@ void TemporalControlWindow::processPauseButton()
 {
     ImGui::BeginDisabled(!_simulationFacade->isSimulationRunning());
     auto result = AlienImGui::ToolbarButton(ICON_FA_PAUSE);
-    AlienImGui::Tooltip("Pause");
+    AlienImGui::Tooltip("暂停");
     if (result) {
         _simulationFacade->pauseSimulation();
-        printOverlayMessage("Pause");
+        printOverlayMessage("暂停");
     }
     ImGui::EndDisabled();
 }
@@ -157,11 +157,11 @@ void TemporalControlWindow::processStepBackwardButton()
 {
     ImGui::BeginDisabled(_history.empty() || _simulationFacade->isSimulationRunning());
     auto result = AlienImGui::ToolbarButton(ICON_FA_CHEVRON_LEFT);
-    AlienImGui::Tooltip("Load previous time step");
+    AlienImGui::Tooltip("载入上一个步数");
     if (result) {
         auto const& snapshot = _history.back();
         delayedExecution([this, snapshot] { applySnapshot(snapshot); });
-        printOverlayMessage("Loading previous time step ...");
+        printOverlayMessage("载入上一个步数中...");
 
         _history.pop_back();
     }
@@ -172,7 +172,7 @@ void TemporalControlWindow::processStepForwardButton()
 {
     ImGui::BeginDisabled(_simulationFacade->isSimulationRunning());
     auto result = AlienImGui::ToolbarButton(ICON_FA_CHEVRON_RIGHT);
-    AlienImGui::Tooltip("Process single time step");
+    AlienImGui::Tooltip("执行单个步数");
     if (result) {
         _history.emplace_back(createSnapshot());
         _simulationFacade->calcTimesteps(1);
@@ -183,11 +183,11 @@ void TemporalControlWindow::processStepForwardButton()
 void TemporalControlWindow::processCreateFlashbackButton()
 {
     auto result = AlienImGui::ToolbarButton(ICON_FA_CAMERA);
-    AlienImGui::Tooltip("Creating in-memory flashback: It saves the content of the current world to the memory.");
+    AlienImGui::Tooltip("创建内容快照：它将当前世界的内容保存到内存中。");
     if (result) {
         delayedExecution([this] { onSnapshot(); });
         
-        printOverlayMessage("Creating flashback ...", true);
+        printOverlayMessage("创建快照中...", true);
     }
 }
 
@@ -195,14 +195,13 @@ void TemporalControlWindow::processLoadFlashbackButton()
 {
     ImGui::BeginDisabled(!_snapshot);
     auto result = AlienImGui::ToolbarButton(ICON_FA_UNDO);
-    AlienImGui::Tooltip("Loading in-memory flashback: It loads the saved world from the memory. Static simulation parameters will not be changed. Non-static parameters "
-                        "(such as the position of moving zones) will be restored as well.");
+    AlienImGui::Tooltip("加载内容快照：它会从内存中加载已保存的世界。静态模拟参数不会被改变。非静态参数（例如移动区域的位置）也会被恢复。");
     if (result) {
         delayedExecution([this] { applySnapshot(*_snapshot); });
         _simulationFacade->removeSelection();
         _history.clear();
 
-        printOverlayMessage("Loading flashback ...", true);
+        printOverlayMessage("载入快照中...", true);
     }
     ImGui::EndDisabled();
 }
