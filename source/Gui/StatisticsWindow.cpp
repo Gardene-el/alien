@@ -60,7 +60,7 @@ void StatisticsWindow::initIntern(SimulationFacade simulationFacade)
 }
 
 StatisticsWindow::StatisticsWindow()
-    : AlienWindow("Statistics", "windows.statistics", false)
+    : AlienWindow("统计数据", "windows.statistics", false)
 {
 }
 
@@ -88,7 +88,7 @@ void StatisticsWindow::processIntern()
     if (ImGui::BeginChild("##statistics", {0, _settingsOpen ? -scale(_settingsHeight) : -scale(50.0f)})) {
         if (ImGui::BeginTabBar("##Statistics", ImGuiTabBarFlags_AutoSelectNewTabs | ImGuiTabBarFlags_FittingPolicyResizeDown)) {
 
-            if (ImGui::BeginTabItem("Timelines")) {
+            if (ImGui::BeginTabItem("时间线表")) {
                 if (ImGui::BeginChild("##timelines", ImVec2(0, 0), false)) {
                     processTimelinesTab();
                 }
@@ -96,7 +96,7 @@ void StatisticsWindow::processIntern()
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Histograms")) {
+            if (ImGui::BeginTabItem("直方图表")) {
                 if (ImGui::BeginChild("##histograms", ImVec2(0, 0), false)) {
                     processHistogramsTab();
                 }
@@ -104,7 +104,7 @@ void StatisticsWindow::processIntern()
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Throughput")) {
+            if (ImGui::BeginTabItem("吞吐量表")) {
                 if (ImGui::BeginChild("##throughput", ImVec2(0, 0), false)) {
                     processTablesTab();
                 }
@@ -125,18 +125,18 @@ void StatisticsWindow::processTimelinesTab()
 
     AlienImGui::Switcher(
         AlienImGui::SwitcherParameters()
-            .name("Mode")
+            .name("模式")
             .textWidth(RightColumnWidth)
             .values(
-                {"Real-time plots", "Entire history plots"}),
+                {"实时图表", "完整历史图表"}),
         _plotMode);
 
     AlienImGui::Switcher(
         AlienImGui::SwitcherParameters()
-            .name("Plot type")
+            .name("图表类型")
             .textWidth(RightColumnWidth)
             .values(
-            {"Accumulate values for all colors", "Break down by color", "Color #0", "Color #1", "Color #2", "Color #3", "Color #4", "Color #5", "Color #6"}),
+            {"累积所有颜色的值", "根据颜色分开", "单独颜色 #0", "单独颜色 #1", "单独颜色 #2", "单独颜色 #3", "单独颜色 #4", "单独颜色 #5", "单独颜色 #6"}),
         _plotType);
     ImGui::Spacing();
     ImGui::Spacing();
@@ -173,7 +173,7 @@ void StatisticsWindow::processHistogramsTab()
 
     auto getLabelString = [](int value) {
         if (value >= 1000) {
-            return std::to_string(value / 1000) + "K";
+            return std::to_string(value / 1000) + "千";
         } else {
             return std::to_string(value);
         }
@@ -207,7 +207,7 @@ void StatisticsWindow::processHistogramsTab()
     if (ImPlot::BeginPlot("##Histograms", ImVec2(-1, -1))) {
         ImPlot::SetupAxisTicks(ImAxis_Y1, positionsY, 5, labelsY);
         ImPlot::SetupAxisTicks(ImAxis_X1, positionsX, 5, labelsX);
-        ImPlot::SetupAxes("Age", "Cell count");
+        ImPlot::SetupAxes("年龄", "细胞数量");
         ImPlot::SetupAxisFormat(ImAxis_X1, "");
         auto const width = 1.0f / MAX_COLORS;
         for (int i = 0; i < MAX_COLORS; ++i) {
@@ -243,14 +243,14 @@ void StatisticsWindow::processTablesTab()
         AlienImGui::Text(StringHelper::format(_tableLiveStatistics.getCreatedCellsPerSecond()));
 
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Created cells / sec");
+        AlienImGui::Text("被创造的细胞数量 / 每秒");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         AlienImGui::Text(StringHelper::format(_tableLiveStatistics.getCreatedReplicatorsPerSecond()));
 
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Created self-replicators / sec");
+        AlienImGui::Text("被创造的自我复制器 / 每秒");
 
         ImGui::EndTable();
     }
@@ -267,30 +267,30 @@ void StatisticsWindow::processSettings()
         AlienImGui::Separator();
     }
 
-    _settingsOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Settings").highlighted(true).defaultOpen(_settingsOpen));
+    _settingsOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("设置").highlighted(true).defaultOpen(_settingsOpen));
     if (_settingsOpen) {
         if (ImGui::BeginChild("##addons", {scale(0), 0})) {
             ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - scale(RightColumnWidth));
             if (_plotMode == 0) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Time horizon")
+                        .name("时间区间")
                         .min(1.0f)
                         .max(TimelineLiveStatistics::MaxLiveHistory)
-                        .format("%.1f s")
+                        .format("%.1f秒")
                         .textWidth(RightColumnWidth),
                     &_timeHorizonForLiveStatistics);
             }
             if (_plotMode == 1) {
                 AlienImGui::SliderFloat(
-                    AlienImGui::SliderFloatParameters().name("Time horizon").min(1.0f).max(100.0f).format("%.0f percent").textWidth(RightColumnWidth),
+                    AlienImGui::SliderFloatParameters().name("时间区间").min(1.0f).max(100.0f).format("百分之%.0f ").textWidth(RightColumnWidth),
                     &_timeHorizonForLongtermStatistics);
             }
 
             AlienImGui::SliderFloat(
-                AlienImGui::SliderFloatParameters().name("Plot height").min(MinPlotHeight).max(1000.0f).format("%.0f").textWidth(RightColumnWidth),
+                AlienImGui::SliderFloatParameters().name("图标高度").min(MinPlotHeight).max(1000.0f).format("%.0f").textWidth(RightColumnWidth),
                 &_plotHeight);
-            AlienImGui::Switcher(AlienImGui::SwitcherParameters().name("Scale").textWidth(RightColumnWidth).values({"Linear", "Logarithmic"}), _plotScale);
+            AlienImGui::Switcher(AlienImGui::SwitcherParameters().name("测量规范").textWidth(RightColumnWidth).values({"线性", "对数性"}), _plotScale);
         }
         ImGui::EndChild();
         AlienImGui::EndTreeNode();
@@ -300,7 +300,7 @@ void StatisticsWindow::processSettings()
 void StatisticsWindow::processTimelineStatistics()
 {
     ImGui::Spacing();
-    AlienImGui::Group("Time step data");
+    AlienImGui::Group("时序（步数）数据");
     ImGui::PushID(1);
     int row = 0;
     if (ImGui::BeginTable("##", 2, ImGuiTableFlags_BordersInnerH, ImVec2(-1, 0))) {
@@ -313,71 +313,71 @@ void StatisticsWindow::processTimelineStatistics()
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numCells);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Cells");
+        AlienImGui::Text("细胞数量");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numConnections);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Cell connections");
+        AlienImGui::Text("细胞的连接的数量");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numParticles);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Energy particles");
+        AlienImGui::Text("能量粒子的数量");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::totalEnergy);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Contained energy");
+        AlienImGui::Text("包含的能量大小");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numSelfReplicators);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Self-replicators");
+        AlienImGui::Text("自我复制器的数量");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numColonies);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Diversity");
+        AlienImGui::Text("多样性");
         ImGui::SameLine();
-        AlienImGui::HelpMarker("The number of colonies is displayed. A colony is a set of at least 20 same mutants.");
+        AlienImGui::HelpMarker("显示种群的数量。一个种群是指至少由20个相同基因的生物组成的集合。");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::averageGenomeCells, 2);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Num genotype\ncells average");
+        AlienImGui::Text("平均基因组含有的细胞数量");
         ImGui::SameLine();
-        AlienImGui::HelpMarker("The average number of encoded cells in the genomes is displayed.");
+        AlienImGui::HelpMarker("显示基因组中编码细胞的平均数量。");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::averageGenomeComplexity, 2);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Genome complexity\naverage");
+        AlienImGui::Text("平均基因复杂度");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::varianceGenomeComplexity, 2);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Genome complexity\nvariance");
+        AlienImGui::Text("基因复杂度方差");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::maxGenomeComplexityOfColonies, 2);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Genome complexity\nmaximum");
+        AlienImGui::Text("基因组复杂度最大值");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numViruses);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Viruses");
+        AlienImGui::Text("病毒数量");
 
         ImPlot::PopColormap();
 
@@ -386,7 +386,7 @@ void StatisticsWindow::processTimelineStatistics()
     ImGui::PopID();
 
     ImGui::Spacing();
-    AlienImGui::Group("Processes per time step and cell");
+    AlienImGui::Group("在每个时序和每个细胞中执行");
     ImGui::PushID(2);
     if (ImGui::BeginTable("##", 2, ImGuiTableFlags_BordersInnerH, ImVec2(-1, 0))) {
         ImGui::TableSetupColumn("##");
@@ -397,85 +397,85 @@ void StatisticsWindow::processTimelineStatistics()
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numCreatedCells, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Created cells");
+        AlienImGui::Text("创造的细胞数量");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numAttacks, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Attacks");
+        AlienImGui::Text("攻击次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numMuscleActivities, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Muscle activities");
+        AlienImGui::Text("肌肉活动次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numTransmitterActivities, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Transmitter activities");
+        AlienImGui::Text("传输器活动次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numDefenderActivities, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Defender activities");
+        AlienImGui::Text("防御器活动次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numNervePulses, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Nerve pulses");
+        AlienImGui::Text("反应神经活动次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numNeuronActivities, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Neural activities");
+        AlienImGui::Text("神经网络活动次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numSensorActivities, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Sensor activities");
+        AlienImGui::Text("感知器活动次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numSensorMatches, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Sensor matches");
+        AlienImGui::Text("感知器命中次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numInjectionActivities, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Injection activities");
+        AlienImGui::Text("注射器活动次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numCompletedInjections, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Completed injections");
+        AlienImGui::Text("注射完成的次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numReconnectorCreated, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Reconnector creations");
+        AlienImGui::Text("重连器创建次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numReconnectorRemoved, 6);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Reconnector deletions");
+        AlienImGui::Text("重连器删除次数");
 
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numDetonations, 8);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Detonations");
+        AlienImGui::Text("爆炸器爆炸次数");
 
         ImPlot::PopColormap();
         ImGui::EndTable();
@@ -830,7 +830,7 @@ void StatisticsWindow::drawValuesAtMouseCursor(
         snprintf(
             label,
             sizeof(label),
-            "Time step: %s\nTimestamp: %s\nValue: %s",
+            "时序: %s\n时间戳: %s\n值: %s",
             StringHelper::format(mousePos.x, 0).c_str(),
             dateTimeString.c_str(),
             StringHelper::format(mousePos.y, fracPartDecimals).c_str());
@@ -838,7 +838,7 @@ void StatisticsWindow::drawValuesAtMouseCursor(
         snprintf(
             label,
             sizeof(label),
-            "Relative time: %s\nValue: %s",
+            "相对时间: %s\n值: %s",
             StringHelper::format(mousePos.x, 0).c_str(),
             StringHelper::format(mousePos.y, fracPartDecimals).c_str());
     }
