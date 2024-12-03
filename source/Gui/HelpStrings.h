@@ -489,23 +489,20 @@ namespace Const
     std::string const CreatorStickyTooltip = "If the Sticky property is selected, the created cells can usually form further connections. That is, they can "
                                              "'stick together' with other cell networks after collision.";
 
-    std::string const LoginHowToCreateNewUseTooltip = "Please enter the desired user name and password and proceed by clicking the 'Create user' button.";
+    std::string const LoginHowToCreateNewUseTooltip = "请输入您期望的用户名与密码。用户创建将通过点击“创建用户”按钮执行。";
 
-    std::string const LoginForgotYourPasswordTooltip = "Please enter the user name and proceed by clicking the 'Reset password' button.";
+    std::string const LoginForgotYourPasswordTooltip = "请输入用户名，密码重设将通过点击“重设密码”按钮执行。";
 
     std::string const LoginSecurityInformationTooltip =
-        "The data transfer to the server is encrypted via https. On the server side, the password is not stored in cleartext, but as a salted SHA-256 hash "
-        "value in the database. If the toggle 'Remember' is activated, the password will be stored in the Windows registry under the path 'HKEY_CURRENT_USER\\SOFTWARE\\alien' "
-        "or, in the case of other OS, in 'settings.json' on your local machine.";
+       "传输至服务器的数据已通过https加密。在服务端，邮箱地址并不储存在明文中，是以加密为SHA-256哈希值的形式储存在数据库中。"
+       "如果'记住'按钮已启用，密码将被储存在 Windows 注册表中的路径 'HKEY_CURRENT_USER\\SOFTWARE\\alien' 下。在其他操作系统中，密码将被储存在本地电脑上的 'settings.json' 文件中。";
 
-    std::string const LoginRememberTooltip = "If the toggle 'Remember' is activated, the password will be stored in the Windows registry under the path "
-                                             "'HKEY_CURRENT_USER\\SOFTWARE\\alien' or, in the case of other OS, in 'settings.json' on your local machine. It "
-                                             "is recommended not to choose a password that is used elsewhere.";
+    std::string const LoginRememberTooltip = "如果'记住'按钮已启用，密码将被储存在 Windows 注册表中的路径 'HKEY_CURRENT_USER\\SOFTWARE\\alien' 下。在其他操作系统中，密码将被储存在本地电脑上的 'settings.json' 文件中。推荐您选用一个不在其他地方使用的密码。";
 
     std::string const LoginShareGpuInfoTooltip1 =
-        "If this option is enabled, other users will be able to see in the browser window that you have the following graphics card: ";
+        "如果该选项已启用，其他用户将可以在浏览器窗口中看到下列你有的显卡：";
     std::string const LoginShareGpuInfoTooltip2 =
-        "As a result, you will be able to see the GPU information of other registered users who have shared it.";
+        "同样的，你也能够看到其他已注册用户分享的显卡。";
 
     std::vector<std::string> const ActivationFunctions = {"Sigmoid", "Binary step", "Identity", "Absolute value", "Gaussian"};
 
@@ -516,5 +513,5 @@ namespace Const
         " 个人: 每一个用户账号都有一个自己的个人空间。上传在此的模拟器和基因组仅对该已登录的用户可浏览。";
 
     std::string const ParameterRadiationAbsorptionLowGenomeComplexityPenaltyTooltip =
-        "When this parameter is increased, cells with fewer genome complexity will absorb less energy from an incoming energy particle.";
+        "当该参数减少时,拥有更少基因组复杂度的细胞将会从吸收的粒子中得到更少能量。";
 }

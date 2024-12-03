@@ -23,11 +23,11 @@ namespace
     auto constexpr FolderWidgetHeight = 50.0f;
 
     std::map<NetworkResourceType, std::string> const BrowserDataTypeToLowerString = {
-        {NetworkResourceType_Simulation, "simulation"},
-        {NetworkResourceType_Genome, "genome"}};
+        {NetworkResourceType_Simulation, "模拟器"},
+        {NetworkResourceType_Genome, "基因组"}};
     std::map<NetworkResourceType, std::string> const BrowserDataTypeToUpperString = {
-        {NetworkResourceType_Simulation, "Simulation"},
-        {NetworkResourceType_Genome, "Genome"}};
+        {NetworkResourceType_Simulation, "模拟器"},
+        {NetworkResourceType_Genome, "基因组"}};
 }
 
 void UploadSimulationDialog::initIntern(SimulationFacade simulationFacade)
@@ -48,7 +48,7 @@ void UploadSimulationDialog::shutdownIntern()
 void UploadSimulationDialog::open(NetworkResourceType resourceType, std::string const& folder)
 {
     if (NetworkService::get().getLoggedInUserName()) {
-        changeTitle("Upload " + BrowserDataTypeToLowerString.at(resourceType));
+        changeTitle("上传" + BrowserDataTypeToLowerString.at(resourceType));
         _resourceType = resourceType;
         _folder = folder;
         _resourceName = _resourceNameByFolder[_folder];
@@ -67,22 +67,20 @@ void UploadSimulationDialog::processIntern()
 {
     auto resourceTypeString = BrowserDataTypeToLowerString.at(_resourceType);
     if (ImGui::BeginChild("##header", ImVec2(0, scale(52.0f)), true, ImGuiWindowFlags_HorizontalScrollbar)) {
-        AlienImGui::Text("Data privacy policy");
+        AlienImGui::Text("数据隐私政策");
         AlienImGui::HelpMarker(
-            "The " + resourceTypeString + " file, name and description are stored on the server. It cannot be guaranteed that the data will not be deleted.");
+            resourceTypeString + " 的文件,名称和描述将被储存在服务器。服务端无法保证文件一定不会被删除。");
 
-        AlienImGui::Text("How to use or create folders?");
+        AlienImGui::Text("如何使用或创建一个文件夹？");
         AlienImGui::HelpMarker(
-            "If you want to upload the " + resourceTypeString
-            + " to a folder, you can use the `/`-notation. The folder will be created automatically if it does not exist.\nFor instance, naming a simulation "
-              "as `Biome/Water "
-              "world/Initial/Variant 1` will create the nested folders `Biome`, `Water world` and `Initial`.");
+            "如果你想要上传" + resourceTypeString
+            + "到一个文件夹，你可以使用‘/’字符。文件夹将被自动创建如果不存在。\n例如，为一个模拟器文件命名为‘Biome/Water world/Initial/Variant 1’ 将会创建相嵌的文件夹‘Biome’, ‘Water world’和‘Initial’。");
     }
     ImGui::EndChild();
 
     if (!_folder.empty()) {
         if (ImGui::BeginChild("##folder info", ImVec2(0, scale(85.0f)), true, ImGuiWindowFlags_HorizontalScrollbar)) {
-            AlienImGui::Text("The following folder has been selected in the browser\nand will used for the upload:\n\n");
+            AlienImGui::Text("相应的文件夹已在浏览器中被选中\n并且将要用于储存上传的文件:\n\n");
             AlienImGui::BoldText(_folder);
         }
         ImGui::EndChild();
@@ -90,14 +88,14 @@ void UploadSimulationDialog::processIntern()
 
     AlienImGui::Separator();
 
-    AlienImGui::InputText(AlienImGui::InputTextParameters().hint(BrowserDataTypeToUpperString.at(_resourceType)  + " name").textWidth(0), _resourceName);
+    AlienImGui::InputText(AlienImGui::InputTextParameters().hint(BrowserDataTypeToUpperString.at(_resourceType)  + " 名称").textWidth(0), _resourceName);
 
     AlienImGui::Separator();
 
-    ImGui::PushID("description");
+    ImGui::PushID("描述");
     AlienImGui::InputTextMultiline(
         AlienImGui::InputTextMultilineParameters()
-            .hint("Description (optional)")
+            .hint("描述（可选项）")
             .textWidth(0)
             .height(ImGui::GetContentRegionAvail().y - StyleRepository::get().scale(70.0f)),
         _resourceDescription);
@@ -105,21 +103,21 @@ void UploadSimulationDialog::processIntern()
 
     AlienImGui::ToggleButton(
         AlienImGui::ToggleButtonParameters()
-            .name("Make public")
+            .name("是否公开")
             .tooltip(
-                "If true, the " + resourceTypeString + " will be visible to all users. If false, the " + resourceTypeString
-                + " will only be visible in the private workspace. This property can also be changed later if desired."),
+                "如是，" + resourceTypeString + " 将对所有用户可见。如否，" + resourceTypeString
+                + "将仅在您的私人空间中可见。 这个属性可以在稍后更改，如果需要的话。"),
         _share);
 
     AlienImGui::Separator();
 
     ImGui::BeginDisabled(_resourceName.empty());
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         if (NetworkValidationService::get().isStringValidForDatabase(_resourceName) && NetworkValidationService::get().isStringValidForDatabase(_resourceDescription)) {
             close();
             onUpload();
         } else {
-            showMessage("Error", Const::NotAllowedCharacters);
+            showMessage("错误", Const::NotAllowedCharacters);
         }
         _resourceNameByFolder[_folder] = _resourceName;
         _resourceDescriptionByFolder[_folder] = _resourceDescription;
@@ -128,7 +126,7 @@ void UploadSimulationDialog::processIntern()
     ImGui::SetItemDefaultFocus();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
 }

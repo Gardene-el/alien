@@ -23,42 +23,42 @@ void LoginDialog::initIntern(SimulationFacade simulationFacade, PersisterFacade 
 }
 
 LoginDialog::LoginDialog()
-    : AlienDialog("Login")
+    : AlienDialog("登录")
 {}
 
 void LoginDialog::processIntern()
 {
-    AlienImGui::Text("How to create a new user?");
+    AlienImGui::Text("如何创建一个新用户？");
     AlienImGui::HelpMarker(Const::LoginHowToCreateNewUseTooltip);
 
-    AlienImGui::Text("Forgot your password?");
+    AlienImGui::Text("忘记密码?");
     AlienImGui::HelpMarker(Const::LoginForgotYourPasswordTooltip);
 
-    AlienImGui::Text("Security information");
+    AlienImGui::Text("安全信息");
     AlienImGui::HelpMarker(Const::LoginSecurityInformationTooltip);
 
     AlienImGui::Separator();
 
     auto& loginController = LoginController::get();
     auto userName = loginController.getUserName();
-    AlienImGui::InputText(AlienImGui::InputTextParameters().hint("User name").textWidth(0), userName);
+    AlienImGui::InputText(AlienImGui::InputTextParameters().hint("用户名称").textWidth(0), userName);
     loginController.setUserName(userName);
 
     auto password= loginController.getPassword();
-    AlienImGui::InputText(AlienImGui::InputTextParameters().hint("Password").password(true).textWidth(0), password);
+    AlienImGui::InputText(AlienImGui::InputTextParameters().hint("密码").password(true).textWidth(0), password);
     loginController.setPassword(password);
 
     AlienImGui::Separator();
     ImGui::Spacing();
 
     auto remember = loginController.isRemember();
-    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Remember").tooltip(Const::LoginRememberTooltip), remember);
+    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("记住").tooltip(Const::LoginRememberTooltip), remember);
     loginController.setRemember(remember);
 
     auto shareGpuInfo = loginController.shareGpuInfo();
     AlienImGui::ToggleButton(
         AlienImGui::ToggleButtonParameters()
-            .name("Share GPU model info")
+            .name("分享GPU信息")
             .tooltip(Const::LoginShareGpuInfoTooltip1 + _simulationFacade->getGpuName() + "\n" + Const::LoginShareGpuInfoTooltip2),
         shareGpuInfo);
     loginController.setShareGpuInfo(shareGpuInfo);
@@ -67,7 +67,7 @@ void LoginDialog::processIntern()
     AlienImGui::Separator();
 
     ImGui::BeginDisabled(userName.empty() || password.empty());
-    if (AlienImGui::Button("Login")) {
+    if (AlienImGui::Button("登录")) {
         close();
         loginController.onLogin();
     }
@@ -79,7 +79,7 @@ void LoginDialog::processIntern()
 
     ImGui::SameLine();
     ImGui::BeginDisabled(userName.empty() || password.empty());
-    if (AlienImGui::Button("Create user")) {
+    if (AlienImGui::Button("创建用户")) {
         close();
         CreateUserDialog::get().open(userName, password, LoginController::get().getUserInfo());
     }
@@ -87,7 +87,7 @@ void LoginDialog::processIntern()
 
     ImGui::SameLine();
     ImGui::BeginDisabled(userName.empty());
-    if (AlienImGui::Button("Reset password")) {
+    if (AlienImGui::Button("重设密码")) {
         close();
         ResetPasswordDialog::get().open(userName, LoginController::get().getUserInfo());
     }
@@ -97,7 +97,7 @@ void LoginDialog::processIntern()
     AlienImGui::VerticalSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
 }

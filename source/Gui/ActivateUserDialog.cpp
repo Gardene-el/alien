@@ -25,22 +25,22 @@ void ActivateUserDialog::open(std::string const& userName, std::string const& pa
 }
 
 ActivateUserDialog::ActivateUserDialog()
-    : AlienDialog("Activate user")
+    : AlienDialog("启用用户")
 {}
 
 void ActivateUserDialog::processIntern()
 {
-    AlienImGui::Text("Please enter the confirmation code sent to your email address.");
+    AlienImGui::Text("请输入发送至您邮箱的确认码");
     AlienImGui::HelpMarker(
-        "Please check your spam folder if you did not find an email. If you did not receive an email there, try signing up with possibly another "
-        "email address. If this still does not work, please contact info@alien-project.org.");
+        "如果您没有找到对应的邮件，请查看您邮箱的垃圾邮件文件夹。 如果您确实没有收到邮件，请尝试以其他可能的邮箱地址注册。"
+        "如果您的邮箱仍然无法接收邮件，请联系通知@alien-project.org。");
     AlienImGui::Separator();
-    AlienImGui::InputText(AlienImGui::InputTextParameters().hint("Code (case sensitive)").textWidth(0), _confirmationCode);
+    AlienImGui::InputText(AlienImGui::InputTextParameters().hint("确认码（区分大小写）").textWidth(0), _confirmationCode);
 
     AlienImGui::Separator();
 
     ImGui::BeginDisabled(_confirmationCode.empty());
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         close();
         onActivateUser();
     }
@@ -51,12 +51,12 @@ void ActivateUserDialog::processIntern()
     AlienImGui::VerticalSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Resend")) {
+    if (AlienImGui::Button("重新发送")) {
         CreateUserDialog::get().onCreateUser();
     }
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Resend to other email address")) {
+    if (AlienImGui::Button("重新发送至其他邮箱")) {
         close();
         CreateUserDialog::get().open(_userName, _password, _userInfo);
     }
@@ -65,7 +65,7 @@ void ActivateUserDialog::processIntern()
     AlienImGui::VerticalSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
 }
@@ -78,12 +78,12 @@ void ActivateUserDialog::onActivateUser()
         result |= NetworkService::get().login(errorCode, _userName, _password, _userInfo);
     }
     if (!result) {
-        GenericMessageDialog::get().information("Error", "An error occurred on the server. Your entered code may be incorrect.\nPlease try to register again.");
+        GenericMessageDialog::get().information("错误", "服务器中发生了一个错误。你输入的确认码可能不正确。\n请重新尝试注册。");
     } else {
         GenericMessageDialog::get().information(
-            "Information",
-            "The user '" + _userName
-                + "' has been successfully created.\nYou are logged in and are now able to upload your own simulations\nor upvote others by likes.");
+            "信息",
+            "用户'" + _userName
+                + "'账户已经成功创建。\n你已经登录并且现在能够上传你的模拟器\n或者根据喜好点在别人的模拟器。");
         BrowserWindow::get().onRefresh();
     }
 }
