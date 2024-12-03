@@ -30,20 +30,20 @@ void NewSimulationDialog::shutdownIntern()
 }
 
 NewSimulationDialog::NewSimulationDialog()
-    : AlienDialog("New simulation")
+    : AlienDialog("新建模拟器")
 {}
 
 void NewSimulationDialog::processIntern()
 {
-    AlienImGui::InputText(AlienImGui::InputTextParameters().name("Project name").textWidth(ContentTextInputWidth), _projectName, ProjectNameSize);
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Width").textWidth(ContentTextInputWidth), _width);
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Height").textWidth(ContentTextInputWidth), _height);
+    AlienImGui::InputText(AlienImGui::InputTextParameters().name("模拟器名称").textWidth(ContentTextInputWidth), _projectName, ProjectNameSize);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("宽度").textWidth(ContentTextInputWidth), _width);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("高度").textWidth(ContentTextInputWidth), _height);
     AlienImGui::Checkbox(
-        AlienImGui::CheckboxParameters().name("Adopt simulation parameters").textWidth(0), _adoptSimulationParameters);
+        AlienImGui::CheckboxParameters().name("继承当前的模拟器参数集").textWidth(0), _adoptSimulationParameters);
 
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         ImGui::CloseCurrentPopup();
         onNewSimulation();
         close();
@@ -51,7 +51,7 @@ void NewSimulationDialog::processIntern()
     ImGui::SetItemDefaultFocus();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         ImGui::CloseCurrentPopup();
         close();
     }

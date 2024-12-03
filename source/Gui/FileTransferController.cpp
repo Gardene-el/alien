@@ -13,7 +13,7 @@
 void FileTransferController::onOpenSimulationDialog()
 {
     GenericFileDialog::get().showOpenFileDialog(
-        "Open simulation", "Simulation file (*.sim){.sim},.*", _referencePath, [&](std::filesystem::path const& filename) {
+        "打开模拟器文件", "Simulation file (*.sim){.sim},.*", _referencePath, [&](std::filesystem::path const& filename) {
             auto filenameCopy = filename;
             _referencePath = filenameCopy.remove_filename().string();
             onOpenSimulation(filename);
@@ -23,7 +23,7 @@ void FileTransferController::onOpenSimulationDialog()
 
 void FileTransferController::onOpenSimulation(std::filesystem::path const& filename)
 {
-    printOverlayMessage("Loading ...");
+    printOverlayMessage("载入中 ...");
 
     _openSimulationProcessor->executeTask(
         [&](auto const& senderId) {
@@ -49,7 +49,7 @@ void FileTransferController::onOpenSimulation(std::filesystem::path const& filen
             } catch (CudaMemoryAllocationException const& exception) {
                 errorMessage = exception.what();
             } catch (...) {
-                errorMessage = "Failed to load simulation.";
+                errorMessage = "模拟器文件打开失败。";
             }
 
             if (errorMessage) {
@@ -73,11 +73,11 @@ void FileTransferController::onOpenSimulation(std::filesystem::path const& filen
 void FileTransferController::onSaveSimulationDialog()
 {
     GenericFileDialog::get().showSaveFileDialog(
-        "Save simulation", "Simulation file (*.sim){.sim},.*", _referencePath, [&](std::filesystem::path const& path) {
+        "保存模拟器文件", "Simulation file (*.sim){.sim},.*", _referencePath, [&](std::filesystem::path const& path) {
             auto firstFilename = ifd::FileDialog::Instance().GetResult();
             auto firstFilenameCopy = firstFilename;
             _referencePath = firstFilenameCopy.remove_filename().string();
-            printOverlayMessage("Saving ...");
+            printOverlayMessage("保存中 ...");
             _saveSimulationProcessor->executeTask(
                 [&, firstFilename = firstFilename](auto const& senderId) {
                     auto senderInfo = SenderInfo{.senderId = senderId, .wishResultData = false, .wishErrorInfo = true};

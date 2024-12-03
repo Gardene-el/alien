@@ -24,7 +24,7 @@ private:
     SimulationFacade _simulationFacade;
 
     bool _adoptSimulationParameters = true;
-    Char64 _projectName = "<unnamed>";
+    Char64 _projectName = "<未命名>";
     int _width = 0;
     int _height = 0;
 };
