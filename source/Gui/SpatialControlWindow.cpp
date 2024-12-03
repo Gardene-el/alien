@@ -23,7 +23,7 @@ void SpatialControlWindow::initIntern(SimulationFacade simulationFacade)
 }
 
 SpatialControlWindow::SpatialControlWindow()
-    : AlienWindow("Spatial control", "windows.spatial control", true)
+    : AlienWindow("空间控制器", "windows.spatial control", true)
 {}
 
 void SpatialControlWindow::shutdownIntern()
@@ -52,7 +52,7 @@ void SpatialControlWindow::processIntern()
 
     if (ImGui::BeginChild("##", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar)) {
 
-        ImGui::Text("World size");
+        ImGui::Text("世界大小");
         ImGui::PushFont(StyleRepository::get().getLargeFont());
         ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
         auto worldSize = _simulationFacade->getWorldSize();
@@ -61,14 +61,14 @@ void SpatialControlWindow::processIntern()
         ImGui::PopStyleColor();
         ImGui::PopFont();
 
-        ImGui::Text("Zoom factor");
+        ImGui::Text("缩放速度");
         ImGui::PushFont(StyleRepository::get().getLargeFont());
         ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
         ImGui::TextUnformatted(StringHelper::format(Viewport::get().getZoomFactor(), 2).c_str());
         ImGui::PopStyleColor();
         ImGui::PopFont();
 
-        ImGui::Text("Center position");
+        ImGui::Text("当前画面中心位置");
         ImGui::PushFont(StyleRepository::get().getLargeFont());
         ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
         auto centerPos = Viewport::get().getCenterInWorldPos();
@@ -78,11 +78,11 @@ void SpatialControlWindow::processIntern()
         ImGui::PopFont();
 
         AlienImGui::Separator();
-        AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Autotracking on selection"), _centerSelection);
+        AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("自动跟踪所选中的物体"), _centerSelection);
         ImGui::Spacing();
         ImGui::Spacing();
         float sensitivity = Viewport::get().getZoomSensitivity();
-        if (AlienImGui::SliderFloat(AlienImGui::SliderFloatParameters().name("Zoom sensitivity").min(1.0f).max(1.1f).textWidth(130).format(""), &sensitivity)) {
+        if (AlienImGui::SliderFloat(AlienImGui::SliderFloatParameters().name("缩放敏感性").min(1.0f).max(1.1f).textWidth(130).format(""), &sensitivity)) {
             Viewport::get().setZoomSensitivity(sensitivity);
         }
     }
@@ -99,7 +99,7 @@ void SpatialControlWindow::processZoomInButton()
     if (AlienImGui::ToolbarButton(ICON_FA_SEARCH_PLUS)) {
         Viewport::get().setZoomFactor(Viewport::get().getZoomFactor() * 2);
     }
-    AlienImGui::Tooltip("Zoom in");
+    AlienImGui::Tooltip("放大");
 }
 
 void SpatialControlWindow::processZoomOutButton()
@@ -107,7 +107,7 @@ void SpatialControlWindow::processZoomOutButton()
     if (AlienImGui::ToolbarButton(ICON_FA_SEARCH_MINUS)) {
         Viewport::get().setZoomFactor(Viewport::get().getZoomFactor() / 2);
     }
-    AlienImGui::Tooltip("Zoom out");
+    AlienImGui::Tooltip("缩小");
 }
 
 void SpatialControlWindow::processCenterButton()
@@ -117,7 +117,7 @@ void SpatialControlWindow::processCenterButton()
         auto worldSize = toRealVector2D(_simulationFacade->getWorldSize());
         Viewport::get().setCenterInWorldPos({worldSize.x / 2, worldSize.y / 2});
     }
-    AlienImGui::Tooltip("Center");
+    AlienImGui::Tooltip("定位至模拟器中心");
 }
 
 void SpatialControlWindow::processResizeButton()
@@ -125,7 +125,7 @@ void SpatialControlWindow::processResizeButton()
     if (AlienImGui::ToolbarButton(ICON_FA_CROP_ALT)) {
         ResizeWorldDialog::get().open();
     }
-    AlienImGui::Tooltip("Resize");
+    AlienImGui::Tooltip("修改模拟器大小");
 }
 
 void SpatialControlWindow::processCenterOnSelection()

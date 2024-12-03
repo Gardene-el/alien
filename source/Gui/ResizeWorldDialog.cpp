@@ -24,7 +24,7 @@ void ResizeWorldDialog::open()
 }
 
 ResizeWorldDialog::ResizeWorldDialog()
-    : AlienDialog("Resize world")
+    : AlienDialog("修改世界大小")
 {}
 
 void ResizeWorldDialog::processIntern()
@@ -40,7 +40,7 @@ void ResizeWorldDialog::processIntern()
         ImGui::PopItemWidth();
 
         ImGui::TableSetColumnIndex(1);
-        ImGui::Text("Width");
+        ImGui::Text("宽度");
 
         //height
         ImGui::TableNextRow();
@@ -50,22 +50,22 @@ void ResizeWorldDialog::processIntern()
         ImGui::PopItemWidth();
 
         ImGui::TableSetColumnIndex(1);
-        ImGui::Text("Height");
+        ImGui::Text("高度");
 
         ImGui::EndTable();
     }
-    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Scale content"), _scaleContent);
+    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("缩放内容"), _scaleContent);
 
     AlienImGui::Separator();
 
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         onResizing();
         close();
     }
     ImGui::SetItemDefaultFocus();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
 
