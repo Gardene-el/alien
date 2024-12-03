@@ -160,7 +160,7 @@ void MainLoopController::processLoadingScreen()
         _programState = ProgramState::FadeOutLoadingScreen;
     }
     if (requestedSimState == PersisterRequestState::Error) {
-        GenericMessageDialog::get().information("Error", "The default simulation file could not be read.\nAn empty simulation will be created.");
+        GenericMessageDialog::get().information("错误", "默认的模拟器文件无法读取。\n一个空的模拟器文件将被创建。");
 
         DeserializedSimulation deserializedSim;
         deserializedSim.auxiliaryData.generalSettings.worldSizeX = 1000;
@@ -240,7 +240,7 @@ void MainLoopController::processOperatingMode()
 void MainLoopController::processScheduleExit()
 {
     if (_saveOnExit) {
-        printOverlayMessage("Saving on exit ...");
+        printOverlayMessage("正在退出前保存文件...");
 
         auto senderInfo = SenderInfo{.senderId = SenderId{StartupSenderId}, .wishResultData = true, .wishErrorInfo = false};
         auto saveData = SaveSimulationRequestData{Const::AutosaveFile, Viewport::get().getZoomFactor(), Viewport::get().getCenterInWorldPos()};
@@ -298,7 +298,7 @@ void MainLoopController::drawLoadingScreen()
 
     drawList->AddText(styleRep.getReefLargeFont(), scale(48.0f), {center.x - scale(175), bottom - scale(200)}, textColor, "Artificial Life Environment");
 
-    auto versionString = "Version " + Const::ProgramVersion;
+    auto versionString = "版本号 " + Const::ProgramVersion;
     drawList->AddText(
         styleRep.getReefMediumFont(),
         scale(24.0f),
@@ -342,35 +342,35 @@ void MainLoopController::processMenubar()
     AlienImGui::MenuShutdownButton([&] { ExitDialog::get().open(); });
     ImGui::Dummy(ImVec2(scale(10.0f), 0.0f));
 
-    AlienImGui::BeginMenu(" " ICON_FA_GAMEPAD "  Simulation ", _simulationMenuOpened);
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("New").keyCtrl(true).key(ImGuiKey_N), [&] { NewSimulationDialog::get().open(); });
+    AlienImGui::BeginMenu(" " ICON_FA_GAMEPAD "  模拟器 ", _simulationMenuOpened);
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("新建").keyCtrl(true).key(ImGuiKey_N), [&] { NewSimulationDialog::get().open(); });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Open").keyCtrl(true).key(ImGuiKey_O), [&] { FileTransferController::get().onOpenSimulationDialog(); });
+        AlienImGui::MenuItemParameters().name("打开").keyCtrl(true).key(ImGuiKey_O), [&] { FileTransferController::get().onOpenSimulationDialog(); });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Save").keyCtrl(true).key(ImGuiKey_S), [&] { FileTransferController::get().onSaveSimulationDialog(); });
+        AlienImGui::MenuItemParameters().name("保存").keyCtrl(true).key(ImGuiKey_S), [&] { FileTransferController::get().onSaveSimulationDialog(); });
     AlienImGui::MenuSeparator();
     auto running = _simulationFacade->isSimulationRunning();
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Run").key(ImGuiKey_Space).disabled(running).closeMenuWhenItemClicked(false), [&] {
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("运行").key(ImGuiKey_Space).disabled(running).closeMenuWhenItemClicked(false), [&] {
         _simulationFacade->runSimulation();
-        printOverlayMessage("Run");
+        printOverlayMessage("运行");
     });
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Pause").key(ImGuiKey_Space).disabled(!running).closeMenuWhenItemClicked(false), [&] {
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("暂停").key(ImGuiKey_Space).disabled(!running).closeMenuWhenItemClicked(false), [&] {
         _simulationFacade->pauseSimulation();
-        printOverlayMessage("Pause");
+        printOverlayMessage("暂停");
     });
     AlienImGui::EndMenu();
 
-    AlienImGui::BeginMenu(" " ICON_FA_GLOBE "  Network ", _networkMenuOpened);
+    AlienImGui::BeginMenu(" " ICON_FA_GLOBE "  网络 ", _networkMenuOpened);
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Browser").keyAlt(true).key(ImGuiKey_W).closeMenuWhenItemClicked(false).selected(BrowserWindow::get().isOn()),
+        AlienImGui::MenuItemParameters().name("浏览器").keyAlt(true).key(ImGuiKey_W).closeMenuWhenItemClicked(false).selected(BrowserWindow::get().isOn()),
         [&] { BrowserWindow::get().setOn(!BrowserWindow::get().isOn()); });
     AlienImGui::MenuSeparator();
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Login").keyAlt(true).key(ImGuiKey_L).disabled(NetworkService::get().isLoggedIn()), [&] {
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("登录").keyAlt(true).key(ImGuiKey_L).disabled(NetworkService::get().isLoggedIn()), [&] {
         LoginDialog::get().open();
     });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Logout")
+            .name("登出")
             .keyAlt(true)
             .key(ImGuiKey_T)
             .closeMenuWhenItemClicked(false)
@@ -380,21 +380,21 @@ void MainLoopController::processMenubar()
             BrowserWindow::get().onRefresh();
         });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Upload simulation").keyAlt(true).key(ImGuiKey_D).disabled(!NetworkService::get().isLoggedIn()),
+        AlienImGui::MenuItemParameters().name("上传模拟器").keyAlt(true).key(ImGuiKey_D).disabled(!NetworkService::get().isLoggedIn()),
         [&] { UploadSimulationDialog::get().open(NetworkResourceType_Simulation); });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Upload genome").keyAlt(true).key(ImGuiKey_Q).disabled(!NetworkService::get().isLoggedIn()),
+        AlienImGui::MenuItemParameters().name("上传基因组").keyAlt(true).key(ImGuiKey_Q).disabled(!NetworkService::get().isLoggedIn()),
         [&] { UploadSimulationDialog::get().open(NetworkResourceType_Genome); });
     AlienImGui::MenuSeparator();
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Delete user").keyAlt(true).key(ImGuiKey_J).disabled(!NetworkService::get().isLoggedIn()), [&] {
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("删除用户").keyAlt(true).key(ImGuiKey_J).disabled(!NetworkService::get().isLoggedIn()), [&] {
         DeleteUserDialog::get().open();
     });
     AlienImGui::EndMenu();
 
-    AlienImGui::BeginMenu(" " ICON_FA_WINDOW_RESTORE "  Windows ", _windowMenuOpened);
+    AlienImGui::BeginMenu(" " ICON_FA_WINDOW_RESTORE "  窗口 ", _windowMenuOpened);
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Temporal control")
+            .name("时间控制器")
             .keyAlt(true)
             .key(ImGuiKey_1)
             .selected(TemporalControlWindow::get().isOn())
@@ -402,7 +402,7 @@ void MainLoopController::processMenubar()
         [&] { TemporalControlWindow::get().setOn(!TemporalControlWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Spatial control")
+            .name("空间控制器")
             .keyAlt(true)
             .key(ImGuiKey_2)
             .selected(SpatialControlWindow::get().isOn())
@@ -410,7 +410,7 @@ void MainLoopController::processMenubar()
         [&] { SpatialControlWindow::get().setOn(!SpatialControlWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Statistics")
+            .name("统计数据")
             .keyAlt(true)
             .key(ImGuiKey_3)
             .selected(StatisticsWindow::get().isOn())
@@ -418,7 +418,7 @@ void MainLoopController::processMenubar()
         [&] { StatisticsWindow::get().setOn(!StatisticsWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Simulation parameters")
+            .name("模拟器参数")
             .keyAlt(true)
             .key(ImGuiKey_4)
             .selected(SimulationParametersWindow::get().isOn())
@@ -426,7 +426,7 @@ void MainLoopController::processMenubar()
         [&] { SimulationParametersWindow::get().setOn(!SimulationParametersWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Radiation sources")
+            .name("放射粒子源")
             .keyAlt(true)
             .key(ImGuiKey_5)
             .selected(RadiationSourcesWindow::get().isOn())
@@ -434,24 +434,24 @@ void MainLoopController::processMenubar()
         [&] { RadiationSourcesWindow::get().setOn(!RadiationSourcesWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Shader parameters")
+            .name("着色器参数")
             .keyAlt(true)
             .key(ImGuiKey_6)
             .selected(ShaderWindow::get().isOn())
             .closeMenuWhenItemClicked(false),
         [&] { ShaderWindow::get().setOn(!ShaderWindow::get().isOn()); });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Autosave").keyAlt(true).key(ImGuiKey_7).selected(AutosaveWindow::get().isOn()).closeMenuWhenItemClicked(false),
+        AlienImGui::MenuItemParameters().name("自动保存").keyAlt(true).key(ImGuiKey_7).selected(AutosaveWindow::get().isOn()).closeMenuWhenItemClicked(false),
         [&] { AutosaveWindow::get().setOn(!AutosaveWindow::get().isOn()); });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Log").keyAlt(true).key(ImGuiKey_8).selected(LogWindow::get().isOn()).closeMenuWhenItemClicked(false),
+        AlienImGui::MenuItemParameters().name("日志").keyAlt(true).key(ImGuiKey_8).selected(LogWindow::get().isOn()).closeMenuWhenItemClicked(false),
         [&] { LogWindow::get().setOn(!LogWindow::get().isOn()); });
     AlienImGui::EndMenu();
 
-    AlienImGui::BeginMenu(" " ICON_FA_PEN_ALT "  Editor ", _editorMenuOpened);
+    AlienImGui::BeginMenu(" " ICON_FA_PEN_ALT "  编辑器 ", _editorMenuOpened);
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Activate")
+            .name("启用")
             .keyAlt(true)
             .key(ImGuiKey_E)
             .selected(SimulationInteractionController::get().isEditMode())
@@ -460,7 +460,7 @@ void MainLoopController::processMenubar()
     AlienImGui::MenuSeparator();
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Selection")
+            .name("所选项")
             .keyAlt(true)
             .key(ImGuiKey_S)
             .selected(SelectionWindow::get().isOn())
@@ -469,7 +469,7 @@ void MainLoopController::processMenubar()
         [&] { SelectionWindow::get().setOn(!SelectionWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Creator")
+            .name("制作器")
             .keyAlt(true)
             .key(ImGuiKey_R)
             .selected(CreatorWindow::get().isOn())
@@ -478,7 +478,7 @@ void MainLoopController::processMenubar()
         [&] { CreatorWindow::get().setOn(!CreatorWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Pattern editor")
+            .name("图式编辑器")
             .keyAlt(true)
             .key(ImGuiKey_M)
             .selected(PatternEditorWindow::get().isOn())
@@ -487,7 +487,7 @@ void MainLoopController::processMenubar()
         [&] { PatternEditorWindow::get().setOn(!PatternEditorWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Genome editor")
+            .name("基因组编辑器")
             .keyAlt(true)
             .key(ImGuiKey_B)
             .selected(GenomeEditorWindow::get().isOn())
@@ -496,7 +496,7 @@ void MainLoopController::processMenubar()
         [&] { GenomeEditorWindow::get().setOn(!GenomeEditorWindow::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Multiplier")
+            .name("复制器")
             .keyAlt(true)
             .key(ImGuiKey_A)
             .selected(MultiplierWindow::get().isOn())
@@ -506,51 +506,51 @@ void MainLoopController::processMenubar()
     AlienImGui::MenuSeparator();
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Inspect objects")
+            .name("查看物体")
             .keyAlt(true)
             .key(ImGuiKey_N)
             .disabled(!SimulationInteractionController::get().isEditMode() || !PatternEditorWindow::get().isObjectInspectionPossible()),
         [&] { EditorController::get().onInspectSelectedObjects(); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Inspect principal genome")
+            .name("查看目标基因组")
             .keyAlt(true)
             .key(ImGuiKey_F)
             .disabled(!SimulationInteractionController::get().isEditMode() || !PatternEditorWindow::get().isGenomeInspectionPossible()),
         [&] { EditorController::get().onInspectSelectedGenomes(); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Close inspections")
+            .name("关闭查看")
             .key(ImGuiKey_Escape)
             .disabled(!SimulationInteractionController::get().isEditMode() || !EditorController::get().areInspectionWindowsActive()),
         [&] { EditorController::get().onCloseAllInspectorWindows(); });
     AlienImGui::MenuSeparator();
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Copy")
+            .name("复制")
             .keyCtrl(true)
             .key(ImGuiKey_C)
             .disabled(!SimulationInteractionController::get().isEditMode() || !EditorController::get().isCopyingPossible()),
         [&] { EditorController::get().onCopy(); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Paste")
+            .name("粘贴")
             .keyCtrl(true)
             .key(ImGuiKey_V)
             .disabled(!SimulationInteractionController::get().isEditMode() || !EditorController::get().isPastingPossible()),
         [&] { EditorController::get().onPaste(); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Delete")
+            .name("删除")
             .key(ImGuiKey_Delete)
             .disabled(!SimulationInteractionController::get().isEditMode() || !EditorController::get().isCopyingPossible()),
         [&] { EditorController::get().onDelete(); });
     AlienImGui::EndMenu();
 
-    AlienImGui::BeginMenu(" " ICON_FA_EYE "  View ", _viewMenuOpened);
+    AlienImGui::BeginMenu(" " ICON_FA_EYE "  视图 ", _viewMenuOpened);
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Cell info overlay")
+            .name("显示细胞信息")
             .keyAlt(true)
             .key(ImGuiKey_O)
             .selected(SimulationView::get().isOverlayActive())
@@ -558,18 +558,18 @@ void MainLoopController::processMenubar()
         [&] { SimulationView::get().setOverlayActive(!SimulationView::get().isOverlayActive()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Message overlay")
+            .name("显示消息")
             .keyAlt(true)
             .key(ImGuiKey_X)
             .selected(OverlayController::get().isOn())
             .closeMenuWhenItemClicked(false),
         [&] { OverlayController::get().setOn(!OverlayController::get().isOn()); });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Render UI").keyAlt(true).key(ImGuiKey_U).selected(UiController::get().isOn()).closeMenuWhenItemClicked(false),
+        AlienImGui::MenuItemParameters().name("绘制UI").keyAlt(true).key(ImGuiKey_U).selected(UiController::get().isOn()).closeMenuWhenItemClicked(false),
         [&] { UiController::get().setOn(!UiController::get().isOn()); });
     AlienImGui::MenuItem(
         AlienImGui::MenuItemParameters()
-            .name("Render simulation")
+            .name("绘制模拟器画面")
             .keyAlt(true)
             .key(ImGuiKey_I)
             .selected(SimulationView::get().isRenderSimulation())
@@ -577,24 +577,24 @@ void MainLoopController::processMenubar()
         [&] { SimulationView::get().setRenderSimulation(!SimulationView::get().isRenderSimulation()); });
     AlienImGui::EndMenu();
 
-    AlienImGui::BeginMenu(" " ICON_FA_TOOLS "  Tools ", _toolsMenuOpened);
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Mass operations").keyAlt(true).key(ImGuiKey_H), [&] { MassOperationsDialog::get().open(); });
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Pattern analysis").keyAlt(true).key(ImGuiKey_P), [&] { PatternAnalysisDialog::get().show(); });
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Image converter").keyAlt(true).key(ImGuiKey_G), [&] { ImageToPatternDialog::get().show(); });
+    AlienImGui::BeginMenu(" " ICON_FA_TOOLS "  工具 ", _toolsMenuOpened);
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("大量操作").keyAlt(true).key(ImGuiKey_H), [&] { MassOperationsDialog::get().open(); });
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("图式分析").keyAlt(true).key(ImGuiKey_P), [&] { PatternAnalysisDialog::get().show(); });
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("图像生成器").keyAlt(true).key(ImGuiKey_G), [&] { ImageToPatternDialog::get().show(); });
     AlienImGui::EndMenu();
 
-    AlienImGui::BeginMenu(" " ICON_FA_COG "  Settings ", _settingsMenuOpened, false);
+    AlienImGui::BeginMenu(" " ICON_FA_COG "  设置 ", _settingsMenuOpened, false);
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Save on exit").selected(_saveOnExit).closeMenuWhenItemClicked(false), [&] { _saveOnExit = !_saveOnExit; });
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("CUDA settings").keyAlt(true).key(ImGuiKey_C), [&] { GpuSettingsDialog::get().open(); });
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Display settings").keyAlt(true).key(ImGuiKey_V), [&] { DisplaySettingsDialog::get().open(); });
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("Network settings").keyAlt(true).key(ImGuiKey_K), [&] { NetworkSettingsDialog::get().open(); });
+        AlienImGui::MenuItemParameters().name("退出时保存").selected(_saveOnExit).closeMenuWhenItemClicked(false), [&] { _saveOnExit = !_saveOnExit; });
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("CUDA设置").keyAlt(true).key(ImGuiKey_C), [&] { GpuSettingsDialog::get().open(); });
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("显示设置").keyAlt(true).key(ImGuiKey_V), [&] { DisplaySettingsDialog::get().open(); });
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("网络设置").keyAlt(true).key(ImGuiKey_K), [&] { NetworkSettingsDialog::get().open(); });
     AlienImGui::EndMenu();
 
-    AlienImGui::BeginMenu(" " ICON_FA_LIFE_RING "  Help ", _helpMenuOpened);
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("About"), [&] { AboutDialog::get().open(); });
+    AlienImGui::BeginMenu(" " ICON_FA_LIFE_RING "  帮助 ", _helpMenuOpened);
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("关于ALIEN"), [&] { AboutDialog::get().open(); });
     AlienImGui::MenuItem(
-        AlienImGui::MenuItemParameters().name("Getting started").selected(GettingStartedWindow::get().isOn()).closeMenuWhenItemClicked(false),
+        AlienImGui::MenuItemParameters().name("入门手册").selected(GettingStartedWindow::get().isOn()).closeMenuWhenItemClicked(false),
         [&] { GettingStartedWindow::get().setOn(!GettingStartedWindow::get().isOn()); });
     AlienImGui::EndMenu();
     AlienImGui::EndMenuBar();
