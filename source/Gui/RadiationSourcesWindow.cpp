@@ -20,7 +20,7 @@ void RadiationSourcesWindow::initIntern(SimulationFacade simulationFacade)
 }
 
 RadiationSourcesWindow::RadiationSourcesWindow()
-    : AlienWindow("Radiation sources", "windows.radiation sources", false)
+    : AlienWindow("放射性粒子源", "windows.radiation sources", false)
 {}
 
 void RadiationSourcesWindow::processIntern()
@@ -36,7 +36,7 @@ void RadiationSourcesWindow::processIntern()
             if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip)) {
                 scheduleAppendTab = true;
             }
-            AlienImGui::Tooltip("Add radiation source");
+            AlienImGui::Tooltip("添加放射性粒子源");
         }
 
         processBaseTab();
@@ -64,7 +64,7 @@ void RadiationSourcesWindow::processIntern()
 
 void RadiationSourcesWindow::processBaseTab()
 {
-    if (ImGui::BeginTabItem("Base", nullptr, _focusBaseTab ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None)) {
+    if (ImGui::BeginTabItem("基础", nullptr, _focusBaseTab ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None)) {
         auto parameters = _simulationFacade->getSimulationParameters();
         auto lastParameters = parameters;
         auto origParameters = _simulationFacade->getOriginalSimulationParameters();
@@ -76,15 +76,13 @@ void RadiationSourcesWindow::processBaseTab()
         auto editedStrength = strength;
         if (AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Relative strength")
+                    .name("相对强度")
                     .textWidth(RightColumnWidth)
                     .min(0.0f)
                     .max(1.0f)
                     .format("%.3f")
                     .defaultValue(&origStrengths.values.front())
-                    .tooltip("Cells can emit energy particles over time. A portion of this energy can be released directly near the cell, while the rest is "
-                             "utilized by one of the available radiation sources. This parameter determines the fraction of energy assigned to the emitted "
-                             "energy particle in the vicinity of the cell. Values between 0 and 1 are permitted."),
+                    .tooltip("细胞可以随着时间的推移释放能量粒子。\n这部分能量可以直接在细胞附近释放，而其余部分则由可用的辐射源之一利用。\n此参数决定分配给所选辐射源的能量粒子的能量比例。\n允许的值在0到1之间。"),
                 &editedStrength.values.front(),
                 nullptr,
                 &parameters.baseStrengthRatioPinned)) {
@@ -115,12 +113,12 @@ bool RadiationSourcesWindow::processSourceTab(int index)
     bool isOpen = true;
     static char name[20] = {};
 
-    snprintf(name, IM_ARRAYSIZE(name), "Source %01d", index + 1);
+    snprintf(name, IM_ARRAYSIZE(name), "粒子源 %01d", index + 1);
     if (ImGui::BeginTabItem(name, &isOpen, ImGuiTabItemFlags_None)) {
         if (AlienImGui::Switcher(
                 AlienImGui::SwitcherParameters()
-                    .name("Shape")
-                    .values({"Circular", "Rectangular"})
+                    .name("形状")
+                    .values({"圆形", "长方形"})
                     .textWidth(RightColumnWidth)
                     .defaultValue(origSource.shapeType),
                 source.shapeType)) {
@@ -135,15 +133,13 @@ bool RadiationSourcesWindow::processSourceTab(int index)
         auto origStrengths = editService.getRadiationStrengths(parameters);
         if (AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Relative strength")
+                    .name("相对强度")
                     .textWidth(RightColumnWidth)
                     .min(0.0f)
                     .max(1.0f)
                     .format("%.3f")
                     .defaultValue(&origSource.strength)
-                    .tooltip("Cells can emit energy particles over time. A portion of this energy can be released directly near the cell, while the rest is "
-                             "utilized by one of the available radiation sources. This parameter determines the fraction of energy assigned to the emitted "
-                             "energy particle for the selected radiation source. Values between 0 and 1 are permitted."),
+                    .tooltip("细胞可以随着时间的推移释放能量粒子。\n这部分能量可以直接在细胞附近释放，而其余部分则由可用的辐射源之一利用。\n此参数决定分配给所选辐射源的能量粒子的能量比例。\n允许的值在0到1之间。"),
                 &source.strength,
                 nullptr,
                 &source.strengthPinned)) {
@@ -158,7 +154,7 @@ bool RadiationSourcesWindow::processSourceTab(int index)
         auto getMousePickerPositionFunc = [&]() { return SimulationInteractionController::get().getPositionSelectionData(); };
         AlienImGui::SliderFloat2(
             AlienImGui::SliderFloat2Parameters()
-                .name("Position (x,y)")
+                .name("位置 (x,y)")
                 .textWidth(RightColumnWidth)
                 .min({0, 0})
                 .max(toRealVector2D(worldSize))
@@ -171,7 +167,7 @@ bool RadiationSourcesWindow::processSourceTab(int index)
             source.posY);
         AlienImGui::SliderFloat2(
             AlienImGui::SliderFloat2Parameters()
-                .name("Velocity (x,y)")
+                .name("速度 (x,y)")
                 .textWidth(RightColumnWidth)
                 .min({-4.0f, -4.0f})
                 .max({4.0f, 4.0f})
@@ -183,7 +179,7 @@ bool RadiationSourcesWindow::processSourceTab(int index)
             auto maxRadius = toFloat(std::min(worldSize.x, worldSize.y));
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Radius")
+                    .name("范围")
                     .textWidth(RightColumnWidth)
                     .min(1)
                     .max(maxRadius)
@@ -194,7 +190,7 @@ bool RadiationSourcesWindow::processSourceTab(int index)
         if (source.shapeType == RadiationSourceShapeType_Rectangular) {
             AlienImGui::SliderFloat2(
                 AlienImGui::SliderFloat2Parameters()
-                    .name("Size (x,y)")
+                    .name("大小 (x,y)")
                     .textWidth(RightColumnWidth)
                     .min({0, 0})
                     .max({toFloat(worldSize.x), toFloat(worldSize.y)})
@@ -205,7 +201,7 @@ bool RadiationSourcesWindow::processSourceTab(int index)
         }
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Radiation angle")
+                .name("放射角度")
                 .textWidth(RightColumnWidth)
                 .min(-180.0f)
                 .max(180.0f)

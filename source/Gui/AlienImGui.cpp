@@ -78,10 +78,10 @@ bool AlienImGui::SliderFloat2(SliderFloat2Parameters const& parameters, float& v
         if (AlienImGui::SelectableButton(AlienImGui::SelectableButtonParameters().name(ICON_FA_CROSSHAIRS).width(MousePickerButtonWidth), mousePickerEnabled)) {
             parameters._setMousePickerEnabledFunc.value()(mousePickerEnabled);
             if (mousePickerEnabled) {
-                OverlayController::get().showMessage("Select a position in the simulation view");
+                OverlayController::get().showMessage("通过模拟器视图选择一个位置");
             }
         }
-        AlienImGui::Tooltip("Select a position with the mouse");
+        AlienImGui::Tooltip("通过鼠标选择一个位置");
         if (parameters._getMousePickerEnabledFunc.value()()) {
             if (auto pos = parameters._getMousePickerPositionFunc.value()()) {
                 valueX = pos->x;
