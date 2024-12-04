@@ -48,7 +48,7 @@ void PatternEditorWindow::processIntern()
     if (AlienImGui::ToolbarButton(ICON_FA_FOLDER_OPEN)) {
         onOpenPattern();
     }
-    AlienImGui::Tooltip("Open pattern");
+    AlienImGui::Tooltip("打开图式");
 
     //save button
     ImGui::BeginDisabled(EditorModel::get().isSelectionEmpty());
@@ -57,7 +57,7 @@ void PatternEditorWindow::processIntern()
         onSavePattern();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Save pattern");
+    AlienImGui::Tooltip("保存图示");
 
     ImGui::SameLine();
     AlienImGui::ToolbarSeparator();
@@ -69,7 +69,7 @@ void PatternEditorWindow::processIntern()
         onCopy();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Copy pattern");
+    AlienImGui::Tooltip("复制图式");
 
     //paste button
     ImGui::SameLine();
@@ -78,7 +78,7 @@ void PatternEditorWindow::processIntern()
         onPaste();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Paste pattern");
+    AlienImGui::Tooltip("粘贴图式");
 
     //delete button
     ImGui::SameLine();
@@ -87,7 +87,7 @@ void PatternEditorWindow::processIntern()
         onDelete();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Delete Pattern");
+    AlienImGui::Tooltip("删除图式");
 
     ImGui::SameLine();
     AlienImGui::ToolbarSeparator();
@@ -99,7 +99,7 @@ void PatternEditorWindow::processIntern()
         EditorController::get().onInspectSelectedObjects();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Inspect Objects");
+    AlienImGui::Tooltip("观察对象");
 
     //inspect genomes button
     ImGui::SameLine();
@@ -108,7 +108,7 @@ void PatternEditorWindow::processIntern()
         EditorController::get().onInspectSelectedGenomes();
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Inspect principal genome");
+    AlienImGui::Tooltip("观察基因组");
 
     if (ImGui::BeginChild(
         "##",
@@ -117,7 +117,7 @@ void PatternEditorWindow::processIntern()
         ImGuiWindowFlags_HorizontalScrollbar)) {
 
         ImGui::BeginDisabled(EditorModel::get().isSelectionEmpty());
-        AlienImGui::Group("Center position and velocity");
+        AlienImGui::Group("中心位置和速度");
 
         auto const& selectionData = EditorModel::get().getSelectionShallowData();
 
@@ -125,7 +125,7 @@ void PatternEditorWindow::processIntern()
         auto origCenterPosX = centerPosX;
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Position X")
+                .name("位置 X")
                 .textWidth(RightColumnWidth)
                 .format("%.3f"),
             centerPosX);
@@ -134,7 +134,7 @@ void PatternEditorWindow::processIntern()
         auto origCenterPosY = centerPosY;
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Position Y")
+                .name("位置 Y")
                 .textWidth(RightColumnWidth)
                 .format("%.3f"),
             centerPosY);
@@ -143,7 +143,7 @@ void PatternEditorWindow::processIntern()
         auto origCenterVelX = centerVelX;
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Velocity X")
+                .name("速度 X")
                 .textWidth(RightColumnWidth)
                 .step(0.1f)
                 .format("%.3f"),
@@ -153,17 +153,17 @@ void PatternEditorWindow::processIntern()
         auto origCenterVelY = centerVelY;
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Velocity Y")
+                .name("速度 Y")
                 .textWidth(RightColumnWidth)
                 .step(0.1f)
                 .format("%.3f"),
             centerVelY);
 
-        AlienImGui::Group("Center rotation");
+        AlienImGui::Group("中心旋转");
         auto origAngle = _angle;
         AlienImGui::SliderInputFloat(
             AlienImGui::SliderInputFloatParameters()
-                .name("Angle")
+                .name("角度")
                 .textWidth(RightColumnWidth)
                 .inputWidth(StyleRepository::get().scale(50.0f))
                 .min(-180.0f)
@@ -174,7 +174,7 @@ void PatternEditorWindow::processIntern()
         auto origAngularVel = _angularVel;
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Angular velocity")
+                .name("角速度")
                 .textWidth(RightColumnWidth)
                 .step(0.01f)
                 .format("%.2f"),
@@ -216,7 +216,7 @@ void PatternEditorWindow::processIntern()
         ImGui::EndDisabled();
 
 
-        AlienImGui::Group("Color");
+        AlienImGui::Group("颜色");
         if (colorButton("    ##color1", Const::IndividualCellColor1)) {
             _simulationFacade->colorSelectedObjects(0, EditorModel::get().isRolloutToClusters());
             EditorModel::get().setDefaultColorCode(0);
@@ -251,50 +251,50 @@ void PatternEditorWindow::processIntern()
             _simulationFacade->colorSelectedObjects(6, EditorModel::get().isRolloutToClusters());
             EditorModel::get().setDefaultColorCode(6);
         }
-        AlienImGui::Group("Tools");
+        AlienImGui::Group("工具");
         ImGui::BeginDisabled(EditorModel::get().isSelectionEmpty());
         if (ImGui::Button(ICON_FA_WIND)) {
             _simulationFacade->uniformVelocitiesForSelectedObjects(EditorModel::get().isRolloutToClusters());
         }
         ImGui::EndDisabled();
-        AlienImGui::Tooltip("Make uniform velocities");
+        AlienImGui::Tooltip("统一速度");
 
         ImGui::SameLine();
         ImGui::BeginDisabled(EditorModel::get().isCellSelectionEmpty());
         if (ImGui::Button(ICON_FA_BALANCE_SCALE)) {
             _simulationFacade->relaxSelectedObjects(EditorModel::get().isRolloutToClusters());
         }
-        AlienImGui::Tooltip("Release stresses");
+        AlienImGui::Tooltip("释放压力");
 
         ImGui::SameLine();
         if (ImGui::Button(ICON_FA_SORT_NUMERIC_DOWN)) {
             onGenerateExecutionOrderNumbers();
         }
-        AlienImGui::Tooltip("Generate ascending execution order numbers");
+        AlienImGui::Tooltip("生成递进的执行顺序号");
 
         ImGui::SameLine();
         if (ImGui::Button(ICON_FA_TINT)) {
             onMakeSticky();
         }
-        AlienImGui::Tooltip("Make sticky");
+        AlienImGui::Tooltip("使粘稠");
 
         ImGui::SameLine();
         if (ImGui::Button(ICON_FA_TINT_SLASH)) {
             onRemoveStickiness();
         }
-        AlienImGui::Tooltip("Make unsticky");
+        AlienImGui::Tooltip("使不粘稠");
 
         ImGui::SameLine();
         if (ImGui::Button(ICON_FA_LINK)) {
             onSetBarrier(true);
         }
-        AlienImGui::Tooltip("Convert to indestructible wall");
+        AlienImGui::Tooltip("转化为不可摧毁的墙");
 
         ImGui::SameLine();
         if (ImGui::Button(ICON_FA_UNLINK)) {
             onSetBarrier(false);
         }
-        AlienImGui::Tooltip("Convert to destructible cell");
+        AlienImGui::Tooltip("转化为不可摧毁的细胞");
         ImGui::EndDisabled();
 
         _lastSelection = selection;
@@ -303,21 +303,19 @@ void PatternEditorWindow::processIntern()
 
     AlienImGui::Separator();
     auto rolloutToClusters = EditorModel::get().isRolloutToClusters();
-    if (AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Roll out changes to cell networks"), rolloutToClusters)) {
+    if (AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("将更改应用到单元格网络"), rolloutToClusters)) {
         EditorModel::get().setRolloutToClusters(rolloutToClusters);
         _angle = 0;
         _angularVel = 0;
     }
     ImGui::SameLine();
-    AlienImGui::HelpMarker("If turned on, all changes made in this window or with the mouse cursor are applied to the cell networks of the selected cell.\n"
-                           "If this option is disabled, the changes will be applied only to the selected cells. In this case, the connections between the cells and the neighboring cells are recalculated when the positions are changed.\n"
-                           "If you hold down the SHIFT key, this toggle button is temporarily turned off.");
+    AlienImGui::HelpMarker("如果开启，所有在此窗口或使用鼠标光标所做的更改将应用于所选单元格的单元格网络。\n 如果禁用此选项，更改将仅应用于所选单元格。在这种情况下，当位置更改时，单元格与邻近单元格之间的连接将重新计算。\n 如果按住 SHIFT 键，此切换按钮将暂时关闭。");
 }
 
 void PatternEditorWindow::onOpenPattern()
 {
     GenericFileDialog::get().showOpenFileDialog(
-        "Open pattern", "Pattern file (*.sim){.sim},.*", _startingPath, [&](std::filesystem::path const& path) {
+        "打开图式", "图式文件 (*.sim){.sim},.*", _startingPath, [&](std::filesystem::path const& path) {
             auto firstFilename = ifd::FileDialog::Instance().GetResult();
             auto firstFilenameCopy = firstFilename;
             _startingPath = firstFilenameCopy.remove_filename().string();
@@ -328,7 +326,7 @@ void PatternEditorWindow::onOpenPattern()
                 _simulationFacade->addAndSelectSimulationData(DataDescription(content));
                 EditorModel::get().update();
             } else {
-                GenericMessageDialog::get().information("Open pattern", "The selected file could not be opened.");
+                GenericMessageDialog::get().information("打开图式", "选中的文件无法被打开。");
             }
         });
 }
@@ -336,14 +334,14 @@ void PatternEditorWindow::onOpenPattern()
 void PatternEditorWindow::onSavePattern()
 {
     GenericFileDialog::get().showSaveFileDialog(
-        "Save pattern", "Pattern file (*.sim){.sim},.*", _startingPath, [&](std::filesystem::path const& path) {
+        "保存图式", "图示文件 (*.sim){.sim},.*", _startingPath, [&](std::filesystem::path const& path) {
             auto firstFilename = ifd::FileDialog::Instance().GetResult();
             auto firstFilenameCopy = firstFilename;
             _startingPath = firstFilenameCopy.remove_filename().string();
 
             auto content = _simulationFacade->getSelectedClusteredSimulationData(EditorModel::get().isRolloutToClusters());
             if (!SerializerService::get().serializeContentToFile(firstFilename.string(), content)) {
-                GenericMessageDialog::get().information("Save pattern", "The selected pattern could not be saved to the specified file.");
+                GenericMessageDialog::get().information("保存图式", "选中的图式无法被保存为指定文件。");
             }
         });
 }
@@ -395,7 +393,7 @@ void PatternEditorWindow::onDelete()
 }
 
 PatternEditorWindow::PatternEditorWindow()
-    : AlienWindow("Pattern editor", "editors.pattern editor", true)
+    : AlienWindow("图式编辑器", "editors.pattern editor", true)
 {}
 
 void PatternEditorWindow::shutdownIntern()

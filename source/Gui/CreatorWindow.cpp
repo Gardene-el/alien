@@ -24,12 +24,12 @@
 namespace
 {
     auto const ModeText = std::unordered_map<CreationMode, std::string>{
-        {CreationMode_CreateParticle, "Create a single energy particle"},
-        {CreationMode_CreateCell, "Create a single cell"},
-        {CreationMode_CreateRectangle, "Create a rectangular cell network"},
-        {CreationMode_CreateHexagon, "Create a hexagonal cell network"},
-        {CreationMode_CreateDisc, "Create a disc-shaped cell network"},
-        {CreationMode_Drawing, "Draw freehand cell network"},
+        {CreationMode_CreateParticle, "制作单个能量粒子"},
+        {CreationMode_CreateCell, "制作单个细胞"},
+        {CreationMode_CreateRectangle, "制作一个长方形的细胞网格"},
+        {CreationMode_CreateHexagon, "制作一个六边形的细胞网格"},
+        {CreationMode_CreateDisc, "制作一个环形的细胞网格"},
+        {CreationMode_Drawing, "自由绘制细胞网格"},
     };
 
     auto const RightColumnWidth = 160.0f;
@@ -69,13 +69,13 @@ void CreatorWindow::processIntern()
         AlienImGui::Group(ModeText.at(_mode));
 
         auto color = EditorModel::get().getDefaultColorCode();
-        AlienImGui::ComboColor(AlienImGui::ComboColorParameters().name("Color").textWidth(RightColumnWidth).tooltip(Const::GenomeColorTooltip), color);
+        AlienImGui::ComboColor(AlienImGui::ComboColorParameters().name("颜色").textWidth(RightColumnWidth).tooltip(Const::GenomeColorTooltip), color);
         EditorModel::get().setDefaultColorCode(color);
         if (_mode == CreationMode_Drawing) {
             auto pencilWidth = EditorModel::get().getPencilWidth();
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Pencil radius")
+                    .name("笔触大小")
                     .min(1.0f)
                     .max(8.0f)
                     .textWidth(RightColumnWidth)
@@ -85,52 +85,52 @@ void CreatorWindow::processIntern()
             EditorModel::get().setPencilWidth(pencilWidth);
         }
         AlienImGui::InputFloat(
-            AlienImGui::InputFloatParameters().name("Energy").format("%.2f").textWidth(RightColumnWidth).tooltip(Const::CellEnergyTooltip), _energy);
+            AlienImGui::InputFloatParameters().name("能量").format("%.2f").textWidth(RightColumnWidth).tooltip(Const::CellEnergyTooltip), _energy);
         if (_mode != CreationMode_CreateParticle) {
             AlienImGui::SliderFloat(
-                AlienImGui::SliderFloatParameters().name("Stiffness").max(1.0f).min(0.0f).textWidth(RightColumnWidth).tooltip(Const::CellStiffnessTooltip),
+                AlienImGui::SliderFloatParameters().name("刚度").max(1.0f).min(0.0f).textWidth(RightColumnWidth).tooltip(Const::CellStiffnessTooltip),
                 &_stiffness);
         }
         
         if (_mode == CreationMode_CreateCell) {
             AlienImGui::SliderInt(
                 AlienImGui::SliderIntParameters()
-                    .name("Max connections")
+                    .name("最大连接")
                     .max(MAX_CELL_BONDS)
                     .textWidth(RightColumnWidth)
                     .tooltip(Const::CellMaxConnectionTooltip),
                 &_maxConnections);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Set execution order")
+                    .name("设置计算执行顺序")
                     .textWidth(RightColumnWidth)
                     .tooltip(Const::CreatorAscendingExecutionOrderNumberTooltip),
                 _ascendingExecutionNumbers);
         }
         if (_mode == CreationMode_CreateRectangle) {
             AlienImGui::InputInt(
-                AlienImGui::InputIntParameters().name("Horizontal cells").textWidth(RightColumnWidth).tooltip(Const::CreatorRectangleWidthTooltip),
+                AlienImGui::InputIntParameters().name("水平细胞数").textWidth(RightColumnWidth).tooltip(Const::CreatorRectangleWidthTooltip),
                 _rectHorizontalCells);
             AlienImGui::InputInt(
-                AlienImGui::InputIntParameters().name("Vertical cells").textWidth(RightColumnWidth).tooltip(Const::CreatorRectangleHeightTooltip),
+                AlienImGui::InputIntParameters().name("垂直细胞数").textWidth(RightColumnWidth).tooltip(Const::CreatorRectangleHeightTooltip),
                 _rectVerticalCells);
         }
         if (_mode == CreationMode_CreateHexagon) {
             AlienImGui::InputInt(
-                AlienImGui::InputIntParameters().name("Layers").textWidth(RightColumnWidth).tooltip(Const::CreatorHexagonLayersTooltip), _layers);
+                AlienImGui::InputIntParameters().name("层数").textWidth(RightColumnWidth).tooltip(Const::CreatorHexagonLayersTooltip), _layers);
         }
         if (_mode == CreationMode_CreateDisc) {
             AlienImGui::InputFloat(
-                AlienImGui::InputFloatParameters().name("Outer radius").textWidth(RightColumnWidth).format("%.2f").tooltip(Const::CreatorDiscOuterRadiusTooltip),
+                AlienImGui::InputFloatParameters().name("外层半径").textWidth(RightColumnWidth).format("%.2f").tooltip(Const::CreatorDiscOuterRadiusTooltip),
                 _outerRadius);
             AlienImGui::InputFloat(
-                AlienImGui::InputFloatParameters().name("Inner radius").textWidth(RightColumnWidth).format("%.2f").tooltip(Const::CreatorDiscInnerRadiusTooltip),
+                AlienImGui::InputFloatParameters().name("内层半径").textWidth(RightColumnWidth).format("%.2f").tooltip(Const::CreatorDiscInnerRadiusTooltip),
                 _innerRadius);
         }
         if (_mode == CreationMode_CreateRectangle || _mode == CreationMode_CreateHexagon || _mode == CreationMode_CreateDisc) {
             AlienImGui::InputFloat(
                 AlienImGui::InputFloatParameters()
-                    .name("Cell distance")
+                    .name("细胞间距")
                     .format("%.2f")
                     .step(0.1)
                     .textWidth(RightColumnWidth)
@@ -138,11 +138,11 @@ void CreatorWindow::processIntern()
                 _cellDistance);
         }
         if (_mode != CreationMode_CreateParticle & _mode != CreationMode_CreateCell) {
-            AlienImGui::Checkbox(AlienImGui::CheckboxParameters().name("Sticky").textWidth(RightColumnWidth).tooltip(Const::CreatorStickyTooltip), _makeSticky);
+            AlienImGui::Checkbox(AlienImGui::CheckboxParameters().name("粘性").textWidth(RightColumnWidth).tooltip(Const::CreatorStickyTooltip), _makeSticky);
         }
         if (_mode != CreationMode_CreateParticle) {
             AlienImGui::Checkbox(
-                AlienImGui::CheckboxParameters().name("Indestructible wall").textWidth(RightColumnWidth).tooltip(Const::CellIndestructibleTooltip), _barrier);
+                AlienImGui::CheckboxParameters().name("无法摧毁的墙").textWidth(RightColumnWidth).tooltip(Const::CellIndestructibleTooltip), _barrier);
         }
     }
     ImGui::EndChild();
@@ -150,13 +150,13 @@ void CreatorWindow::processIntern()
     AlienImGui::Separator();
     auto& simInteractionController = SimulationInteractionController::get();
     if (_mode == CreationMode_Drawing) {
-        auto text = simInteractionController.isDrawMode() ? "End drawing" : "Start drawing";
+        auto text = simInteractionController.isDrawMode() ? "结束绘制" : "开始绘制";
         if (AlienImGui::Button(text)) {
             simInteractionController.setDrawMode(!simInteractionController.isDrawMode());
         }
     } else {
         simInteractionController.setDrawMode(false);
-        if (AlienImGui::Button("Build")) {
+        if (AlienImGui::Button("构建")) {
             if (_mode == CreationMode_CreateCell) {
                 createCell();
             }
@@ -238,7 +238,7 @@ void CreatorWindow::finishDrawing()
 }
 
 CreatorWindow::CreatorWindow()
-    : AlienWindow("Creator", "editors.creator", false)
+    : AlienWindow("制作器", "editors.creator", false)
 {}
 
 void CreatorWindow::createCell()

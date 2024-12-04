@@ -27,352 +27,208 @@ namespace Const
     std::string const NotAllowedCharacters = "Your input contains not allowed characters.";
 
     std::string const NeuronTooltip =
-        "This function equips the cell with a small network of 8 neurons with 8x8 configurable weights, 8 bias values and activation functions. It processes "
-        "the input from channel #0 to #7 and provides the output to those channels. More precisely, the output of each neuron calculates as\noutput_j := "
-        "sigma(sum_i (input_i * weight_ji) + bias_j),\nwhere sigma stands for the activation function (different choices are available).";
+        "此功能为细胞配备了一个由8个神经元组成的小型网络，具有8x8可配置权重、8个偏置值和激活函数。它处理来自通道#0到#7的输入，并将输出提供给这些通道。更准确地说，每个神经元的输出计算为\noutput_j := sigma(sum_i (input_i * weight_ji) + bias_j)，\n其中sigma代表激活函数（有不同的选择）。";
 
     std::string const TransmitterTooltip =
-        "Transmitter cells are designed to transport energy. This is important, for example, to supply constructor cells with energy or to "
-        "support attacked cells. The energy transport works as follows: A part of the excess energy of the own cell and the directly connected "
-        "cells is collected and transferred to other cells in the vicinity. A cell has excess energy when it exceeds a defined normal value (see "
-        "simulation parameter 'Normal energy' in 'Cell life cycle'). Transmitter cells do not need an activation but they can transport "
-        "signals received from their input.";
+        "传输细胞设计用于传输能量。这对于例如为构造器细胞提供能量或支持被攻击的细胞非常重要。能量传输的工作原理如下：收集自身细胞和直接连接的细胞的部分多余能量，并将其传输到附近的其他细胞。当细胞的能量超过定义的正常值时，它就有多余的能量（参见“细胞生命周期”中的模拟参数“正常能量”）。传输细胞不需要激活，但它们可以传输从输入接收到的信号。";
 
     std::string const ConstructorTooltip =
-        "A constructor cell builds a cell network according to a contained genome. The construction process takes place cell by "
-        "cell, where energy is required for each new cell. Once a new cell is generated, it is connected to the already constructed "
-        "cell network.\n\n" ICON_FA_CHEVRON_RIGHT " Input channel #0: abs(value) > threshold activates constructor (only necessary in "
-        "'Manual' mode)\n\n" ICON_FA_CHEVRON_RIGHT " Output channel #0: 0 (could not constructor next cell, e.g. no energy, required "
-        "connection check failed, completeness check failed), 1 (next cell construction successful)";
+        "构造器细胞根据包含的基因组构建细胞网络。构造过程逐个细胞进行，每个新细胞都需要能量。一旦生成新细胞，它就会连接到已经构建的细胞网络。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#0：abs(value) > 阈值激活构造器（仅在“手动”模式下需要）\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#0：0（无法构造下一个细胞，例如没有能量，所需连接检查失败，完整性检查失败），1（下一个细胞构造成功）";
 
     std::string const SensorTooltip =
-        "Sensor cells scan their environment for concentrations of cells of a certain color and provide distance and angle to the "
-        "closest match.\n\n" ICON_FA_CHEVRON_RIGHT " Input channel #0: abs(value) > threshold activates sensor\n\n" ICON_FA_CHEVRON_RIGHT " Output channel #0: "
-        "0 (no match) or 1 (match)\n\n" ICON_FA_CHEVRON_RIGHT " Output channel #1: density of the last match\n\n" ICON_FA_CHEVRON_RIGHT " Output channel #2: distance "
-        "of the last match (0 = far away, 1 = close)\n\n" ICON_FA_CHEVRON_RIGHT " Output channel #3: angle of the last match";
+        "传感器细胞扫描其环境中某种颜色的细胞浓度，并提供与最近匹配的距离和角度。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#0：abs(value) > 阈值激活传感器\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#0：0（无匹配）或1（匹配）\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#1：最后一次匹配的密度\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#2：最后一次匹配的距离（0 = 远，1 = 近）\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#3：最后一次匹配的角度";
 
     std::string const NerveTooltip =
-        "By default, a nerve cell forwards signals from connected cells (and summing it up if "
-        "there are multiple such cells) and thus directly providing it as input to other cells. Independently of this, one can specify "
-        "that it also generates a signal in channel #0 at regular intervals. This can be used to trigger other sensor cells, "
-        "attacker cells, etc.";
+        "默认情况下，神经细胞转发来自连接细胞的信号（如果有多个这样的细胞，则将其汇总），并直接将其作为输入提供给其他细胞。除此之外，还可以指定它在常规间隔内在通道#0生成信号。这可以用于触发其他传感器细胞、攻击细胞等。";
 
     std::string const AttackerTooltip =
-        "An attacker cell attacks surrounding cells from other cell networks (with different creature id) by stealing energy from "
-        "them. The gained energy is then distributed in the own cell network.\n\n" ICON_FA_CHEVRON_RIGHT " Input channel #0: abs(value) > threshold activates "
-        "attacker\n\n" ICON_FA_CHEVRON_RIGHT " Output channel #0: a value which is proportional to the gained energy";
+        "攻击细胞通过从其他细胞网络（具有不同生物体ID）的周围细胞中窃取能量来攻击它们。获得的能量随后在自己的细胞网络中分配。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#0：abs(value) > 阈值激活攻击者\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#0：与获得的能量成比例的值";
 
     std::string const InjectorTooltip =
-        "Injector cells can override the genome of other constructor or injector cells by their own. To do this, they need to be activated, remain in "
-        "close proximity to the target cell for a certain minimum duration, and, in the case of a target constructor cell, its construction process "
-        "must not have started yet.\n\n" ICON_FA_CHEVRON_RIGHT " Input channel #0: abs(value) > threshold activates injector\n\n" ICON_FA_CHEVRON_RIGHT
-        " Output channel #0: 0 (no cells found) or 1 (injection in process or completed)";
+        "注射器细胞可以通过自己的基因组覆盖其他构造器或注射器细胞的基因组。为此，它们需要被激活，保持在目标细胞附近一定的最短时间，并且在目标构造器细胞的情况下，其构造过程尚未开始。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#0：abs(value) > 阈值激活注射器\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#0：0（未找到细胞）或1（注射进行中或已完成）";
 
     std::string const MuscleTooltip =
-        "Muscle cells can perform different movements and deformations based on input and configuration.\n\n" ICON_FA_CHEVRON_RIGHT " Input channel "
-        "#0: The strength of the movement, bending or expansion/contraction. A negative sign corresponds to the opposite "
-        "action.\n\n" ICON_FA_CHEVRON_RIGHT " Input channel #1: This channel is solely utilized for acceleration due to bending. If the sign of channel #1 "
-        "differs from the sign of channel #0, no acceleration will be obtained during the bending process.\n\n " ICON_FA_CHEVRON_RIGHT
-        " Input channel #3: This channel is used for muscles in movement mode. It encodes the relative angle for the movement with respect to a "
-        "detected object (if the parameter 'Movement toward target' is activated) or to the direction of the adjacent cell where the input signal comes from "
-        "(if the parameter 'Movement toward target' is deactivated). In the first case, the object must have been targeted by a sensor cell from which the "
-        "input signal originates (it does not have to be an adjacent cell). A value of -0.5 correspond to -180 deg and +0.5 to +180 deg.";
+        "肌肉细胞可以根据输入和配置执行不同的运动和变形。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#0：运动、弯曲或扩展/收缩的强度。负号对应相反的动作。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#1：此通道仅用于弯曲加速。如果通道#1的符号与通道#0的符号不同，则在弯曲过程中不会获得加速。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#3：此通道用于运动模式下的肌肉。它编码相对于检测到的物体的运动相对角度（如果激活了“朝向目标运动”参数）或相对于输入信号来自的相邻细胞的方向（如果未激活“朝向目标运动”参数）。在第一种情况下，物体必须由传感器细胞定位，输入信号来自该传感器细胞（不必是相邻细胞）。值-0.5对应-180度，+0.5对应+180度。";
 
     std::string const DefenderTooltip =
-        "A defender cell does not need to be activated. Its presence reduces the strength of an enemy attack involving attacker "
-        "cells or extends the injection duration for injector cells.";
+        "防御细胞不需要激活。它的存在减少了涉及攻击细胞的敌人攻击的强度，或延长了注射器细胞的注射时间。";
 
     std::string const ReconnectorTooltip =
-        "A reconnector cell can make or break a cell connection to an other cell (with a different creature id) with a specified color. \n\n" ICON_FA_CHEVRON_RIGHT
-        " Input channel #0: value > threshold triggers creation of a bond to a cell in the vicinity, value < -threshold triggers destruction of a bond\n\n" ICON_FA_CHEVRON_RIGHT
-        " Output channel #0: 0 (no connection created/removed) or 1 (connection created/removed)";
+        "重连器细胞可以与指定颜色的其他细胞（具有不同生物体ID）建立或断开细胞连接。\n\n" ICON_FA_CHEVRON_RIGHT " 输入通道#0：值 > 阈值触发与附近细胞的连接，值 < -阈值触发断开连接\n\n" ICON_FA_CHEVRON_RIGHT " 输出通道#0：0（未创建/移除连接）或1（创建/移除连接）";
 
     std::string const DetonatorTooltip =
-        "A detonator cell will be activated if it receives an input on channel #0 with abs(value) > threshold. Then its counter "
-        "is decreasing after each executing until it reaches 0. After that the detonator cell will explode and the surrounding cells are highly accelerated.";
+        "如果引爆器细胞在通道#0接收到abs(value) > 阈值的输入，它将被激活。然后其计数器在每次执行后减少，直到达到0。之后，引爆器细胞将爆炸，周围的细胞将被高度加速。";
 
     std::string const CellFunctionTooltip =
-        "Cells can possess a specific function that enables them to, for example, perceive their environment, process information, or "
-        "take action. All cell functions have in common that they obtain the input from connected cells whose execution number matches the input "
-        "execution number of the current cell. For this purpose, each channel from #0 to #7 of those cells is summed and the result is written "
-        "to the channel from #0 to #7 of the current cell. In particular, if there is only one input cell, its signal is simply forwarded. After "
-        "the execution of a cell function, some channels will be then overriden by the output of the corresponding cell function.\n\nIMPORTANT: If "
-        "you choose a cell function, this tooltip will be updated to provide more specific information. ";
+        "细胞可以具有特定功能，使其能够感知环境、处理信息或采取行动。所有细胞功能的共同点是，它们从连接的细胞获取输入信号，这些细胞的执行编号与当前细胞的输入执行编号匹配。为此，从这些细胞的#0到#7通道的信号会被汇总，结果写入当前细胞的#0到#7通道。特别地，如果只有一个输入细胞，其信号将被简单地转发。执行细胞功能后，一些通道将被相应的细胞功能输出覆盖。\n\n重要提示：如果选择了细胞功能，此工具提示将更新以提供更具体的信息。";
 
     std::string const GenomeColorTooltip =
-        "This property defines the color of the cell. It is not just a visual marker. On the one hand, the cell color can be used to define own types of cells "
-        "that are subject to different rules. For this purpose, the simulation parameters can be specified depending on the color. For example, one could "
-        "define that green cells are particularly good at absorbing energy particles, while other cell colors are better at attacking foreign cells.\nOn the "
-        "other hand, cell color also plays a role in perception. Sensor cells are dedicated to a specific color and can only detect the corresponding cells.";
+        "此属性定义细胞的颜色。这不仅仅是一个视觉标记。一方面，细胞颜色可以用来定义不同类型的细胞，这些细胞遵循不同的规则。为此，可以根据颜色指定模拟参数。例如，可以定义绿色细胞特别擅长吸收能量粒子，而其他颜色的细胞更擅长攻击外来细胞。\n另一方面，细胞颜色在感知中也起作用。传感器细胞专用于特定颜色，只能检测到相应颜色的细胞。";
 
     std::string const GenomeAngleTooltip =
-        "The angle between the predecessor and successor cell can be specified here. Please note that the shown angle here is shifted "
-        "by 180 degrees for convenience. In other words, a value of 0 actually corresponds to an angle of 180 degrees, i.e. a straight "
-        "segment.";
+        "可以在此处指定前驱细胞和后继细胞之间的角度。请注意，为方便起见，此处显示的角度已偏移180度。换句话说，值为0实际上对应于180度的角度，即一个直线段。";
 
     std::string const GenomeEnergyTooltip =
-        "The energy that the cell should receive after its creation. The larger this value is, the more energy the constructor cell must expend "
-        "to create it.";
+        "细胞在创建后应接收的能量。此值越大，构造细胞必须消耗的能量越多。";
 
     std::string const GenomeExecutionNumberTooltip =
-        "The functions of cells can be executed in a specific sequence determined by this number. The values are limited between 0 and 5 and "
-        "follow a modulo 6 logic. For example, a cell with an execution number of 0 will be executed at time points 0, 6, 12, 18, etc. A cell "
-        "with an execution number of 1 will be shifted by one, i.e. executed at 1, 7, 13, 19, etc. This time offset enables the orchestration "
-        "of cell functions. A muscle cell, for instance, requiring input from a neuron cell, should then be executed some time steps later.";
+        "细胞的功能可以按照此编号确定的特定顺序执行。值限制在0到5之间，并遵循模6逻辑。例如，执行编号为0的细胞将在时间点0、6、12、18等执行。执行编号为1的细胞将延迟一个时间步，即在1、7、13、19等执行。此时间偏移使细胞功能的协调成为可能。例如，需要从神经元细胞获取输入的肌肉细胞应在稍后的时间步执行。";
 
     std::string const GenomeInputExecutionNumberTooltip =
-        "A functioning organism requires cells to collaborate. This can involve sensor cells that perceive the environment, neuron cells that "
-        "process information, muscle cells that perform movements, and so on. These various cell functions often require input signals and produce "
-        "output signals. The process for updating a cell signal is performed in two steps:\n\n1) When a "
-        "cell function is executed, an input signal will firstly be calculated. This involves reading the signals of all connected cells "
-        "whose 'execution number' matches the specified 'input execution number' and summing their values up.\n\n2) The cell function is executed and can use "
-        "the calculated signal as input. The cell then provides an output in form of an output signal.\n\nSetting an 'input execution number' is optional. If "
-        "none is set, the cell can receive no input signals.";
+        "一个正常运作的生物体需要细胞协同工作。这可能涉及感知环境的传感器细胞、处理信息的神经元细胞、执行运动的肌肉细胞等。这些不同的细胞功能通常需要输入信号并产生输出信号。更新细胞信号的过程分为两个步骤：\n\n1) 当执行细胞功能时，首先计算输入信号。这涉及读取所有连接细胞的信号，这些细胞的“执行编号”与指定的“输入执行编号”匹配，并将其值汇总。\n\n2) 执行细胞功能并可以使用计算的信号作为输入。然后，细胞提供一个输出信号。\n\n设置“输入执行编号”是可选的。如果未设置，细胞将无法接收输入信号。";
 
     std::string const GenomeBlockOutputTooltip =
-        "Activating this toggle, the cell's output can be locked, preventing any other cell from utilizing it as input.";
+        "激活此开关后，细胞的输出可以被锁定，防止任何其他细胞将其用作输入。";
 
     std::string const GenomeRequiredConnectionsTooltip =
-        "By default, cells in the genome sequence are automatically connected to all neighboring cells belonging to the same genome when they "
-        "are created. However, this can pose a challenge because the constructed cells need time to fold into their desired positions. If the "
-        "current spatial location of the constructor cell is unfavorable, the newly formed cell might not be connected to the desired cells, "
-        "for instance, due to being too far away. An better approach would involve delaying the construction process until a desired number of "
-        "neighboring cells from the same genome are in the direct vicinity. This number of cells can be optionally set here.\n For example, 'required "
-        "connections' = 2 means that the cell to be "
-        "constructed will only be created when there are at least 2 already constructed cells (excluding the predecessor cell) available for "
-        "potential connections. If the condition is not met, the construction process is postponed.";
+        "默认情况下，基因组序列中的细胞在创建时会自动连接到属于同一基因组的所有邻近细胞。然而，这可能会带来挑战，因为构造的细胞需要时间折叠到其所需位置。如果构造细胞的当前空间位置不利，新形成的细胞可能无法连接到所需的细胞，例如，由于距离太远。更好的方法是延迟构造过程，直到所需数量的同一基因组的邻近细胞在直接附近。可以在此处设置所需的细胞数量。\n例如，“所需连接”=2表示只有当至少有2个已构造的细胞（不包括前驱细胞）可供潜在连接时，才会创建要构造的细胞。如果不满足条件，构造过程将被推迟。";
 
     std::string const GenomeNeuronActivationFunctionTooltip =
-        "The activation function is a mapping which will be applied to the accumulated value from all inputs channels"
-        " considering the weights and bias in order to calculate the neuron's output, i.e., output_j = sigma(sum_i (input_i * weight_ji) + bias_j), where sigma"
-        " denotes the activation function. The following choices for sigma are available:\n\n" ICON_FA_CHEVRON_RIGHT
-        " Sigmoid(x) := 2 / (1 + exp(x)) - 1\n\n" ICON_FA_CHEVRON_RIGHT " Binary step(x) := 1 if x >= 0 and 0 if x < 0\n\n" ICON_FA_CHEVRON_RIGHT
-        " Identity(x) := x\n\n" ICON_FA_CHEVRON_RIGHT " Abs(x) := x if x >= 0 and -x if x < 0\n\n" ICON_FA_CHEVRON_RIGHT " Gaussian(x) := exp(-2 * x * x)";
+        "激活函数是一个映射，将应用于所有输入通道的累积值，考虑权重和偏差，以计算神经元的输出，即output_j = sigma(sum_i (input_i * weight_ji) + bias_j)，其中sigma表示激活函数。可用的sigma选择如下：\n\n" ICON_FA_CHEVRON_RIGHT " Sigmoid(x) := 2 / (1 + exp(x)) - 1\n\n" ICON_FA_CHEVRON_RIGHT " Binary step(x) := 1 if x >= 0 and 0 if x < 0\n\n" ICON_FA_CHEVRON_RIGHT " Identity(x) := x\n\n" ICON_FA_CHEVRON_RIGHT " Abs(x) := x if x >= 0 and -x if x < 0\n\n" ICON_FA_CHEVRON_RIGHT " Gaussian(x) := exp(-2 * x * x)";
 
     std::string const GenomeNeuronWeightAndBiasTooltip =
-        "Each neuron has 8 input channels and produces an output by the formula output_j = sigma((sum_i (input_i * weight_ji) + "
-        "bias_j), where sigma denotes the activation function.";
+        "每个神经元有8个输入通道，并通过公式output_j = sigma((sum_i (input_i * weight_ji) + bias_j)计算输出，其中sigma表示激活函数。";
 
     std::string const GenomeTransmitterEnergyDistributionTooltip =
-        "There are two ways to control the energy distribution, which is set "
-        "here:\n\n" ICON_FA_CHEVRON_RIGHT " Connected cells: "
-        "In this case the energy will be distributed evenly across all connected and connected-connected cells.\n\n" ICON_FA_CHEVRON_RIGHT
-        " Transmitters and constructors: "
-        "Here, the energy will be transferred to spatially nearby constructors or other transmitter cells within the same cell "
-        "network. If multiple such transmitter cells are present at certain distances, energy can be transmitted over greater distances, "
-        "for example, from attacker cells to constructor cells.";
+        "有两种方法可以控制能量分配，在此设置：\n\n" ICON_FA_CHEVRON_RIGHT " 连接的细胞：在这种情况下，能量将均匀分配给所有连接的和连接-连接的细胞。\n\n" ICON_FA_CHEVRON_RIGHT " 传输器和构造器：在这里，能量将传输到同一细胞网络内空间上附近的构造器或其他传输器细胞。如果在某些距离处存在多个这样的传输器细胞，能量可以传输到更远的距离，例如，从攻击细胞到构造细胞。";
 
     std::string const GenomeConstructorActivationModeTooltip =
-        "There are 2 modes available for controlling constructor cells:\n\n" ICON_FA_CHEVRON_RIGHT " Manual: The construction process is only triggered when "
-        "there is signal in channel #0.\n\n" ICON_FA_CHEVRON_RIGHT " Automatic: The construction process is automatically triggered at regular intervals. "
-        "Signal in channel #0 is not necessary.\n\n In both cases, if there is not enough energy available for the cell being "
-        "created, the construction process will pause until the next triggering.";
+        "有两种模式可用于控制构造细胞：\n\n" ICON_FA_CHEVRON_RIGHT " 手动：只有在通道#0有信号时才会触发构造过程。\n\n" ICON_FA_CHEVRON_RIGHT " 自动：构造过程会在定期间隔自动触发。通道#0的信号不是必需的。\n\n在这两种情况下，如果没有足够的能量可用于创建细胞，构造过程将暂停，直到下次触发。";
 
     std::string const GenomeConstructorIntervalTooltip =
-        "This value specifies the time interval for automatic triggering of the constructor cell. It is given in multiples "
-        "of 6 (which is a complete execution cycle). This means that a value of 1 indicates that the constructor cell will be activated "
-        "every 6 time steps.";
+        "此值指定构造细胞自动触发的时间间隔。它以6的倍数给出（这是一个完整的执行周期）。这意味着值为1表示构造细胞每6个时间步激活一次。";
 
     std::string const GenomeConstructorOffspringActivationTime =
-        "When a new cell network has been fully constructed by a constructor cell, one can define the time steps until activation. Before activation, the cell "
-        "network is in a dormant state. This is especially useful when the offspring should not become active immediately, for example, to prevent it from "
-        "attacking its creator.";
+        "当构造细胞完全构建了一个新的细胞网络时，可以定义激活前的时间步。在激活之前，细胞网络处于休眠状态。这在后代不应立即变得活跃时特别有用，例如，防止其攻击其创造者。";
 
     std::string const GenomeConstructorAngle1Tooltip =
-        "By default, when the constructor cell initiates a new construction, the new cell is created in the area with the most available "
-        "space. This angle specifies the deviation from that rule.";
+        "默认情况下，当构造细胞启动新构造时，新细胞会在最有可用空间的区域创建。此角度指定偏离该规则的偏差。";
 
     std::string const GenomeConstructorAngle2Tooltip =
-        "This value determines the angle from the last constructed cell to the second-last constructed cell and the constructor cell. The "
-        "effects can be best observed in the preview of the genome editor.";
+        "此值确定从最后构造的细胞到倒数第二个构造的细胞和构造细胞的角度。效果在基因组编辑器的预览中最为明显。";
 
     std::string const GenomeSensorModeTooltip =
-        "Sensors can operate in 2 modes:\n\n" ICON_FA_CHEVRON_RIGHT " Scan vicinity: In this mode, the entire nearby area is scanned (typically "
-        "within a radius of several 100 units). The scan radius can be adjusted via a simulation parameter (see 'Range' in the sensor "
-        "settings).\n\n" ICON_FA_CHEVRON_RIGHT " Scan specific direction: In this mode, the scanning process is restricted to a particular direction. The "
-        "direction is specified as an angle.";
+        "传感器可以在两种模式下操作：\n\n" ICON_FA_CHEVRON_RIGHT " 扫描附近：在这种模式下，扫描整个附近区域（通常在几百个单位的半径内）。扫描半径可以通过模拟参数调整（参见传感器设置中的“范围”）。\n\n" ICON_FA_CHEVRON_RIGHT " 扫描特定方向：在这种模式下，扫描过程仅限于特定方向。方向以角度指定。";
 
     std::string const GenomeSensorScanAngleTooltip =
-        "The angle in which direction the scanning process should take place can be determined here. An angle of 0 means that the "
-        "scan will be performed in the direction derived from the input cell (the cell from which the input signal originates) "
-        "towards the sensor cell.";
+        "可以在此处确定扫描过程应进行的方向角度。角度为0表示扫描将沿输入细胞（信号来源细胞）到传感器细胞的方向进行。";
 
-    std::string const GenomeSensorScanColorTooltip = "Restricts the sensor so that it only scans cells with a certain color.";
+    std::string const GenomeSensorScanColorTooltip = "限制传感器仅扫描特定颜色的细胞。";
 
     std::string const SensorRestrictToMutantsTooltip =
-        "The following options can be used to only detect cells with certain properties:\n\n"
-        ICON_FA_CHEVRON_RIGHT" None: No further restriction.\n\n"
-        ICON_FA_CHEVRON_RIGHT" Same mutants: Cells that have a related genome.\n\n"
-        ICON_FA_CHEVRON_RIGHT" Other mutants: Cells that have a significantly different genome.\n\n"
-        ICON_FA_CHEVRON_RIGHT" Free cells: Cells that were not created by reproduction but by the conversion of energy particles (they could serve as free food).\n\n"
-        ICON_FA_CHEVRON_RIGHT" Handcrafted constructs: Cells that were created in the editor (e.g. walls).\n\n"
-        ICON_FA_CHEVRON_RIGHT" Less complex mutants: Cells that have a less complex genome. The complexity calculation can be customized in the simulation parameters under the 'Genome complexity measurement' addon. By default, it is the number of encoded cells in the genome.\n\n"
-        ICON_FA_CHEVRON_RIGHT" More complex mutants: Cells that have a more complex genome.\n\n";
+        "以下选项可用于仅检测具有特定属性的细胞：\n\n" ICON_FA_CHEVRON_RIGHT " 无：没有进一步限制。\n\n" ICON_FA_CHEVRON_RIGHT " 相同突变体：具有相关基因组的细胞。\n\n" ICON_FA_CHEVRON_RIGHT " 其他突变体：具有显著不同基因组的细胞。\n\n" ICON_FA_CHEVRON_RIGHT " 自由细胞：不是通过复制过程创建的细胞，而是通过能量粒子转化创建的细胞（它们可以作为自由食物）。\n\n" ICON_FA_CHEVRON_RIGHT " 手工制作的构造物：在编辑器中创建的细胞（例如墙壁）。\n\n" ICON_FA_CHEVRON_RIGHT " 复杂性较低的突变体：具有较低复杂性基因组的细胞。复杂性计算可以在模拟参数中的“基因组复杂性测量”附加功能中自定义。默认情况下，它是基因组中编码的细胞数量。\n\n" ICON_FA_CHEVRON_RIGHT " 复杂性较高的突变体：具有较高复杂性基因组的细胞。\n\n";
 
     std::string const GenomeSensorMinDensityTooltip =
-        "The minimum density to search for a cell concentration of a specific color. This value ranges between 0 and 1. It controls the "
-        "sensitivity of the sensor. Typically, very few cells of the corresponding color are already detected with a value of 0.1.";
+        "搜索特定颜色细胞浓度的最小密度。此值范围在0到1之间。它控制传感器的灵敏度。通常，已经检测到相应颜色的少量细胞时，值为0.1。";
 
-    std::string const GenomeSensorMinRangeTooltip = "If activated, the sensor detects only objects with a distance equal or greater than the specified value.";
-    std::string const GenomeSensorMaxRangeTooltip = "If activated, the sensor detects only objects with a distance equal or less than the specified value.";
+    std::string const GenomeSensorMinRangeTooltip = "如果激活，传感器仅检测距离等于或大于指定值的物体。";
+    std::string const GenomeSensorMaxRangeTooltip = "如果激活，传感器仅检测距离等于或小于指定值的物体。";
 
-    std::string const GenomeNerveGeneratePulsesTooltip = "If enabled, a signal in channel #0 will be generated at regular time intervals.";
+    std::string const GenomeNerveGeneratePulsesTooltip = "如果启用，将在定期时间间隔生成通道#0的信号。";
 
     std::string const GenomeNervePulseIntervalTooltip =
-        "The intervals between two pulses can be set here. It is specified in cycles, which corresponds to 6 time steps each.";
+        "可以在此处设置两个脉冲之间的间隔。它以周期指定，每个周期对应6个时间步。";
 
     std::string const GenomeNerveAlternatingPulsesTooltip =
-        "By default, the generated pulses consist of a positive value in channel #0. When 'Alternating pulses' is enabled, the "
-        "sign of this value alternates at specific time intervals. This can be used, for example, to easily create signals for back-and-forth movements or "
-        "bending in muscle cells.";
+        "默认情况下，生成的脉冲在通道#0中包含一个正值。当启用“交替脉冲”时，此值的符号将在特定时间间隔交替。这可以用于例如轻松创建肌肉细胞的来回运动或弯曲信号。";
 
-    std::string const GenomeNervePulsesPerPhaseTooltip = "This value indicates the number of pulses until the sign will be changed in channel #0.";
+    std::string const GenomeNervePulsesPerPhaseTooltip = "此值表示在通道#0中符号更改之前的脉冲数量。";
 
     std::string const GenomeAttackerEnergyDistributionTooltip =
-        "Attacker cells can distribute the acquired energy through two different methods. The energy distribution is analogous to "
-        "transmitter cells. \n\n" ICON_FA_CHEVRON_RIGHT " Connected cells: In this case the energy will be distributed evenly across all "
-        "connected and connected-connected cells.\n\n" ICON_FA_CHEVRON_RIGHT
-        " Transmitters and constructors: Here, the energy will be transferred to spatially nearby constructors or other transmitter cells "
-        "within the same cell network. If multiple such transmitter cells are present at certain distances, energy can be transmitted "
-        "over greater distances, for example, from attacker cells to constructor cells.";
+        "攻击细胞可以通过两种不同的方法分配获得的能量。能量分配类似于传输器细胞。\n\n" ICON_FA_CHEVRON_RIGHT " 连接的细胞：在这种情况下，能量将均匀分配给所有连接的和连接-连接的细胞。\n\n" ICON_FA_CHEVRON_RIGHT " 传输器和构造器：在这里，能量将传输到同一细胞网络内空间上附近的构造器或其他传输器细胞。如果在某些距离处存在多个这样的传输器细胞，能量可以传输到更远的距离，例如，从攻击细胞到构造细胞。";
 
     std::string const GenomeInjectorModeTooltip = ICON_FA_CHEVRON_RIGHT
-        " Only empty cells: Only cells which possess an empty genome can be infected. This mode is useful when an organism wants to "
-        "inject its genome into another own constructor cell (e.g. to build a spore). In this mode the injection process does not take any "
-        "time.\n\n" ICON_FA_CHEVRON_RIGHT " All Cells: In this mode there are no restrictions, e.g. any other constructor or injector cell can be infected. "
-        "The duration of the injection process depends on the simulation parameter 'Injection time'.";
+        " 仅空细胞：只有具有空基因组的细胞可以被感染。当生物体想要将其基因组注入另一个自己的构造细胞时（例如构建孢子），此模式非常有用。在此模式下，注射过程不需要任何时间。\n\n" ICON_FA_CHEVRON_RIGHT " 所有细胞：在此模式下没有限制，例如，任何其他构造细胞或注射器细胞都可以被感染。注射过程的持续时间取决于模拟参数“注射时间”。";
 
     std::string const GenomeMuscleModeTooltip = ICON_FA_CHEVRON_RIGHT
-        " Movement to sensor target: A movement can be performed if the input signal has its origin in a sensor cell which has previously detected a "
-        "target. The direction of movement is specified relative to the target.\n\n" ICON_FA_CHEVRON_RIGHT
-        " Expansion and contraction: Causes an elongation (or contraction) of the "
-        "reference distance to the input cell.\n\n" ICON_FA_CHEVRON_RIGHT " Bending: Increases (or decreases) the angle between the muscle "
-        "cell, input cell, and the nearest connected cell clockwise from the muscle cell.";
+        " 移动到传感器目标：如果输入信号源自先前检测到目标的传感器细胞，则可以执行移动。移动方向相对于目标指定。\n\n" ICON_FA_CHEVRON_RIGHT " 扩展和收缩：导致参考距离相对于输入细胞的延长（或收缩）。\n\n" ICON_FA_CHEVRON_RIGHT " 弯曲：增加（或减少）肌肉细胞、输入细胞和从肌肉细胞顺时针方向最近连接细胞之间的角度。";
 
     std::string const GenomeDefenderModeTooltip =
-        ICON_FA_CHEVRON_RIGHT " Anti-attacker: reduces the attack strength of an enemy attacker cell\n\n" ICON_FA_CHEVRON_RIGHT
-                              "Anti-injector: increases the injection duration of an enemy injector cell";
+        ICON_FA_CHEVRON_RIGHT " 反攻击：减少敌方攻击细胞的攻击强度\n\n" ICON_FA_CHEVRON_RIGHT " 反注射：增加敌方注射器细胞的注射时间";
 
-    std::string const GenomeReconnectorRestrictToColorTooltip = "Specifies the color of the cells where connections are to be established or destroyed.";
+    std::string const GenomeReconnectorRestrictToColorTooltip = "指定要建立或破坏连接的细胞颜色。";
 
     std::string const ReconnectorRestrictToMutantsTooltip =
-        "The following options can be used to only bind to cells with certain properties:\n\n"
-        ICON_FA_CHEVRON_RIGHT" None: No further restriction.\n\n"
-        ICON_FA_CHEVRON_RIGHT" Same mutants: Cells that have a related genome.\n\n"
-        ICON_FA_CHEVRON_RIGHT" Other mutants: Cells that have a significantly different genome.\n\n"
-        ICON_FA_CHEVRON_RIGHT" Free cells: Cells that were not created by reproduction but by the conversion of energy particles (they could serve as free food).\n\n"
-        ICON_FA_CHEVRON_RIGHT" Handcrafted constructs: Cells that were created in the editor (e.g. walls).\n\n"
-        ICON_FA_CHEVRON_RIGHT" Less complex mutants: Cells that have a less complex genome. The complexity calculation can be customized in the simulation parameters under the 'Genome complexity measurement' addon. By default, it is the number of encoded cells in the genome.\n\n"
-        ICON_FA_CHEVRON_RIGHT" More complex mutants: Cells that have a more complex genome.\n\n";
+        "以下选项可用于仅绑定具有某些属性的细胞：\n\n"
+        ICON_FA_CHEVRON_RIGHT" 无：没有进一步的限制。\n\n"
+        ICON_FA_CHEVRON_RIGHT" 相同突变体：具有相关基因组的细胞。\n\n"
+        ICON_FA_CHEVRON_RIGHT" 其他突变体：具有显著不同基因组的细胞。\n\n"
+        ICON_FA_CHEVRON_RIGHT" 自由细胞：不是通过繁殖而是通过能量粒子转换创建的细胞（它们可以作为自由食物）。\n\n"
+        ICON_FA_CHEVRON_RIGHT" 手工构造：在编辑器中创建的细胞（例如墙）。\n\n"
+        ICON_FA_CHEVRON_RIGHT" 复杂度较低的突变体：具有较低复杂度基因组的细胞。复杂度计算可以在模拟参数中的“基因组复杂度测量”插件中自定义。默认情况下，它是基因组中编码的细胞数量。\n\n"
+        ICON_FA_CHEVRON_RIGHT" 复杂度较高的突变体：具有较高复杂度基因组的细胞。\n\n";
 
     std::string const DetonatorStateTooltip =
-        ICON_FA_CHEVRON_RIGHT " Ready: The detonator cell waits for input on channel #0. If abs(value) > threshold, the detonator will be activated.\n\n"
-        ICON_FA_CHEVRON_RIGHT " Activated: The countdown is decreased until 0 each time the detonator is executed. If the countdown is 0, the detonator will explode.\n\n"
-        ICON_FA_CHEVRON_RIGHT " Exploded: The detonator is already exploded.";
+        ICON_FA_CHEVRON_RIGHT " 准备：引爆器细胞等待通道#0上的输入。如果abs(value) > 阈值，引爆器将被激活。\n\n"
+        ICON_FA_CHEVRON_RIGHT " 激活：每次引爆器执行时，倒计时减少直到0。如果倒计时为0，引爆器将爆炸。\n\n"
+        ICON_FA_CHEVRON_RIGHT " 爆炸：引爆器已经爆炸。";
 
-    std::string const GenomeDetonatorCountdownTooltip = "The countdown specifies the cycles (in 6 time steps) until the detonator will explode.";
+    std::string const GenomeDetonatorCountdownTooltip = "倒计时指定了引爆器爆炸前的周期数（每周期包含6个时间步）。";
 
     std::string const SubGenomeTooltip =
-        "If a constructor or injector cell is encoded in a genome, that cell can itself contain another genome. This sub-genome can "
-        "describe additional body parts or branching of the creature, for instance. Furthermore, sub-genomes can in turn possess further "
-        "sub-sub-genomes, etc. To insert a sub-genome here by clicking on 'Paste', one must have previously copied one to the clipboard. "
-        "This can be done using the 'Copy genome' button in the toolbar. This action copies the entire genome from the current tab to "
-        "the clipboard. If you want to create self-replication, you must not insert a sub-genome; instead, you switch it to the "
-        "'self-copy' mode. In this case, the constructor's sub-genome refers to its superordinate genome.";
+        "如果在基因组中编码了构造器或注射器细胞，该细胞本身可以包含另一个基因组。这个子基因组可以描述额外的身体部位或生物的分支。例如，子基因组可以进一步包含子子基因组，等等。要在此处通过点击“粘贴”插入子基因组，必须先将其复制到剪贴板。这可以通过工具栏中的“复制基因组”按钮完成。此操作将当前选项卡中的整个基因组复制到剪贴板。如果要创建自我复制，不应插入子基因组；而是将其切换到“自我复制”模式。在这种情况下，构造器的子基因组指的是其上级基因组。";
 
     std::string const GenomeGeometryTooltip =
-        "A genome describes a network of connected cells. On the one hand, there is the option to select a pre-defined geometry (e.g. "
-        "triangle or hexagon). Then, the cells encoded in the genome are generated along this geometry and connected together "
-        "appropriately. On the other hand, it is also possible to define custom geometries by setting an angle between predecessor and "
-        "successor cells for each cell (except for the first and last in the sequence).";
+        "基因组描述了一个连接细胞的网络。一方面，可以选择预定义的几何形状（例如三角形或六边形）。然后，基因组中编码的细胞将沿着这种几何形状生成并适当地连接在一起。另一方面，也可以通过为每个细胞（序列中的第一个和最后一个除外）设置前驱细胞和后继细胞之间的角度来定义自定义几何形状。";
 
     std::string const GenomeConnectionDistanceTooltip =
-        "The spatial distance between each cell and its predecessor cell in the genome sequence is determined here.";
+        "这里确定基因组序列中每个细胞与其前驱细胞之间的空间距离。";
 
-    std::string const GenomeStiffnessTooltip = "This value sets the stiffness for the entire encoded cell network. The stiffness determines the amount of "
-                                               "force generated to push the cell network to its reference configuration.";
+    std::string const GenomeStiffnessTooltip = "此值设置整个编码细胞网络的刚度。刚度决定了生成的力将细胞网络推向其参考配置的程度。";
 
     std::string const GenomeAngleAlignmentTooltip =
-        "Triples of connected cells within a network have specific spatial angles relative to each other. These angles "
-        "are guided by the reference angles encoded in the cells. With this setting, it is optionally possible to specify that the reference angles must only "
-        "be multiples of certain values. This allows for greater stability of the created networks, as the angles would otherwise be more susceptible to "
-        "external influences. Choosing 60 degrees is recommended here, as it allows for the accurate representation of most geometries.";
+        "网络中的连接细胞三元组彼此之间具有特定的空间角度。这些角度由细胞中编码的参考角度引导。通过此设置，可以选择性地指定参考角度必须仅为某些值的倍数。这允许创建的网络具有更大的稳定性，因为否则角度会更容易受到外部影响。建议选择60度，因为它允许准确表示大多数几何形状。";
 
-    std::string const GenomeNumBranchesTooltip = "Specifies how many branches the constructor can use to build the cell networks. Each branch is connected to "
-                                                 "the constructor cell and consists of repetitions of the encoded cell network.";
+    std::string const GenomeNumBranchesTooltip = "指定构造器可以用来构建细胞网络的分支数量。每个分支连接到构造器细胞，并由编码的细胞网络的重复组成。";
 
     std::string const GenomeRepetitionsPerBranchTooltip =
-        "This value specifies how many times the cell network described in the genome should be concatenated for each construction. For a value greater "
-        "than 1, the cell network geometry has to fulfill certain requirements (e.g. rectangle, hexagon, loop and lolli geometries are not suitable for "
-        "concatenation). A value of infinity is also possible, but should not be used for an activated completeness check (see simulation parameters).";
+        "此值指定基因组中描述的细胞网络应为每个构造连接多少次。对于大于1的值，细胞网络几何形状必须满足某些要求（例如，矩形、六边形、循环和棒棒糖几何形状不适合连接）。也可以使用无限值，但不应用于激活的完整性检查（参见模拟参数）。";
 
     std::string const GenomeConcatenationAngle1 =
-        "This value describes the angle between two concatenated cell networks viewed from the first cell of the subsequent cell network.";
+        "此值描述从后续细胞网络的第一个细胞看两个连接的细胞网络之间的角度。";
 
     std::string const GenomeConcatenationAngle2 =
-        "This value describes the angle between two concatenated cell networks viewed from the last cell of the previous cell network.";
+        "此值描述从前一个细胞网络的最后一个细胞看两个连接的细胞网络之间的角度。";
 
     std::string const GenomeSeparationConstructionTooltip =
-        "Here, one can configure whether the encoded cell network in the genome should be detached from the constructor cell once it has been "
-        "fully constructed. Disabling this property is useful for encoding growing structures (such as plant-like species) or creature body "
-        "parts.";
+        "在这里，可以配置基因组中编码的细胞网络在完全构建后是否应与构造器细胞分离。禁用此属性对于编码生长结构（如植物状物种）或生物体部位是有用的。";
 
-    std::string const CellEnergyTooltip = "The amount of internal energy of the cell. The cell undergoes decay when its energy falls below a critical "
-                                          "threshold (refer to the 'Minimum energy' simulation parameter).";
+    std::string const CellEnergyTooltip = "细胞的内部能量量。当其能量低于临界阈值时，细胞会衰减（参见“最低能量”模拟参数）。";
 
-    std::string const CellStiffnessTooltip =
-        "The stiffness determines the amount of force generated after a displacement to push the cell (network) to its reference configuration.";
+    std::string const CellStiffnessTooltip = "刚度决定了位移后产生的力的大小，以将细胞（网络）推回到其参考配置。";
 
-    std::string const CellMaxConnectionTooltip = "The maximum number of bonds a cell can form with other cells.";
+    std::string const CellMaxConnectionTooltip = "细胞可以与其他细胞形成的最大连接数。";
 
-    std::string const CellIndestructibleTooltip =
-        "When a cell is set as indestructible wall, it becomes immortal, resistant to external forces, but still capable of linear movement. Furthermore, unconnected "
-        "normal cells and energy particles bounce off from indestructible ones.";
+    std::string const CellIndestructibleTooltip = "当细胞被设置为不可破坏的墙时，它变得不朽，抗外力，但仍然能够线性移动。此外，未连接的普通细胞和能量粒子会从不可破坏的细胞上弹开。";
 
-    std::string const CellReferenceDistanceTooltip =
-        "The reference distance defines the distance at which no forces act between two connected cells. If the actual distance is greater than the reference "
-        "distance, the cells attract each other. If it is smaller, they repel.";
+    std::string const CellReferenceDistanceTooltip = "参考距离定义了两个连接细胞之间没有力作用的距离。如果实际距离大于参考距离，细胞会相互吸引。如果小于参考距离，细胞会相互排斥。";
 
-    std::string const CellReferenceAngleTooltip =
-        "The reference angle defines an angle between two cell connections. If the actual angle is larger, tangential forces act on the connected cells, "
-        "aiming to reduce the angle. Conversely, if the actual angle is smaller, the tangential forces tend to enlarge this angle. With this type of force "
-        "cell networks can fold back into a desired shape after deformation.";
+    std::string const CellReferenceAngleTooltip = "参考角度定义了两个细胞连接之间的角度。如果实际角度较大，切向力会作用于连接的细胞，旨在减小角度。相反，如果实际角度较小，切向力会倾向于增大此角度。通过这种类型的力，细胞网络可以在变形后折回到所需的形状。";
 
-    std::string const CellAgeTooltip = "The age of the cell in time steps.";
+    std::string const CellAgeTooltip = "细胞的年龄，以时间步为单位。";
 
-    std::string const CellIdTooltip = "The id of the cell is a unique 64 bit number which identifies the cell in the entire world and cannot be changed. The "
-                                      "cell id is displayed here in hexadecimal notation.";
+    std::string const CellIdTooltip = "细胞的ID是一个唯一的64位数字，用于标识整个世界中的细胞，且无法更改。细胞ID以十六进制表示。";
 
-    std::string const CellCreatureIdTooltip =
-        "This value loosely identifies a specific creature. While not guaranteed, it is very likely that two creatures will have different creature ids.";
+    std::string const CellCreatureIdTooltip = "此值大致标识特定生物。虽然不能保证，但很可能两个生物会有不同的生物ID。";
 
-    std::string const CellMutationIdTooltip =
-        "The mutation id is a value to distinguish mutants. After most mutations (except neural network and cell properties) the mutation id changes. A few "
-        "values have a special meaning:\n\n" ICON_FA_CHEVRON_RIGHT " 0: This value is used for handcrafted cells. This refers to cells that have been "
-        "artificially created by the user.\n\n" ICON_FA_CHEVRON_RIGHT " 1: This value is used for free cells. Free cells are cells that have not been created by a "
-        "self-replication process, but by transformation from an energy particle.";
+    std::string const CellMutationIdTooltip = "突变ID是用于区分突变体的值。在大多数突变（神经网络和细胞属性除外）之后，突变ID会发生变化。一些值具有特殊意义：\n\n" ICON_FA_CHEVRON_RIGHT " 0：此值用于手工制作的细胞。这指的是用户人工创建的细胞。\n\n" ICON_FA_CHEVRON_RIGHT " 1：此值用于自由细胞。自由细胞是指不是通过自我复制过程创建的细胞，而是通过能量粒子的转化创建的细胞。";
     std::string const GenomeComplexityTooltip =
-        "This value denotes the complexity of the creature's genome. The calculation can be customized in the simulation parameters under the 'Genome "
-        "complexity measurement' addon. By default, it is the number of encoded cells in the genome.";
+        "此值表示生物体基因组的复杂性。计算方法可以在模拟参数中的“基因组复杂度测量”插件中自定义。默认情况下，它是基因组中编码的细胞数量。";
 
     std::string const CellLivingStateTooltip =
-        "Cells can exist in various states. When a cell network of the organism is being constructed, its cells are in the 'Under construction' state. Once the cell network "
-        "is completed, the cells briefly enter the 'Activating' state before transitioning to the 'Ready' state shortly after. If a cell "
-        "network is in the process of dying, its cells are in the 'Dying' state.\n\n"
-        "In case that the parameter 'Cell death consequences' is set to 'Detached creature parts die': A cell is in 'Detached' state when it is separated from "
-        "its organism where the constructor cell for self-replication is located. However, if a non-dying cell for self-replication is still present, a detached cell will "
-        "transition into the 'Reviving' state and then into 'Ready' state shortly after.";
+        "细胞可以存在于各种状态。当生物体的细胞网络正在构建时，其细胞处于“建设中”状态。一旦细胞网络完成，细胞会短暂进入“激活”状态，然后很快转变为“准备就绪”状态。如果细胞网络正在死亡过程中，其细胞处于“死亡中”状态。\n\n"
+        "如果参数“细胞死亡后果”设置为“分离的生物体部分死亡”：当细胞与其自我复制的构造器细胞所在的生物体分离时，细胞处于“分离”状态。然而，如果仍然存在一个非死亡的自我复制细胞，分离的细胞将转变为“复活”状态，然后很快转变为“准备就绪”状态。";
 
-std::string const ColoringParameterTooltip =
-        "在这里，可以设置细胞在渲染期间的着色方式。\n\n" ICON_FA_CHEVRON_RIGHT
-        " 能量：细胞的能量越多，显示越亮。使用灰度。\n\n" ICON_FA_CHEVRON_RIGHT
-        " 标准细胞颜色：每个细胞被分配一种默认的7种颜色之一，并以此选项显示。\n\n" ICON_FA_CHEVRON_RIGHT
-        " 基因代际：不同的突变体用不同的颜色表示（仅考虑较大的结构突变，如平移或复制）。\n\n" ICON_FA_CHEVRON_RIGHT
-        " 基因代际和细胞功能：突变体和细胞功能着色的组合。\n\n" ICON_FA_CHEVRON_RIGHT
-        " 细胞状态：绿色 = 建设中，蓝色 = 准备就绪，红色 = 死亡中\n\n" ICON_FA_CHEVRON_RIGHT
-        " 基因组复杂度：当参数“复杂生物保护”激活时，攻击细胞可以利用此属性（参见那里的工具提示）。着色如下：蓝色 = 低奖励的生物（通常是小型或简单的基因组结构），红色 = 大奖励\n\n" ICON_FA_CHEVRON_RIGHT
-        " 单一细胞功能：可以突出显示特定类型的细胞功能，在下一个参数中选择。\n\n" ICON_FA_CHEVRON_RIGHT
-        " 所有细胞功能：细胞根据其细胞功能着色。";
+    std::string const ColoringParameterTooltip =
+            "在这里，可以设置细胞在渲染期间的着色方式。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 能量：细胞的能量越多，显示越亮。使用灰度。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 标准细胞颜色：每个细胞被分配一种默认的7种颜色之一，并以此选项显示。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 基因代际：不同的突变体用不同的颜色表示（仅考虑较大的结构突变，如平移或复制）。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 基因代际和细胞功能：突变体和细胞功能着色的组合。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 细胞状态：绿色 = 建设中，蓝色 = 准备就绪，红色 = 死亡中\n\n" ICON_FA_CHEVRON_RIGHT
+            " 基因组复杂度：当参数“复杂生物保护”激活时，攻击细胞可以利用此属性（参见那里的工具提示）。着色如下：蓝色 = 低奖励的生物（通常是小型或简单的基因组结构），红色 = 大奖励\n\n" ICON_FA_CHEVRON_RIGHT
+            " 单一细胞功能：可以突出显示特定类型的细胞功能，在下一个参数中选择。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 所有细胞功能：细胞根据其细胞功能着色。";
 
     inline std::string getCellFunctionTooltip(CellFunction cellFunction)
     {
@@ -405,87 +261,68 @@ std::string const ColoringParameterTooltip =
     };
 
     std::string const GenomeNumCellsRecursivelyTooltip =
-        "The number of all encoded cells in the genome including its sub-genomes, repetitions and number of branches.";
+        "基因组中所有编码细胞的数量，包括其子基因组、重复次数和分支数量。";
 
-    std::string const GenomeBytesTooltip = "The length of the genome in bytes.";
+    std::string const GenomeBytesTooltip = "基因组的长度，以字节为单位。";
 
-    std::string const GenomeGenerationTooltip = "This value indicates the number of times this genome has been inherited by offspring.";
+    std::string const GenomeGenerationTooltip = "此值表示该基因组被后代继承的次数。";
 
-    std::string const GenomeNumCellsTooltip = "The number of the encoded cells per repetition in the genome. Cells of sub-genomes are not counted here.";
+    std::string const GenomeNumCellsTooltip = "基因组中每次重复编码的细胞数量。不包括子基因组的细胞。";
 
-    std::string const GenomeCurrentBranchTooltip = "This number specifies the current branch on which the construction process takes place. Each branch is "
-                                                   "connected to the constructor cell and consists of repetitions of the encoded cell network.";
+    std::string const GenomeCurrentBranchTooltip = "此数字指定当前构造过程所在的分支。每个分支连接到构造器细胞，并由编码的细胞网络的重复组成。";
 
     std::string const GenomeCurrentRepetitionTooltip =
-        "The cell network encoded in the genome can be repeatedly built by specifying a number of "
-        "repetitions. This value indicates the index of the current repetition.";
+        "基因组中编码的细胞网络可以通过指定重复次数来重复构建。此值表示当前重复的索引。";
 
-    std::string const GenomeCurrentCellTooltip = "The sequence number of the cell in the genome that will be constructed next.";
+    std::string const GenomeCurrentCellTooltip = "基因组中下一个要构建的细胞的序列号。";
 
-    std::string const GenomePreviewTooltip = "The spatial structure of the cells encoded in the genome is displayed here. This is only a rough "
-                                             "prediction without using the physics engine.";
+    std::string const GenomePreviewTooltip = "此处显示基因组中编码细胞的空间结构。这只是一个粗略的预测，不使用物理引擎。";
 
     std::string const CellInjectorCounterTooltip =
-        "When a genome injection is initiated, the counter increments after each consecutive successful activation of the injector. Once the counter reaches a "
-        "specific threshold (refer to the 'Injection time' simulation parameter), the injection process is completed.";
+        "当基因组注射开始时，每次连续成功激活注射器后，计数器递增。一旦计数器达到特定阈值（参见“注射时间”模拟参数），注射过程完成。";
 
-    std::string const CellSensorTargetCreatureIdTooltip = "The id of the last creature that has been scanned.";
+    std::string const CellSensorTargetCreatureIdTooltip = "最后一次扫描的生物体的ID。";
 
     std::string const NeuronInputTooltipByChannel[8] = {
-        "The following cell functions write their output to channel #0:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT " Constructor: 0 (could not "
-        "constructor next cell, e.g. no energy, required connection check failed, completeness check failed), 1 (next cell construction "
-        "successful)\n\n" ICON_FA_CHEVRON_RIGHT " Sensor: 0 (no match) or 1 (match)\n\n" ICON_FA_CHEVRON_RIGHT " Attacker: a value which is proportional to the gained "
-        "energy\n\n" ICON_FA_CHEVRON_RIGHT " Injector: 0 (no cells found) or 1 (injection in process or completed)\n\n" ICON_FA_CHEVRON_RIGHT
-        " Reconnector: 0 (no connection created/removed) or 1 (connection created/removed)",
-        "The following cell functions write their output to channel #1:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT " Sensor: density of the last match",
-        "The following cell functions write their output to channel #2:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT " Sensor: distance of the last match (0 = far away, 1 = close)",
-        "The following cell functions write their output to channel #3:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT " Sensor: angle of the last match",
-        "The following cell functions write their output to channel #4:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron",
-        "The following cell functions write their output to channel #5:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron",
-        "The following cell functions write their output to channel #6:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron",
-        "The following cell functions write their output to channel #7:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT " Attacker: 1 if a cell is attacked by an other attacker cell" 
+        "以下细胞功能将其输出写入通道#0：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 构造器：0（无法构造下一个细胞，例如没有能量，所需连接检查失败，完整性检查失败），1（下一个细胞构造成功）\n\n" ICON_FA_CHEVRON_RIGHT " 传感器：0（无匹配）或1（匹配）\n\n" ICON_FA_CHEVRON_RIGHT " 攻击者：与获得的能量成比例的值\n\n" ICON_FA_CHEVRON_RIGHT " 注射器：0（未找到细胞）或1（注射进行中或已完成）\n\n" ICON_FA_CHEVRON_RIGHT " 重连器：0（未创建/移除连接）或1（创建/移除连接）",
+        "以下细胞功能将其输出写入通道#1：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 传感器：最后一次匹配的密度",
+        "以下细胞功能将其输出写入通道#2：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 传感器：最后一次匹配的距离（0 = 远，1 = 近）",
+        "以下细胞功能将其输出写入通道#3：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 传感器：最后一次匹配的角度",
+        "以下细胞功能将其输出写入通道#4：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元",
+        "以下细胞功能将其输出写入通道#5：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元",
+        "以下细胞功能将其输出写入通道#6：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元",
+        "以下细胞功能将其输出写入通道#7：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 攻击者：如果细胞被其他攻击细胞攻击，则为1"
     };
 
     std::string const NeuronOutputTooltipByChannel[8] = {
-        "The following cell functions obtain their input from channel #0:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT " Constructor: abs(value) > "
-        "threshold activates constructor (only necessary in 'Manual' mode)\n\n" ICON_FA_CHEVRON_RIGHT " Sensor: abs(value) > threshold activates "
-        "sensor\n\n" ICON_FA_CHEVRON_RIGHT " Attacker: abs(value) > threshold activates attacker\n\n" ICON_FA_CHEVRON_RIGHT " Injector: abs(value) > threshold "
-        "activates injector\n\n" ICON_FA_CHEVRON_RIGHT " Muscle: The strength of the movement, bending or expansion/contraction. A negative sign corresponds to "
-        "the opposite action.\n\n" ICON_FA_CHEVRON_RIGHT " Reconnector: value > threshold triggers creation of a bond to a cell in the vicinity, value < -threshold triggers destruction of a bond\n\n"
-        ICON_FA_CHEVRON_RIGHT " Detonator: abs(value) > threshold activates detonator",
-        "The following cell functions obtain their input from channel #1:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT " Muscle: This channel is "
-        "solely utilized for acceleration due to bending. If the sign of channel #1 differs from the sign of channel #0, no acceleration will be obtained "
-        "during the bending process.",
-        "The following cell functions obtain their input from channel #2:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron",
-        "The following cell functions obtain their input from channel #3:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron\n\n" ICON_FA_CHEVRON_RIGHT
-        " Muscle: This channel is used for muscles in movement mode. It encodes the relative angle for the movement with respect to a previously "
-        "detected target by a sensor cell (if the parameter 'Movement toward target' is activated) or to the direction of the adjacent cell where the input "
-        "signal comes from (if the parameter 'Movement toward target' is deactivated). A value of -0.5 correspond to -180 deg and +0.5 to +180 deg.",
-        "The following cell functions obtain their input from channel #4:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron",
-        "The following cell functions obtain their input from channel #5:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron",
-        "The following cell functions obtain their input from channel #6:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron",
-        "The following cell functions obtain their input from channel #7:\n\n" ICON_FA_CHEVRON_RIGHT " Neuron"
+        "以下细胞功能从通道#0获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 构造器：abs(value) > 阈值激活构造器（仅在“手动”模式下需要）\n\n" ICON_FA_CHEVRON_RIGHT " 传感器：abs(value) > 阈值激活传感器\n\n" ICON_FA_CHEVRON_RIGHT " 攻击者：abs(value) > 阈值激活攻击者\n\n" ICON_FA_CHEVRON_RIGHT " 注射器：abs(value) > 阈值激活注射器\n\n" ICON_FA_CHEVRON_RIGHT " 肌肉：运动、弯曲或扩展/收缩的强度。负号对应相反的动作。\n\n" ICON_FA_CHEVRON_RIGHT " 重连器：值 > 阈值触发与附近细胞的连接，值 < -阈值触发断开连接\n\n" ICON_FA_CHEVRON_RIGHT " 引爆器：abs(value) > 阈值激活引爆器",
+        "以下细胞功能从通道#1获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 肌肉：此通道仅用于弯曲加速。如果通道#1的符号与通道#0的符号不同，则在弯曲过程中不会获得加速。",
+        "以下细胞功能从通道#2获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元",
+        "以下细胞功能从通道#3获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元\n\n" ICON_FA_CHEVRON_RIGHT " 肌肉：此通道用于运动模式下的肌肉。它编码相对于检测到的物体的运动相对角度（如果激活了“朝向目标运动”参数）或相对于输入信号来自的相邻细胞的方向（如果未激活“朝向目标运动”参数）。在第一种情况下，物体必须由传感器细胞定位，输入信号来自该传感器细胞（不必是相邻细胞）。值-0.5对应-180度，+0.5对应+180度。",
+        "以下细胞功能从通道#4获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元",
+        "以下细胞功能从通道#5获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元",
+        "以下细胞功能从通道#6获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元",
+        "以下细胞功能从通道#7获取其输入：\n\n" ICON_FA_CHEVRON_RIGHT " 神经元"
     };
 
-    std::string const CreatorPencilRadiusTooltip = "The radius of the pencil in number of cells.";
+    std::string const CreatorPencilRadiusTooltip = "铅笔的半径，以单元格数量表示。";
 
     std::string const CreatorAscendingExecutionOrderNumberTooltip =
-        "Each generated cell has an 'execution order number' that is one greater than the previous generated cell.";
+        "每个生成的单元格的“执行顺序号”比前一个生成的单元格大一。";
 
-    std::string const CreatorRectangleWidthTooltip = "The width of the rectangle in cells.";
+    std::string const CreatorRectangleWidthTooltip = "矩形的宽度，以单元格数量表示。";
 
-    std::string const CreatorRectangleHeightTooltip = "The height of the rectangle in cells.";
+    std::string const CreatorRectangleHeightTooltip = "矩形的高度，以单元格数量表示。";
 
-    std::string const CreatorHexagonLayersTooltip = "The number of layers in cells starting from the center.";
+    std::string const CreatorHexagonLayersTooltip = "从中心开始的六边形层数，以单元格数量表示。";
 
-    std::string const CreatorDiscOuterRadiusTooltip = "The outer radius of the disc in cells.";
+    std::string const CreatorDiscOuterRadiusTooltip = "圆盘的外半径，以单元格数量表示。";
 
-    std::string const CreatorDiscInnerRadiusTooltip = "The inner radius of the disc in cells.";
+    std::string const CreatorDiscInnerRadiusTooltip = "圆盘的内半径，以单元格数量表示。";
 
-    std::string const CreatorDistanceTooltip = "The distance between two connected cells.";
+    std::string const CreatorDistanceTooltip = "两个连接单元格之间的距离。";
 
-    std::string const CreatorStickyTooltip = "If the Sticky property is selected, the created cells can usually form further connections. That is, they can "
-                                             "'stick together' with other cell networks after collision.";
+    std::string const CreatorStickyTooltip = "如果选择了粘性属性，创建的单元格通常可以形成进一步的连接。也就是说，它们在碰撞后可以与其他单元格网络“粘在一起”。";
 
     std::string const LoginHowToCreateNewUseTooltip = "请输入您期望的用户名与密码。用户创建将通过点击“创建用户”按钮执行。";
 
