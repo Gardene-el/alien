@@ -5,22 +5,22 @@
 #include "MainLoopController.h"
 
 ExitDialog::ExitDialog()
-    : AlienDialog("Exit")
+    : AlienDialog("退出")
 {}
 
 void ExitDialog::processIntern()
 {
-    ImGui::TextWrapped("%s", "Do you really want to terminate the program?");
+    ImGui::TextWrapped("%s", "你真的想要终止程序吗？");
 
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();
 
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         MainLoopController::get().scheduleClosing();
         close();
     }
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
     ImGui::SetItemDefaultFocus();
