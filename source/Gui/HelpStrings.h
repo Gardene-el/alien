@@ -363,18 +363,16 @@ namespace Const
         "its organism where the constructor cell for self-replication is located. However, if a non-dying cell for self-replication is still present, a detached cell will "
         "transition into the 'Reviving' state and then into 'Ready' state shortly after.";
 
-    std::string const ColoringParameterTooltip =
-        "Here, one can set how the cells are to be colored during rendering. \n\n" ICON_FA_CHEVRON_RIGHT
-        " Energy: The more energy a cell has, the brighter it is displayed. A grayscale is used.\n\n" ICON_FA_CHEVRON_RIGHT
-        " Standard cell colors: Each cell is assigned one of 7 default colors, which is displayed with this option. \n\n" ICON_FA_CHEVRON_RIGHT
-        " Mutants: Different mutants are represented by different colors (only larger structural mutations such as translations or duplications are taken into "
-        "account).\n\n" ICON_FA_CHEVRON_RIGHT " Mutants and cell functions: Combination of mutants and cell function coloring.\n\n" ICON_FA_CHEVRON_RIGHT
-        " Cell states: green = under construction, blue = ready, red = dying\n\n" ICON_FA_CHEVRON_RIGHT
-        " Genome complexities: This property can be utilized by attacker cells when the parameter 'Complex creature protection' is "
-        "activated (see tooltip there). The coloring is as follows: blue = creature with low bonus (usually small or simple genome structure), red = large "
-        "bonus\n\n" ICON_FA_CHEVRON_RIGHT
-        " Single cell function: A specific type of cell function can be highlighted, which is selected in the next parameter.\n\n" ICON_FA_CHEVRON_RIGHT
-        " All cell functions: The cells are colored according to their cell function.";
+std::string const ColoringParameterTooltip =
+        "在这里，可以设置细胞在渲染期间的着色方式。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 能量：细胞的能量越多，显示越亮。使用灰度。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 标准细胞颜色：每个细胞被分配一种默认的7种颜色之一，并以此选项显示。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 基因代际：不同的突变体用不同的颜色表示（仅考虑较大的结构突变，如平移或复制）。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 基因代际和细胞功能：突变体和细胞功能着色的组合。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 细胞状态：绿色 = 建设中，蓝色 = 准备就绪，红色 = 死亡中\n\n" ICON_FA_CHEVRON_RIGHT
+        " 基因组复杂度：当参数“复杂生物保护”激活时，攻击细胞可以利用此属性（参见那里的工具提示）。着色如下：蓝色 = 低奖励的生物（通常是小型或简单的基因组结构），红色 = 大奖励\n\n" ICON_FA_CHEVRON_RIGHT
+        " 单一细胞功能：可以突出显示特定类型的细胞功能，在下一个参数中选择。\n\n" ICON_FA_CHEVRON_RIGHT
+        " 所有细胞功能：细胞根据其细胞功能着色。";
 
     inline std::string getCellFunctionTooltip(CellFunction cellFunction)
     {

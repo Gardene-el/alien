@@ -954,20 +954,20 @@ void AlienImGui::ColorButtonWithPicker(ColorButtonWithPickerParameters const& pa
         imGuiBackupColor = imGuiColor;
     }
     if (ImGui::BeginPopup("colorpicker")) {
-        ImGui::Text("Please choose a color");
+        ImGui::Text("请选择一个颜色");
         ImGui::Separator();
         ImGui::ColorPicker4("##picker", (float*)&imGuiColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview);
         ImGui::SameLine();
 
         ImGui::BeginGroup();  // Lock X position
-        ImGui::Text("Current");
+        ImGui::Text("当前");
         ImGui::ColorButton("##current", imGuiColor, ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_AlphaPreviewHalf, ImVec2(60, 40));
-        ImGui::Text("Previous");
+        ImGui::Text("之前");
         if (ImGui::ColorButton("##previous", imGuiBackupColor, ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_AlphaPreviewHalf, ImVec2(60, 40))) {
             imGuiColor = imGuiBackupColor;
         }
         ImGui::Separator();
-        ImGui::Text("Palette");
+        ImGui::Text("调色板");
         for (int n = 0; n < IM_ARRAYSIZE(imGuiSavedPalette); n++) {
             ImGui::PushID(n);
             if ((n % 8) != 0)
