@@ -23,7 +23,7 @@ void MassOperationsDialog::initIntern(SimulationFacade simulationFacade)
 
 void MassOperationsDialog::processIntern()
 {
-    AlienImGui::Group("Cell colors");
+    AlienImGui::Group("细胞颜色");
     ImGui::PushID("cell");
     ImGui::Checkbox("##colors", &_randomizeCellColors);
     ImGui::BeginDisabled(!_randomizeCellColors);
@@ -44,7 +44,7 @@ void MassOperationsDialog::processIntern()
     ImGui::EndDisabled();
     ImGui::PopID();
 
-    AlienImGui::Group("Genome colors");
+    AlienImGui::Group("基因组颜色");
     ImGui::PushID("genome");
     ImGui::Checkbox("##colors", &_randomizeGenomeColors);
     ImGui::BeginDisabled(!_randomizeGenomeColors);
@@ -65,51 +65,51 @@ void MassOperationsDialog::processIntern()
     ImGui::EndDisabled();
     ImGui::PopID();
 
-    AlienImGui::Group("Cell Energies");
+    AlienImGui::Group("细胞能量");
     ImGui::Checkbox("##energies", &_randomizeEnergies);
     ImGui::SameLine(0, ImGui::GetStyle().FramePadding.x * 4);
     auto posX = ImGui::GetCursorPos().x;
     ImGui::BeginDisabled(!_randomizeEnergies);
-    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().format("%.1f").name("Minimum energy").textWidth(RightColumnWidth), _minEnergy);
+    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().format("%.1f").name("最小能量").textWidth(RightColumnWidth), _minEnergy);
     ImGui::SetCursorPosX(posX);
-    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().format("%.1f").name("Maximum energy").textWidth(RightColumnWidth), _maxEnergy);
+    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().format("%.1f").name("最大能量").textWidth(RightColumnWidth), _maxEnergy);
     ImGui::EndDisabled();
 
-    AlienImGui::Group("Cell ages");
+    AlienImGui::Group("细胞年龄");
     ImGui::Checkbox("##ages", &_randomizeAges);
     ImGui::SameLine(0, ImGui::GetStyle().FramePadding.x * 4);
     posX = ImGui::GetCursorPos().x;
     ImGui::BeginDisabled(!_randomizeAges);
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Minimum age").textWidth(RightColumnWidth), _minAge);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("最小年龄").textWidth(RightColumnWidth), _minAge);
     ImGui::SetCursorPosX(posX);
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Maximum age").textWidth(RightColumnWidth), _maxAge);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("最大年龄").textWidth(RightColumnWidth), _maxAge);
     ImGui::EndDisabled();
 
-    AlienImGui::Group("Detonation countdown");
+    AlienImGui::Group("爆炸器倒计时");
     ImGui::Checkbox("##countdown", &_randomizeCountdowns);
     ImGui::SameLine(0, ImGui::GetStyle().FramePadding.x * 4);
     posX = ImGui::GetCursorPos().x;
     ImGui::BeginDisabled(!_randomizeCountdowns);
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Minimum value").textWidth(RightColumnWidth), _minCountdown);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("最小值").textWidth(RightColumnWidth), _minCountdown);
     ImGui::SetCursorPosX(posX);
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Maximum value").textWidth(RightColumnWidth), _maxCountdown);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name("最大值").textWidth(RightColumnWidth), _maxCountdown);
     ImGui::EndDisabled();
 
-    AlienImGui::Group("Mutants");
+    AlienImGui::Group("种群");
     ImGui::Checkbox("##mutationId", &_randomizeMutationId);
     ImGui::SameLine(0, ImGui::GetStyle().FramePadding.x * 4);
-    AlienImGui::Text("Randomize mutation ids");
+    AlienImGui::Text("随机种群id");
 
-    AlienImGui::Group("Options");
+    AlienImGui::Group("选项");
     ImGui::Checkbox("##restrictToSelectedClusters", &_restrictToSelectedClusters);
     ImGui::SameLine(0, ImGui::GetStyle().FramePadding.x * 4);
-    AlienImGui::Text("Restrict to selected cell networks");
+    AlienImGui::Text("限制为所选的生物");
 
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();
 
     ImGui::BeginDisabled(!isOkEnabled());
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         onExecute();
         close();
     }
@@ -117,7 +117,7 @@ void MassOperationsDialog::processIntern()
 
     ImGui::SameLine();
     ImGui::SetItemDefaultFocus();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
 
@@ -125,7 +125,7 @@ void MassOperationsDialog::processIntern()
 }
 
 MassOperationsDialog::MassOperationsDialog()
-    : AlienDialog("Mass operations")
+    : AlienDialog("大量操作")
 {
 }
 
