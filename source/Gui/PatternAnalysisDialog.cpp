@@ -49,7 +49,7 @@ void PatternAnalysisDialog::process()
 
 void PatternAnalysisDialog::show()
 {
-    ifd::FileDialog::Instance().Save("PatternAnalysisDialog", "Save pattern analysis result", "Analysis result (*.txt){.txt},.*", _startingPath);
+    ifd::FileDialog::Instance().Save("PatternAnalysisDialog", "保存图式分析结果", "分析结果 (*.txt){.txt},.*", _startingPath);
 }
 
 void PatternAnalysisDialog::saveRepetitiveActiveClustersToFiles(std::string const& filename)
@@ -59,7 +59,7 @@ void PatternAnalysisDialog::saveRepetitiveActiveClustersToFiles(std::string cons
     std::ofstream file;
     file.open(filename, std::ios_base::out);
     if (!file) {
-        GenericMessageDialog::get().information("Pattern analysis", "The analysis result could not be saved to the specified file.");
+        GenericMessageDialog::get().information("图式分析", "图示分析结果无法被保存在指定文件中。");
         return;
     }
 
