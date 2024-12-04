@@ -114,9 +114,9 @@ std::string _InspectorWindow::generateTitle() const
     auto entity = EditorModel::get().getInspectedEntity(_entityId);
     std::stringstream ss;
     if (isCell()) {
-        ss << "Cell #" << std::hex << std::uppercase << _entityId;
+        ss << "细胞 #" << std::hex << std::uppercase << _entityId;
     } else {
-        ss << "Energy particle #" << std::hex << std::uppercase << _entityId;
+        ss << "能量粒子 #" << std::hex << std::uppercase << _entityId;
     }
     return ss.str();
 }
@@ -124,7 +124,7 @@ std::string _InspectorWindow::generateTitle() const
 void _InspectorWindow::processCell(CellDescription cell)
 {
     if (ImGui::BeginTabBar(
-            "##CellInspect", /*ImGuiTabBarFlags_AutoSelectNewTabs | */ImGuiTabBarFlags_FittingPolicyResizeDown)) {
+            "##细胞查看", /*ImGuiTabBarFlags_AutoSelectNewTabs | */ImGuiTabBarFlags_FittingPolicyResizeDown)) {
         auto origCell = cell;
         processCellBaseTab(cell);
         processCellFunctionTab(cell);
@@ -148,50 +148,50 @@ void _InspectorWindow::processCell(CellDescription cell)
 
 void _InspectorWindow::processCellBaseTab(CellDescription& cell)
 {
-    if (ImGui::BeginTabItem("Base", nullptr, ImGuiTabItemFlags_None)) {
+    if (ImGui::BeginTabItem("基础", nullptr, ImGuiTabItemFlags_None)) {
         if (ImGui::BeginChild("##", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar)) {
-            if (ImGui::TreeNodeEx("Properties##Base", TreeNodeFlags)) {
+            if (ImGui::TreeNodeEx("属性##基础", TreeNodeFlags)) {
                 std::stringstream ss;
                 ss << "0x" << std::hex << std::uppercase << cell.id;
                 auto cellId = ss.str();
 
                 AlienImGui::ComboColor(
-                    AlienImGui::ComboColorParameters().name("Color").textWidth(BaseTabTextWidth).tooltip(Const::GenomeColorTooltip), cell.color);
+                    AlienImGui::ComboColorParameters().name("颜色").textWidth(BaseTabTextWidth).tooltip(Const::GenomeColorTooltip), cell.color);
                 AlienImGui::InputFloat(
-                    AlienImGui::InputFloatParameters().name("Energy").format("%.2f").textWidth(BaseTabTextWidth).tooltip(Const::CellEnergyTooltip),
+                    AlienImGui::InputFloatParameters().name("能量").format("%.2f").textWidth(BaseTabTextWidth).tooltip(Const::CellEnergyTooltip),
                     cell.energy);
-                AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Age").textWidth(BaseTabTextWidth).tooltip(Const::CellAgeTooltip), cell.age);
-                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("Position X").format("%.2f").textWidth(BaseTabTextWidth), cell.pos.x);
-                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("Position Y").format("%.2f").textWidth(BaseTabTextWidth), cell.pos.y);
-                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("Velocity X").format("%.2f").textWidth(BaseTabTextWidth), cell.vel.x);
-                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("Velocity Y").format("%.2f").textWidth(BaseTabTextWidth), cell.vel.y);
+                AlienImGui::InputInt(AlienImGui::InputIntParameters().name("年龄").textWidth(BaseTabTextWidth).tooltip(Const::CellAgeTooltip), cell.age);
+                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("位置 X").format("%.2f").textWidth(BaseTabTextWidth), cell.pos.x);
+                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("位置 Y").format("%.2f").textWidth(BaseTabTextWidth), cell.pos.y);
+                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("速度 X").format("%.2f").textWidth(BaseTabTextWidth), cell.vel.x);
+                AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("速度 Y").format("%.2f").textWidth(BaseTabTextWidth), cell.vel.y);
                 AlienImGui::InputFloat(
-                    AlienImGui::InputFloatParameters().name("Stiffness").format("%.2f").step(0.05f).textWidth(BaseTabTextWidth).tooltip(Const::CellStiffnessTooltip),
+                    AlienImGui::InputFloatParameters().name("刚性").format("%.2f").step(0.05f).textWidth(BaseTabTextWidth).tooltip(Const::CellStiffnessTooltip),
                     cell.stiffness);
-                AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Max connections").textWidth(BaseTabTextWidth).tooltip(Const::CellMaxConnectionTooltip), cell.maxConnections);
+                AlienImGui::InputInt(AlienImGui::InputIntParameters().name("最大连接数").textWidth(BaseTabTextWidth).tooltip(Const::CellMaxConnectionTooltip), cell.maxConnections);
                 AlienImGui::Checkbox(
-                    AlienImGui::CheckboxParameters().name("Indestructible wall").textWidth(BaseTabTextWidth).tooltip(Const::CellIndestructibleTooltip), cell.barrier);
+                    AlienImGui::CheckboxParameters().name("不可摧毁的墙").textWidth(BaseTabTextWidth).tooltip(Const::CellIndestructibleTooltip), cell.barrier);
                 AlienImGui::InputText(
-                    AlienImGui::InputTextParameters().name("Cell id").textWidth(BaseTabTextWidth).tooltip(Const::CellIdTooltip).readOnly(true), cellId);
+                    AlienImGui::InputTextParameters().name("细胞 id").textWidth(BaseTabTextWidth).tooltip(Const::CellIdTooltip).readOnly(true), cellId);
                 ImGui::TreePop();
             }
-            if (ImGui::TreeNodeEx("Associated creature##Base", TreeNodeFlags)) {
+            if (ImGui::TreeNodeEx("关联生物##基础", TreeNodeFlags)) {
                 AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Creature id").textWidth(BaseTabTextWidth).tooltip(Const::CellCreatureIdTooltip), cell.creatureId);
+                    AlienImGui::InputIntParameters().name("生物id").textWidth(BaseTabTextWidth).tooltip(Const::CellCreatureIdTooltip), cell.creatureId);
                 AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Mutation id").textWidth(BaseTabTextWidth).tooltip(Const::CellMutationIdTooltip), cell.mutationId);
+                    AlienImGui::InputIntParameters().name("种族id").textWidth(BaseTabTextWidth).tooltip(Const::CellMutationIdTooltip), cell.mutationId);
                 AlienImGui::InputFloat(
-                    AlienImGui::InputFloatParameters().name("Genome complexity").textWidth(BaseTabTextWidth).tooltip(Const::GenomeComplexityTooltip),
+                    AlienImGui::InputFloatParameters().name("基因组复杂度").textWidth(BaseTabTextWidth).tooltip(Const::GenomeComplexityTooltip),
                     cell.genomeComplexity);
 
                 ImGui::TreePop();
             }
-            if (ImGui::TreeNodeEx("Connections to other cells", TreeNodeFlags)) {
+            if (ImGui::TreeNodeEx("与其他细胞的连接数", TreeNodeFlags)) {
                 for (auto const& [index, connection] : cell.connections | boost::adaptors::indexed(0)) {
-                    if (ImGui::TreeNodeEx(("Connection [" + std::to_string(index) + "]").c_str(), ImGuiTreeNodeFlags_None)) {
+                    if (ImGui::TreeNodeEx(("连接 [" + std::to_string(index) + "]").c_str(), ImGuiTreeNodeFlags_None)) {
                         AlienImGui::InputFloat(
                             AlienImGui::InputFloatParameters()
-                                .name("Reference distance")
+                                .name("相关距离")
                                 .format("%.2f")
                                 .textWidth(BaseTabTextWidth)
                                 .readOnly(true)
@@ -199,7 +199,7 @@ void _InspectorWindow::processCellBaseTab(CellDescription& cell)
                             connection.distance);
                         AlienImGui::InputFloat(
                             AlienImGui::InputFloatParameters()
-                                .name("Reference angle")
+                                .name("相关角度")
                                 .format("%.2f")
                                 .textWidth(BaseTabTextWidth)
                                 .readOnly(true)
@@ -218,13 +218,13 @@ void _InspectorWindow::processCellBaseTab(CellDescription& cell)
 
 void _InspectorWindow::processCellFunctionTab(CellDescription& cell)
 {
-    if (ImGui::BeginTabItem("Function", nullptr, ImGuiTabItemFlags_None)) {
+    if (ImGui::BeginTabItem("功能", nullptr, ImGuiTabItemFlags_None)) {
         int type = cell.getCellFunctionType();
         if (ImGui::BeginChild("##", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar)) {
-            if (ImGui::TreeNodeEx("Properties##Function", TreeNodeFlags)) {
+            if (ImGui::TreeNodeEx("属性##功能", TreeNodeFlags)) {
                 if (AlienImGui::CellFunctionCombo(
                         AlienImGui::CellFunctionComboParameters()
-                            .name("Function")
+                            .name("功能")
                             .textWidth(CellFunctionBaseTabTextWidth)
                             .tooltip(Const::getCellFunctionTooltip(type)),
                         type)) {
@@ -270,31 +270,31 @@ void _InspectorWindow::processCellFunctionTab(CellDescription& cell)
 
                 AlienImGui::InputInt(
                     AlienImGui::InputIntParameters()
-                        .name("Activation time")
+                        .name("激活次数")
                         .textWidth(CellFunctionBaseTabTextWidth)
                         .tooltip(Const::GenomeConstructorOffspringActivationTime),
                     cell.activationTime);
                 AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Execution number").textWidth(CellFunctionBaseTabTextWidth).tooltip(Const::GenomeExecutionNumberTooltip), cell.executionOrderNumber);
+                    AlienImGui::InputIntParameters().name("执行编号").textWidth(CellFunctionBaseTabTextWidth).tooltip(Const::GenomeExecutionNumberTooltip), cell.executionOrderNumber);
                 AlienImGui::InputOptionalInt(
-                    AlienImGui::InputIntParameters().name("Input number").textWidth(CellFunctionBaseTabTextWidth).tooltip(Const::GenomeInputExecutionNumberTooltip), cell.inputExecutionOrderNumber);
+                    AlienImGui::InputIntParameters().name("输入编号").textWidth(CellFunctionBaseTabTextWidth).tooltip(Const::GenomeInputExecutionNumberTooltip), cell.inputExecutionOrderNumber);
                 AlienImGui::Checkbox(
-                    AlienImGui::CheckboxParameters().name("Block Output").textWidth(CellFunctionBaseTabTextWidth).tooltip(Const::GenomeBlockOutputTooltip), cell.outputBlocked);
+                    AlienImGui::CheckboxParameters().name("锁定输出").textWidth(CellFunctionBaseTabTextWidth).tooltip(Const::GenomeBlockOutputTooltip), cell.outputBlocked);
                 AlienImGui::Combo(
                     AlienImGui::ComboParameters()
-                        .name("Living state")
+                        .name("生存状态")
                         .textWidth(CellFunctionBaseTabTextWidth)
-                        .values({"Ready", "Under construction", "Activating", "Detached", "Reviving", "Dying"})
+                        .values({"准备中", "构筑中", "活动中", "分离中", "复活中", "死去中"})
                         .tooltip(Const::CellLivingStateTooltip),
                     cell.livingState);
                 ImGui::TreePop();
             }
         }
-        if (ImGui::TreeNodeEx("Signals", TreeNodeFlags)) {
+        if (ImGui::TreeNodeEx("信号", TreeNodeFlags)) {
             int index = 0;
             for (auto& channel : cell.signal.channels) {
                 AlienImGui::InputFloat(
-                    AlienImGui::InputFloatParameters().name("Channel #" + std::to_string(index)).format("%.3f").step(0.1f).textWidth(SignalTextWidth),
+                    AlienImGui::InputFloatParameters().name("频道 #" + std::to_string(index)).format("%.3f").step(0.1f).textWidth(SignalTextWidth),
                     channel);
                 ++index;
             }
@@ -366,10 +366,10 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
         flags = flags | ImGuiTabItemFlags_SetSelected;
         _selectGenomeTab = false;
     }
-    if (ImGui::BeginTabItem("Genome", nullptr, flags)) {
+    if (ImGui::BeginTabItem("基因组", nullptr, flags)) {
         if (ImGui::BeginChild("##", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar)) {
 
-            auto previewNodeResult = ImGui::TreeNodeEx("Preview (reference configuration)", TreeNodeFlags);
+            auto previewNodeResult = ImGui::TreeNodeEx("预览（参考配置）", TreeNodeFlags);
             AlienImGui::HelpMarker(Const::GenomePreviewTooltip);
             if (previewNodeResult) {
                 if (ImGui::BeginChild("##child", ImVec2(0, scale(200)), true, ImGuiWindowFlags_HorizontalScrollbar)) {
@@ -379,13 +379,13 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
                     AlienImGui::ShowPreviewDescription(previewDesc, _genomeZoom, selectedNodeDummy);
                 }
                 ImGui::EndChild();
-                if (AlienImGui::Button("Edit")) {
+                if (AlienImGui::Button("编辑")) {
                     GenomeEditorWindow::get().openTab(GenomeDescriptionService::get().convertBytesToDescription(desc.genome));
                 }
 
                 ImGui::SameLine();
-                if (AlienImGui::Button(AlienImGui::ButtonParameters().buttonText("Inject from editor").textWidth(ImGui::GetContentRegionAvail().x))) {
-                    printOverlayMessage("Genome injected");
+                if (AlienImGui::Button(AlienImGui::ButtonParameters().buttonText("注射编辑器中选中的基因组").textWidth(ImGui::GetContentRegionAvail().x))) {
+                    printOverlayMessage("基因组已注射");
                     desc.genome = GenomeDescriptionService::get().convertDescriptionToBytes(GenomeEditorWindow::get().getCurrentGenome());
                     if constexpr (std::is_same<Description, ConstructorDescription>()) {
                         desc.genomeCurrentNodeIndex = 0;
@@ -395,11 +395,11 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
                 ImGui::TreePop();
             }
 
-            if (ImGui::TreeNodeEx("Properties (entire genome)", TreeNodeFlags)) {
+            if (ImGui::TreeNodeEx("属性（整个基因组）", TreeNodeFlags)) {
                 auto numNodes = toInt(GenomeDescriptionService::get().getNumNodesRecursively(desc.genome, true));
                 AlienImGui::InputInt(
                     AlienImGui::InputIntParameters()
-                        .name("Number of cells")
+                        .name("细胞数量")
                         .textWidth(GenomeTabTextWidth)
                         .readOnly(true)
                         .tooltip(Const::GenomeNumCellsRecursivelyTooltip),
@@ -408,25 +408,25 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
                 auto numBytes = toInt(desc.genome.size());
                 AlienImGui::InputInt(
                     AlienImGui::InputIntParameters()
-                        .name("Bytes")
+                        .name("比特")
                         .textWidth(GenomeTabTextWidth)
                         .readOnly(true)
                         .tooltip(Const::GenomeBytesTooltip),
                     numBytes);
 
                 AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Generation").textWidth(GenomeTabTextWidth).tooltip(Const::GenomeGenerationTooltip),
+                    AlienImGui::InputIntParameters().name("代际").textWidth(GenomeTabTextWidth).tooltip(Const::GenomeGenerationTooltip),
                     desc.genomeGeneration);
                 ImGui::TreePop();
             }
 
-            if (ImGui::TreeNodeEx("Properties (principal genome part)", TreeNodeFlags)) {
+            if (ImGui::TreeNodeEx("属性（主基因组）", TreeNodeFlags)) {
 
                 auto genomeDesc = GenomeDescriptionService::get().convertBytesToDescription(desc.genome);
                 auto numBranches= genomeDesc.header.numBranches;
                 AlienImGui::InputInt(
                     AlienImGui::InputIntParameters()
-                        .name("Number of branches")
+                        .name("分支的数量")
                         .textWidth(GenomeTabTextWidth)
                         .readOnly(true)
                         .tooltip(Const::GenomeNumBranchesTooltip),
@@ -435,7 +435,7 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
                 auto numRepetitions = genomeDesc.header.numRepetitions;
                 AlienImGui::InputInt(
                     AlienImGui::InputIntParameters()
-                        .name("Repetitions per branch")
+                        .name("每个分支的重复次数")
                         .textWidth(GenomeTabTextWidth)
                         .infinity(true)
                         .readOnly(true)
@@ -445,7 +445,7 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
                 auto numNodes = toInt(genomeDesc.cells.size());
                 AlienImGui::InputInt(
                     AlienImGui::InputIntParameters()
-                        .name("Cells per repetition")
+                        .name("每个重复的细胞数量")
                         .textWidth(GenomeTabTextWidth)
                         .readOnly(true)
                         .tooltip(Const::GenomeNumCellsTooltip),
@@ -454,17 +454,17 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
                 if constexpr (std::is_same<Description, ConstructorDescription>()) {
                     AlienImGui::InputInt(
                         AlienImGui::InputIntParameters()
-                            .name("Current branch index")
+                            .name("当前分支的索引")
                             .textWidth(GenomeTabTextWidth).tooltip(Const::GenomeCurrentBranchTooltip),
                         desc.currentBranch);
                     AlienImGui::InputInt(
                         AlienImGui::InputIntParameters()
-                            .name("Current repetition index")
+                            .name("当前重复次数的索引")
                             .textWidth(GenomeTabTextWidth)
                             .tooltip(Const::GenomeCurrentRepetitionTooltip),
                         desc.genomeCurrentRepetition);
                     AlienImGui::InputInt(
-                        AlienImGui::InputIntParameters().name("Current cell index").textWidth(GenomeTabTextWidth).tooltip(Const::GenomeCurrentCellTooltip),
+                        AlienImGui::InputIntParameters().name("当前细胞索引").textWidth(GenomeTabTextWidth).tooltip(Const::GenomeCurrentCellTooltip),
                         desc.genomeCurrentNodeIndex);
                 }
                 ImGui::TreePop();
@@ -477,11 +477,11 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
 
 void _InspectorWindow::processCellMetadataTab(CellDescription& cell)
 {
-    if (ImGui::BeginTabItem("Annotation", nullptr, ImGuiTabItemFlags_None)) {
+    if (ImGui::BeginTabItem("注释", nullptr, ImGuiTabItemFlags_None)) {
         if (ImGui::BeginChild("##", ImVec2(0, 0), false, 0)) {
-            AlienImGui::InputText(AlienImGui::InputTextParameters().hint("Name").textWidth(0), cell.metadata.name);
+            AlienImGui::InputText(AlienImGui::InputTextParameters().hint("学名").textWidth(0), cell.metadata.name);
 
-            AlienImGui::InputTextMultiline(AlienImGui::InputTextMultilineParameters().hint("Notes").textWidth(0).height(100), cell.metadata.description);
+            AlienImGui::InputTextMultiline(AlienImGui::InputTextMultilineParameters().hint("笔记").textWidth(0).height(100), cell.metadata.description);
         }
         ImGui::EndChild();
         ImGui::EndTabItem();
@@ -490,23 +490,23 @@ void _InspectorWindow::processCellMetadataTab(CellDescription& cell)
 
 void _InspectorWindow::processNerveContent(NerveDescription& nerve)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
 
         bool pulseGeneration = nerve.pulseMode > 0;
-        if (AlienImGui::Checkbox(AlienImGui::CheckboxParameters().name("Generate pulses").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNerveGeneratePulsesTooltip), pulseGeneration)) {
+        if (AlienImGui::Checkbox(AlienImGui::CheckboxParameters().name("生成神经脉冲").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNerveGeneratePulsesTooltip), pulseGeneration)) {
             nerve.pulseMode = pulseGeneration ? 1 : 0;
         }
         if (pulseGeneration) {
-            AlienImGui::InputInt(AlienImGui::InputIntParameters().name("Pulse interval").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNervePulseIntervalTooltip), nerve.pulseMode);
+            AlienImGui::InputInt(AlienImGui::InputIntParameters().name("神经脉冲间隔").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNervePulseIntervalTooltip), nerve.pulseMode);
             bool alternation = nerve.alternationMode > 0;
             if (AlienImGui::Checkbox(
-                    AlienImGui::CheckboxParameters().name("Alternating pulses").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNerveAlternatingPulsesTooltip),
+                    AlienImGui::CheckboxParameters().name("交替脉冲").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNerveAlternatingPulsesTooltip),
                     alternation)) {
                 nerve.alternationMode = alternation ? 1 : 0;
             }
             if (alternation) {
                 AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Pulses per phase").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNervePulsesPerPhaseTooltip),
+                    AlienImGui::InputIntParameters().name("每个阶段的脉冲数").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeNervePulsesPerPhaseTooltip),
                     nerve.alternationMode);
             }
         }
@@ -516,7 +516,7 @@ void _InspectorWindow::processNerveContent(NerveDescription& nerve)
 
 void _InspectorWindow::processNeuronContent(NeuronDescription& neuron)
 {
-    if (ImGui::TreeNodeEx("Neural network", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("神经网络", TreeNodeFlags)) {
         AlienImGui::NeuronSelection(
             AlienImGui::NeuronSelectionParameters().rightMargin(0), neuron.weights, neuron.biases, neuron.activationFunctions);
         ImGui::TreePop();
@@ -525,38 +525,38 @@ void _InspectorWindow::processNeuronContent(NeuronDescription& neuron)
 
 void _InspectorWindow::processConstructorContent(ConstructorDescription& constructor)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         int constructorMode = constructor.activationMode == 0 ? 0 : 1;
         if (AlienImGui::Combo(
                 AlienImGui::ComboParameters()
-                    .name("Activation mode")
+                    .name("激活模型")
                     .textWidth(CellFunctionTextWidth)
-                    .values({"Manual", "Automatic"})
+                    .values({"手动", "自动"})
                     .tooltip(Const::GenomeConstructorActivationModeTooltip),
                 constructorMode)) {
             constructor.activationMode = constructorMode;
         }
         if (constructorMode == 1) {
             AlienImGui::InputInt(
-                AlienImGui::InputIntParameters().name("Interval").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeConstructorIntervalTooltip),
+                AlienImGui::InputIntParameters().name("间隔").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeConstructorIntervalTooltip),
                 constructor.activationMode);
         }
         AlienImGui::InputInt(
             AlienImGui::InputIntParameters()
-                .name("Offspring activation time")
+                .name("后代激活时间")
                 .textWidth(CellFunctionTextWidth)
                 .tooltip(Const::GenomeConstructorOffspringActivationTime),
             constructor.constructionActivationTime);
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Construction angle #1")
+                .name("构筑角度 #1")
                 .textWidth(CellFunctionTextWidth)
                 .format("%.1f")
                 .tooltip(Const::GenomeConstructorAngle1Tooltip),
             constructor.constructionAngle1);
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Construction angle #2")
+                .name("构筑角度 #2")
                 .textWidth(CellFunctionTextWidth)
                 .format("%.1f")
                 .tooltip(Const::GenomeConstructorAngle2Tooltip),
@@ -568,30 +568,30 @@ void _InspectorWindow::processConstructorContent(ConstructorDescription& constru
 
 void _InspectorWindow::processInjectorContent(InjectorDescription& injector)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("Mode")
+                .name("模式")
                 .textWidth(CellFunctionTextWidth)
-                .values({"Only empty cells", "All cells"})
+                .values({"仅空细胞", "所有细胞"})
                 .tooltip(Const::GenomeInjectorModeTooltip),
             injector.mode);
         ImGui::TreePop();
     }
-    if (ImGui::TreeNodeEx("Process data", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("执行数据", TreeNodeFlags)) {
         AlienImGui::InputInt(
-            AlienImGui::InputIntParameters().name("Counter").textWidth(CellFunctionTextWidth).tooltip(Const::CellInjectorCounterTooltip), injector.counter);
+            AlienImGui::InputIntParameters().name("计时器").textWidth(CellFunctionTextWidth).tooltip(Const::CellInjectorCounterTooltip), injector.counter);
         ImGui::TreePop();
     }
 }
 
 void _InspectorWindow::processAttackerContent(AttackerDescription& attacker)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("Energy distribution")
-                .values({"Connected cells", "Transmitters and Constructors"}).tooltip(Const::GenomeAttackerEnergyDistributionTooltip)
+                .name("能量传输")
+                .values({"连接的细胞", "传输器和构筑器"}).tooltip(Const::GenomeAttackerEnergyDistributionTooltip)
                 .textWidth(CellFunctionTextWidth),
             attacker.mode);
         ImGui::TreePop();
@@ -600,11 +600,11 @@ void _InspectorWindow::processAttackerContent(AttackerDescription& attacker)
 
 void _InspectorWindow::processDefenderContent(DefenderDescription& defender)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("Mode")
-                .values({"Anti-attacker", "Anti-injector"})
+                .name("模式")
+                .values({"反攻击器", "反注射器"})
                 .textWidth(CellFunctionDefenderWidth)
                 .tooltip(Const::GenomeDefenderModeTooltip),
             defender.mode);
@@ -614,11 +614,11 @@ void _InspectorWindow::processDefenderContent(DefenderDescription& defender)
 
 void _InspectorWindow::processTransmitterContent(TransmitterDescription& transmitter)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("Energy distribution")
-                .values({"Connected cells", "Transmitters and Constructors"})
+                .name("能量传输")
+                .values({"连接的细胞", "传输器和构筑器"})
                 .tooltip(Const::GenomeTransmitterEnergyDistributionTooltip)
                 .textWidth(CellFunctionTextWidth),
             transmitter.mode);
@@ -628,11 +628,11 @@ void _InspectorWindow::processTransmitterContent(TransmitterDescription& transmi
 
 void _InspectorWindow::processMuscleContent(MuscleDescription& muscle)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("Mode")
-                .values({"Movement to sensor target", "Expansion and contraction", "Bending"})
+                .name("模式")
+                .values({"朝感知到的细胞移动", "扩张和伸缩", "弯曲"})
                 .textWidth(CellFunctionTextWidth)
                 .tooltip(Const::GenomeMuscleModeTooltip),
             muscle.mode);
@@ -642,43 +642,43 @@ void _InspectorWindow::processMuscleContent(MuscleDescription& muscle)
 
 void _InspectorWindow::processSensorContent(SensorDescription& sensor)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::ComboOptionalColor(
-            AlienImGui::ComboColorParameters().name("Scan color").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeSensorScanColorTooltip), sensor.restrictToColor);
+            AlienImGui::ComboColorParameters().name("扫描颜色").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeSensorScanColorTooltip), sensor.restrictToColor);
 
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("Scan mutants")
-                .values({"None", "Same mutants", "Other mutants", "Free cells", "Handcrafted cells", "Less complex mutants", "More complex mutants"})
+                .name("扫描种群")
+                .values({"无", "同一种群", "其他种群", "离散细胞", "人工制作的细胞", "低级种群", "高级种群"})
                 .textWidth(CellFunctionTextWidth)
                 .tooltip(Const::SensorRestrictToMutantsTooltip),
             sensor.restrictToMutants);
         AlienImGui::InputFloat(
             AlienImGui::InputFloatParameters()
-                .name("Min density")
+                .name("最小密度")
                 .format("%.2f")
                 .step(0.05f)
                 .textWidth(CellFunctionTextWidth)
                 .tooltip(Const::GenomeSensorMinDensityTooltip),
             sensor.minDensity);
         AlienImGui::InputOptionalInt(
-            AlienImGui::InputIntParameters().name("Min range").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeSensorMinRangeTooltip), sensor.minRange);
+            AlienImGui::InputIntParameters().name("最小范围").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeSensorMinRangeTooltip), sensor.minRange);
         AlienImGui::InputOptionalInt(
-            AlienImGui::InputIntParameters().name("Max range").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeSensorMaxRangeTooltip), sensor.maxRange);
+            AlienImGui::InputIntParameters().name("最大范围").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeSensorMaxRangeTooltip), sensor.maxRange);
         ImGui::TreePop();
     }
 }
 
 void _InspectorWindow::processReconnectorContent(ReconnectorDescription& reconnector)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::ComboOptionalColor(
-            AlienImGui::ComboColorParameters().name("Restrict to color").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeReconnectorRestrictToColorTooltip),
+            AlienImGui::ComboColorParameters().name("根据颜色限制").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeReconnectorRestrictToColorTooltip),
             reconnector.restrictToColor);
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("Restrict to mutants")
-                .values({"None", "Same mutants", "Other mutants", "Free cells", "Handcrafted cells", "Less complex mutants", "More complex mutants"})
+                .name("根据种群限制")
+                .values({"无", "同一种群", "其他种群", "离散细胞", "人工制作的细胞", "低级种群", "高级种群"})
                 .textWidth(CellFunctionTextWidth)
                 .tooltip(Const::ReconnectorRestrictToMutantsTooltip),
             reconnector.restrictToMutants);
@@ -689,17 +689,17 @@ void _InspectorWindow::processReconnectorContent(ReconnectorDescription& reconne
 
 void _InspectorWindow::processDetonatorContent(DetonatorDescription& detonator)
 {
-    if (ImGui::TreeNodeEx("Properties", TreeNodeFlags)) {
+    if (ImGui::TreeNodeEx("属性", TreeNodeFlags)) {
         AlienImGui::Combo(
             AlienImGui::ComboParameters()
-                .name("State")
-                .values({"Ready", "Activated", "Exploded"})
+                .name("状态")
+                .values({"准备中", "活动中", "已爆炸"})
                 .textWidth(CellFunctionTextWidth)
                 .tooltip(Const::DetonatorStateTooltip),
             detonator.state);
 
         AlienImGui::InputInt(
-            AlienImGui::InputIntParameters().name("Countdown").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeDetonatorCountdownTooltip),
+            AlienImGui::InputIntParameters().name("倒计时").textWidth(CellFunctionTextWidth).tooltip(Const::GenomeDetonatorCountdownTooltip),
             detonator.countdown);
         ImGui::TreePop();
     }
@@ -709,7 +709,7 @@ void _InspectorWindow::processParticle(ParticleDescription particle)
 {
     auto origParticle = particle;
     auto energy = toFloat(particle.energy);
-    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("Energy").textWidth(ParticleContentTextWidth), energy);
+    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("能量").textWidth(ParticleContentTextWidth), energy);
 
     particle.energy = energy;
     if (particle != origParticle) {

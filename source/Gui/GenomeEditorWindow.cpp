@@ -527,11 +527,11 @@ void GenomeEditorWindow::processNode(
             AlienImGui::InputFloatParameters().name("能量").textWidth(ContentTextWidth).format("%.1f").tooltip(Const::GenomeEnergyTooltip), cell.energy);
         table.next();
         AlienImGui::InputInt(
-            AlienImGui::InputIntParameters().name("执行序号").textWidth(ContentTextWidth).tooltip(Const::GenomeExecutionNumberTooltip),
+            AlienImGui::InputIntParameters().name("执行编号").textWidth(ContentTextWidth).tooltip(Const::GenomeExecutionNumberTooltip),
             cell.executionOrderNumber);
         table.next();
         AlienImGui::InputOptionalInt(
-            AlienImGui::InputIntParameters().name("输入的执行序号").textWidth(ContentTextWidth).tooltip(Const::GenomeInputExecutionNumberTooltip),
+            AlienImGui::InputIntParameters().name("输入的执行编号").textWidth(ContentTextWidth).tooltip(Const::GenomeInputExecutionNumberTooltip),
             cell.inputExecutionOrderNumber);
         table.next();
         AlienImGui::Checkbox(
@@ -585,7 +585,7 @@ void GenomeEditorWindow::processNode(
             if (constructorMode == 1) {
                 table.next();
                 AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Interval").textWidth(ContentTextWidth).tooltip(Const::GenomeConstructorIntervalTooltip), constructor.mode);
+                    AlienImGui::InputIntParameters().name("间隔").textWidth(ContentTextWidth).tooltip(Const::GenomeConstructorIntervalTooltip), constructor.mode);
                 if (constructor.mode < 0) {
                     constructor.mode = 0;
                 }
