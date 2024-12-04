@@ -7,27 +7,27 @@
 #include "EditorModel.h"
 
 SelectionWindow::SelectionWindow()
-    : AlienWindow("Selection", "windows.selection", true)
+    : AlienWindow("所选项", "windows.selection", true)
 {}
 
 void SelectionWindow::processIntern()
 {
     auto selection = EditorModel::get().getSelectionShallowData();
-    ImGui::Text("Cells");
+    ImGui::Text("细胞数量");
     ImGui::PushFont(StyleRepository::get().getLargeFont());
     ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
     ImGui::TextUnformatted(StringHelper::format(selection.numCells).c_str());
     ImGui::PopStyleColor();
     ImGui::PopFont();
 
-    ImGui::Text("Connected cells");
+    ImGui::Text("连接的细胞数量");
     ImGui::PushFont(StyleRepository::get().getLargeFont());
     ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
     ImGui::TextUnformatted(StringHelper::format(selection.numClusterCells).c_str());
     ImGui::PopStyleColor();
     ImGui::PopFont();
 
-    ImGui::Text("Energy particles");
+    ImGui::Text("能量粒子细胞数量");
     ImGui::PushFont(StyleRepository::get().getLargeFont());
     ImGui::PushStyleColor(ImGuiCol_Text, Const::TextDecentColor);
     ImGui::TextUnformatted(StringHelper::format(selection.numParticles).c_str());
