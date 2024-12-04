@@ -31,7 +31,7 @@ void GpuSettingsDialog::shutdownIntern()
 }
 
 GpuSettingsDialog::GpuSettingsDialog()
-    : AlienDialog("CUDA settings")
+    : AlienDialog("CUDA设置")
 {}
 
 void GpuSettingsDialog::processIntern()
@@ -45,20 +45,19 @@ void GpuSettingsDialog::processIntern()
             .name("Blocks")
             .textWidth(RightColumnWidth)
             .defaultValue(origGpuSettings.numBlocks)
-            .tooltip("This values specifies the number of CUDA thread blocks. If you are using a high-end graphics card, you can try to increase the number of "
-                     "blocks."),
+            .tooltip("此值指定 CUDA 线程块（blocks）的数量。如果您使用的是高端显卡，可以尝试增加块的数量。"),
         gpuSettings.numBlocks);
 
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();
 
-    if (AlienImGui::Button("Adopt")) {
+    if (AlienImGui::Button("确认")) {
         close();
     }
     ImGui::SetItemDefaultFocus();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
         gpuSettings = _gpuSettings;
     }
