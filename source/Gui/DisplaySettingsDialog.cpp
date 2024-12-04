@@ -24,14 +24,14 @@ void DisplaySettingsDialog::initIntern()
 }
 
 DisplaySettingsDialog::DisplaySettingsDialog()
-    : AlienDialog("Display settings")
+    : AlienDialog("显示设置")
 {}
 
 void DisplaySettingsDialog::processIntern()
 {
     auto isFullscreen = !WindowController::get().isWindowedMode();
 
-    if (AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Full screen"), isFullscreen)) {
+    if (AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("全屏"), isFullscreen)) {
         if (isFullscreen) {
             setFullscreen(_selectionIndex);
         } else {
@@ -43,7 +43,7 @@ void DisplaySettingsDialog::processIntern()
     ImGui::BeginDisabled(!isFullscreen);
 
     if (AlienImGui::Combo(
-            AlienImGui::ComboParameters().name("Resolution").textWidth(RightColumnWidth).defaultValue(_origSelectionIndex).values(_videoModeStrings),
+            AlienImGui::ComboParameters().name("分辨率").textWidth(RightColumnWidth).defaultValue(_origSelectionIndex).values(_videoModeStrings),
             _selectionIndex)) {
 
         setFullscreen(_selectionIndex);
@@ -53,12 +53,12 @@ void DisplaySettingsDialog::processIntern()
     auto fps = WindowController::get().getFps();
     if (AlienImGui::SliderInt(
             AlienImGui::SliderIntParameters()
-                .name("Frames per second")
+                .name("每秒帧数（FPS）")
                 .textWidth(RightColumnWidth)
                 .defaultValue(&_origFps)
                 .min(20)
                 .max(100)
-                .tooltip("A high frame rate leads to a greater GPU workload for rendering and thus lowers the simulation speed (time steps per second)."),
+                .tooltip("高帧率会增加 GPU 渲染的工作负载，从而降低模拟速度（每秒时间步数）。"),
             &fps)) {
         WindowController::get().setFps(fps);
     }
@@ -66,13 +66,13 @@ void DisplaySettingsDialog::processIntern()
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();
 
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         close();
     }
     ImGui::SetItemDefaultFocus();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
         WindowController::get().setMode(_origMode);
         WindowController::get().setFps(_origFps);
@@ -133,7 +133,7 @@ namespace
 std::vector<std::string> DisplaySettingsDialog::createVideoModeStrings() const
 {
     std::vector<std::string> result;
-    result.emplace_back("Desktop");
+    result.emplace_back("桌面");
     for (int i = 0; i < _videoModesCount; ++i) {
         result.emplace_back(createVideoModeString(_videoModes[i]));
     }
