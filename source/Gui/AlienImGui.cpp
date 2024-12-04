@@ -163,7 +163,7 @@ bool AlienImGui::InputInt(InputIntParameters const& parameters, int& value, bool
         ImGuiInputTextFlags flags = parameters._readOnly ? ImGuiInputTextFlags_ReadOnly : ImGuiInputTextFlags_None;
         result |= ImGui::InputInt(("##" + parameters._name).c_str(), &value, 1, 100, flags);
     } else {
-        std::string text = "infinity";
+        std::string text = "无限";
         result |= InputText(InputTextParameters().readOnly(true).width(inputWidth).textWidth(0), text);
     }
     if (parameters._defaultValue) {
@@ -668,7 +668,7 @@ void AlienImGui::InputColorTransition(InputColorTransitionParameters const& para
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - width);
     std::string format = "%d";
     if (parameters._infinity && transitionAge == Infinity<int>::value) {
-        format = "infinity";
+        format = "无限";
         transitionAge = parameters._max;
     }
     ImGui::SliderInt(
@@ -679,7 +679,7 @@ void AlienImGui::InputColorTransition(InputColorTransitionParameters const& para
         format.c_str(),
         parameters._logarithmic ? ImGuiSliderFlags_Logarithmic : 0);
     if (parameters._infinity && transitionAge == parameters._max) {
-        format = "infinity";
+        format = "无限";
         transitionAge = Infinity<int>::value;
     }
     if (parameters._defaultTransitionAge && parameters._defaultTargetColor) {
@@ -1820,7 +1820,7 @@ namespace
     std::string toString(T const& value, std::string const& format, bool allowInfinity = false, bool tryMaintainFormat = false)
     {
         if (allowInfinity && value == Infinity<T>::value) {
-            return "infinity";
+            return "无限";
         }
         if (tryMaintainFormat) {
             return format;

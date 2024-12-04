@@ -26,7 +26,7 @@ namespace
 }
 
 AutosaveWindow::AutosaveWindow()
-    : AlienWindow("Autosave", "windows.autosave", false)
+    : AlienWindow("自动保存", "windows.autosave", false)
 {}
 
 void AutosaveWindow::initIntern(SimulationFacade simulationFacade, PersisterFacade persisterFacade)
@@ -93,7 +93,7 @@ void AutosaveWindow::processIntern()
 
         validateAndCorrect();
     } catch (std::runtime_error const& error) {
-        GenericMessageDialog::get().information("Error", error.what());
+        GenericMessageDialog::get().information("错误", error.what());
     }
 }
 
@@ -113,22 +113,22 @@ void AutosaveWindow::processToolbar()
         onCreateSavepoint(false);
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Create save point");
+    AlienImGui::Tooltip("创建新的保存点");
 
     ImGui::SameLine();
     ImGui::BeginDisabled(!static_cast<bool>(_selectedEntry) || (_selectedEntry->state != SavepointState_Persisted && !_selectedEntry->requestId.empty()));
     if (AlienImGui::ToolbarButton(ICON_FA_MINUS)) {
         onDeleteSavepoint(_selectedEntry);
     }
-    AlienImGui::Tooltip("Delete save point");
+    AlienImGui::Tooltip("删除保存点");
     ImGui::EndDisabled();
 
     ImGui::SameLine();
     ImGui::BeginDisabled(!_savepointTable.has_value() || _savepointTable->isEmpty());
     if (AlienImGui::ToolbarButton(ICON_FA_BROOM)) {
-        GenericMessageDialog::get().yesNo("Delete", "Do you really want to delete all savepoints?", [&]() { scheduleCleanup(); });
+        GenericMessageDialog::get().yesNo("删除", "你是否真的想要删除所有的保存点？", [&]() { scheduleCleanup(); });
     }
-    AlienImGui::Tooltip("Delete all save points");
+    AlienImGui::Tooltip("删除所有的保存点");
     ImGui::EndDisabled();
 
     AlienImGui::Separator();
@@ -141,17 +141,17 @@ void AutosaveWindow::processHeader()
 void AutosaveWindow::processTable()
 {
     if (!_savepointTable.has_value()) {
-        AlienImGui::Text("Error: Savepoint files could not be read or created in the specified directory.");
+        AlienImGui::Text("错误：保存点文件无法被读取或创建在指定的文件夹中。");
         return;
     }
     static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_RowBg
         | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_NoBordersInBody | ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollX;
 
-    if (ImGui::BeginTable("Save files", 4, flags, ImVec2(0, 0), 0.0f)) {
-        ImGui::TableSetupColumn("Simulation", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
-        ImGui::TableSetupColumn("Timestamp", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
-        ImGui::TableSetupColumn("Time step", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(100.0f));
-        ImGui::TableSetupColumn("Peak value", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(200.0f));
+    if (ImGui::BeginTable("保存文件", 4, flags, ImVec2(0, 0), 0.0f)) {
+        ImGui::TableSetupColumn("模拟器", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
+        ImGui::TableSetupColumn("时间戳", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
+        ImGui::TableSetupColumn("步数", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(100.0f));
+        ImGui::TableSetupColumn("峰值", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(200.0f));
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableHeadersRow();
 
@@ -168,14 +168,14 @@ void AutosaveWindow::processTable()
                 // project name
                 ImGui::TableNextColumn();
                 if (entry->state == SavepointState_InQueue) {
-                    AlienImGui::Text("In queue");
+                    AlienImGui::Text("在队列中");
                 }
                 if (entry->state == SavepointState_InProgress) {
-                    AlienImGui::Text("In progress");
+                    AlienImGui::Text("在进程中");
                 }
                 if (entry->state == SavepointState_Persisted) {
                     auto triggerLoadSavepoint = AlienImGui::ActionButton(AlienImGui::ActionButtonParameters().buttonText(ICON_FA_DOWNLOAD));
-                    AlienImGui::Tooltip("Load save point", false);
+                    AlienImGui::Tooltip("载入保存点", false);
                     if (triggerLoadSavepoint) {
                         onLoadSavepoint(entry);
                     }
@@ -184,7 +184,7 @@ void AutosaveWindow::processTable()
                     AlienImGui::Text(entry->name);
                 }
                 if (entry->state == SavepointState_Error) {
-                    AlienImGui::Text("Error");
+                    AlienImGui::Text("错误");
                 }
 
                 ImGui::SameLine();
@@ -237,11 +237,11 @@ void AutosaveWindow::processSettings()
         AlienImGui::Separator();
     }
 
-    _settingsOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Settings").highlighted(true).defaultOpen(_settingsOpen));
+    _settingsOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("设置").highlighted(true).defaultOpen(_settingsOpen));
     if (_settingsOpen) {
         if (ImGui::BeginChild("##autosaveSettings", {scale(0), 0})) {
             if (AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Autosave interval (min)").textWidth(RightColumnWidth).defaultValue(_origAutosaveInterval),
+                    AlienImGui::InputIntParameters().name("每多少分钟自动保存").textWidth(RightColumnWidth).defaultValue(_origAutosaveInterval),
                     _autosaveInterval,
                     &_autosaveEnabled)) {
                 if (_autosaveEnabled) {
@@ -250,41 +250,39 @@ void AutosaveWindow::processSettings()
             }
             if (AlienImGui::Switcher(
                     AlienImGui::SwitcherParameters()
-                        .name("Catch peaks")
+                        .name("捕捉峰值")
                         .textWidth(RightColumnWidth)
                         .defaultValue(_origCatchPeaks)
                         .disabled(!_autosaveEnabled)
                         .values({
-                            "None",
-                            "Genome complexity variance",
+                            "无",
+                            "基因组复杂度方差",
                         })
-                        .tooltip("If activated, the simulation is monitored continuously. When the autosave interval expires, the time at which the selected "
-                                 "measured value was particularly high is saved."),
+                        .tooltip("如果激活，此模拟将被持续监控。当自动保存间隔到期时，将保存所选测量值特别高的时间点。"),
                     _catchPeaks)) {
                 _peakDeserializedSimulation->setDeserializedSimulation(DeserializedSimulation());
             }
 
             if (AlienImGui::InputText(
                     AlienImGui::InputTextParameters()
-                        .name("Directory")
+                        .name("文件夹目录")
                         .textWidth(RightColumnWidth)
                         .defaultValue(_origDirectory)
                         .folderButton(true)
-                        .tooltip("The directory where the savepoints are stored can be chosen here. This allows the savepoints to be created in a separate "
-                                 "directory for a simulation run. The savepoints are named using the current time step."),
+                        .tooltip("可以在这里选择保存点存储的目录。这允许在单独的目录中为模拟运行创建保存点。保存点的命名使用当前的步数。"),
                     _directory)) {
                 updateSavepointTableFromFile();
             }
             AlienImGui::Switcher(
                 AlienImGui::SwitcherParameters()
-                    .name("Mode")
-                    .values({"Limited save files", "Unlimited save files"})
+                    .name("模式")
+                    .values({"限制保存文件", "不限制保存文件"})
                     .textWidth(RightColumnWidth)
                     .defaultValue(_origSaveMode),
                 _saveMode);
             if (_saveMode == SaveMode_Circular) {
                 AlienImGui::InputInt(
-                    AlienImGui::InputIntParameters().name("Number of files").textWidth(RightColumnWidth).defaultValue(_origNumberOfFiles), _numberOfFiles);
+                    AlienImGui::InputIntParameters().name("文件数量").textWidth(RightColumnWidth).defaultValue(_origNumberOfFiles), _numberOfFiles);
             }
         }
         ImGui::EndChild();
@@ -296,15 +294,15 @@ void AutosaveWindow::processStatusBar()
 {
     std::vector<std::string> statusItems;
     if (!_savepointTable.has_value()) {
-        statusItems.emplace_back("No valid directory");
+        statusItems.emplace_back("不是有效的文件夹");
     } else if (!_autosaveEnabled) {
-        statusItems.emplace_back("No autosave scheduled");
+        statusItems.emplace_back("没有规划中的自动保存");
     } else {
         auto secondsSinceLastAutosave = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - _lastAutosaveTimepoint);
-        statusItems.emplace_back("Next autosave in " + StringHelper::format(std::chrono::seconds(_autosaveInterval * 60) - secondsSinceLastAutosave));
+        statusItems.emplace_back("下一个自动保存在" + StringHelper::format(std::chrono::seconds(_autosaveInterval * 60) - secondsSinceLastAutosave));
     }
     if (_savepointTable.has_value()) {
-        statusItems.emplace_back(std::to_string(_savepointTable->getSize()) + " save points");
+        statusItems.emplace_back(std::to_string(_savepointTable->getSize()) + "保存点");
     }
 
     AlienImGui::StatusBar(statusItems);
@@ -312,7 +310,7 @@ void AutosaveWindow::processStatusBar()
 
 void AutosaveWindow::onCreateSavepoint(bool usePeakSimulation)
 {
-    printOverlayMessage("Creating save point ...");
+    printOverlayMessage("创建保存点...");
 
     if (_saveMode == SaveMode_Circular) {
         auto nonPersistentEntries = SavepointTableService::get().truncate(_savepointTable.value(), _numberOfFiles - 1);
@@ -339,7 +337,7 @@ void AutosaveWindow::onCreateSavepoint(bool usePeakSimulation)
 
 void AutosaveWindow::onDeleteSavepoint(SavepointEntry const& entry)
 {
-    printOverlayMessage("Deleting save point ...");
+    printOverlayMessage("删除保存点...");
 
     SavepointTableService::get().deleteEntry(_savepointTable.value(), entry);
 
@@ -357,7 +355,7 @@ void AutosaveWindow::onLoadSavepoint(SavepointEntry const& entry)
 void AutosaveWindow::processCleanup()
 {
     if (_scheduleCleanup) {
-        printOverlayMessage("Cleaning up save points ...");
+        printOverlayMessage("清除保存点...");
 
         auto nonPersistentEntries = SavepointTableService::get().truncate(_savepointTable.value(), 0);
         scheduleDeleteNonPersistentSavepoint(nonPersistentEntries);
@@ -395,7 +393,7 @@ void AutosaveWindow::processAutomaticSavepoints()
                             .center = Viewport::get().getCenterInWorldPos()});
                 },
                 [&](auto const& requestId) {},
-                [](auto const& errors) { GenericMessageDialog::get().information("Error", errors); });
+                [](auto const& errors) { GenericMessageDialog::get().information("错误", errors); });
             _lastPeakTimepoint = std::chrono::steady_clock::now();
         }
     }
@@ -462,7 +460,7 @@ void AutosaveWindow::updateSavepoint(int row)
                     newEntry->name = data.projectName;
                     newEntry->filename = data.filename;
                     newEntry->peak = StringHelper::format(toFloat(sumColorVector(data.rawStatisticsData.timeline.timestep.genomeComplexityVariance)), 2);
-                    newEntry->peakType = "genome complexity variance";
+                    newEntry->peakType = "基因组复杂度方差";
                 }
             }
             if (requestState.value() == PersisterRequestState::Error) {
