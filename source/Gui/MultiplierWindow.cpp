@@ -14,8 +14,8 @@
 namespace
 {
     auto const ModeText = std::unordered_map<MultiplierMode, std::string>{
-        {MultiplierMode_Grid, "Grid multiplier"},
-        {MultiplierMode_Random, "Random multiplier"},
+        {MultiplierMode_Grid, "网格复制器"},
+        {MultiplierMode_Random, "随机复制器"},
     };
 
     auto const RightColumnWidth = 200.0f;
@@ -27,7 +27,7 @@ void MultiplierWindow::initIntern(SimulationFacade simulationFacade)
 }
 
 MultiplierWindow::MultiplierWindow()
-    : AlienWindow("Multiplier", "editors.multiplier", false)
+    : AlienWindow("复制器", "editors.multiplier", false)
 {}
 
 void MultiplierWindow::processIntern()
@@ -56,7 +56,7 @@ void MultiplierWindow::processIntern()
     ImGui::BeginDisabled(
         EditorModel::get().isSelectionEmpty()
         || (_selectionDataAfterMultiplication && _selectionDataAfterMultiplication->compareNumbers(EditorModel::get().getSelectionShallowData())));
-    if (AlienImGui::Button("Build")) {
+    if (AlienImGui::Button("构筑")) {
         onBuild();
     }
     ImGui::EndDisabled();
@@ -65,7 +65,7 @@ void MultiplierWindow::processIntern()
     ImGui::BeginDisabled(
         EditorModel::get().isSelectionEmpty() || !_selectionDataAfterMultiplication
         || !_selectionDataAfterMultiplication->compareNumbers(EditorModel::get().getSelectionShallowData()));
-    if (AlienImGui::Button("Undo")) {
+    if (AlienImGui::Button("放弃执行")) {
         onUndo();
     }
     ImGui::EndDisabled();
@@ -75,62 +75,62 @@ void MultiplierWindow::processIntern()
 
 void MultiplierWindow::processGridPanel()
 {
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name(ICON_FA_ARROW_RIGHT " Number of copies").textWidth(RightColumnWidth), _gridParameters._horizontalNumber);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name(ICON_FA_ARROW_RIGHT "复制的数量").textWidth(RightColumnWidth), _gridParameters._horizontalNumber);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT " Distance").textWidth(RightColumnWidth).format("%.1f"),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT "距离").textWidth(RightColumnWidth).format("%.1f"),
         _gridParameters._horizontalDistance);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT " Angle increment").textWidth(RightColumnWidth).format("%.1f"),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT "角度增量").textWidth(RightColumnWidth).format("%.1f"),
         _gridParameters._horizontalAngleInc);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT " Velocity X increment").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT "速度 X 增量").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
         _gridParameters._horizontalVelXinc);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT " Velocity Y increment").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT "速度 Y 增量").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
         _gridParameters._horizontalVelYinc);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT " Angular velocity increment").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_RIGHT "角速度增量").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
         _gridParameters._horizontalAngularVelInc);
     AlienImGui::Separator();
-    AlienImGui::InputInt(AlienImGui::InputIntParameters().name(ICON_FA_ARROW_DOWN " Number of copies").textWidth(RightColumnWidth), _gridParameters._verticalNumber);
+    AlienImGui::InputInt(AlienImGui::InputIntParameters().name(ICON_FA_ARROW_DOWN "复制的数量").textWidth(RightColumnWidth), _gridParameters._verticalNumber);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN " Distance").textWidth(RightColumnWidth).format("%.1f"),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN "距离").textWidth(RightColumnWidth).format("%.1f"),
         _gridParameters._verticalDistance);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN " Angle increment").textWidth(RightColumnWidth).format("%.1f"),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN "角度增量").textWidth(RightColumnWidth).format("%.1f"),
         _gridParameters._verticalAngleInc);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN " Velocity X increment").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN "速度 X 增量").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
         _gridParameters._verticalVelXinc);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN " Velocity Y increment").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN "速度 Y 增量").textWidth(RightColumnWidth).format("%.2f").step(0.05f),
         _gridParameters._verticalVelYinc);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN " Angular velocity increment").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
+        AlienImGui::InputFloatParameters().name(ICON_FA_ARROW_DOWN "角速度增量").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
         _gridParameters._verticalAngularVelInc);
 }
 
 void MultiplierWindow::processRandomPanel()
 {
     AlienImGui::InputInt(
-        AlienImGui::InputIntParameters().name("Number of copies").textWidth(RightColumnWidth), _randomParameters._number);
-    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("Min angle").textWidth(RightColumnWidth).format("%.1f"), _randomParameters._minAngle);
-    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("Max angle").textWidth(RightColumnWidth).format("%.1f"), _randomParameters._maxAngle);
+        AlienImGui::InputIntParameters().name("复制的数量").textWidth(RightColumnWidth), _randomParameters._number);
+    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("最小角度").textWidth(RightColumnWidth).format("%.1f"), _randomParameters._minAngle);
+    AlienImGui::InputFloat(AlienImGui::InputFloatParameters().name("最大角度").textWidth(RightColumnWidth).format("%.1f"), _randomParameters._maxAngle);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name("Min velocity X").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._minVelX);
+        AlienImGui::InputFloatParameters().name("最小速度 X").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._minVelX);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name("Max velocity X").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._maxVelX);
+        AlienImGui::InputFloatParameters().name("最大速度 X").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._maxVelX);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name("Min velocity Y").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._minVelY);
+        AlienImGui::InputFloatParameters().name("最小速度 Y").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._minVelY);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name("Max velocity Y").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._maxVelY);
+        AlienImGui::InputFloatParameters().name("最大速度 Y").textWidth(RightColumnWidth).format("%.2f").step(0.05f), _randomParameters._maxVelY);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name("Min angular velocity").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
+        AlienImGui::InputFloatParameters().name("最小角速度").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
         _randomParameters._minAngularVel);
     AlienImGui::InputFloat(
-        AlienImGui::InputFloatParameters().name("Max angular velocity").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
+        AlienImGui::InputFloatParameters().name("最大角速度").textWidth(RightColumnWidth).format("%.1f").step(0.1f),
         _randomParameters._maxAngularVel);
-    AlienImGui::Checkbox(AlienImGui::CheckboxParameters().name("Overlapping check").textWidth(RightColumnWidth), _randomParameters._overlappingCheck);
+    AlienImGui::Checkbox(AlienImGui::CheckboxParameters().name("重叠检查").textWidth(RightColumnWidth), _randomParameters._overlappingCheck);
 }
 
 void MultiplierWindow::validateAndCorrect()
@@ -159,7 +159,7 @@ void MultiplierWindow::onBuild()
             auto result = DescriptionEditService::get().randomMultiply(
                 _origSelection, _randomParameters, _simulationFacade->getWorldSize(), std::move(data), overlappingCheckSuccessful);
             if (!overlappingCheckSuccessful) {
-                GenericMessageDialog::get().information("Random multiplication", "Non-overlapping copies could not be created.");
+                GenericMessageDialog::get().information("随机复制", "无法创建非重叠副本。");
             }
             return result;
         }
