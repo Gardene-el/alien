@@ -14,25 +14,25 @@ namespace
 }
 
 NetworkSettingsDialog::NetworkSettingsDialog()
-    : AlienDialog("Network settings")
+    : AlienDialog("网络设置")
 {}
 
 void NetworkSettingsDialog::processIntern()
 {
     AlienImGui::InputText(
-        AlienImGui::InputTextParameters().name("Blocks").defaultValue(_origServerAddress).name("Server address").textWidth(RightColumnWidth), _serverAddress);
+        AlienImGui::InputTextParameters().name("Blocks").defaultValue(_origServerAddress).name("服务器网址").textWidth(RightColumnWidth), _serverAddress);
 
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();
 
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确认")) {
         close();
         onChangeSettings();
     }
     ImGui::SetItemDefaultFocus();
 
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
 }
