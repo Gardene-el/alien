@@ -74,7 +74,7 @@ void SimulationParametersWindow::initIntern(SimulationFacade simulationFacade)
 }
 
 SimulationParametersWindow::SimulationParametersWindow()
-    : AlienWindow("Simulation parameters", "windows.simulation parameters", false)
+    : AlienWindow("模拟器参数集", "windows.simulation parameters", false)
 {}
 
 void SimulationParametersWindow::shutdownIntern()
@@ -135,13 +135,13 @@ void SimulationParametersWindow::processToolbar()
     if (AlienImGui::ToolbarButton(ICON_FA_FOLDER_OPEN)) {
         onOpenParameters();
     }
-    AlienImGui::Tooltip("Open simulation parameters from file");
+    AlienImGui::Tooltip("从文件中获取模拟器参数集");
 
     ImGui::SameLine();
     if (AlienImGui::ToolbarButton(ICON_FA_SAVE)) {
         onSaveParameters();
     }
-    AlienImGui::Tooltip("Save simulation parameters to file");
+    AlienImGui::Tooltip("保存模拟器参数集至文件");
 
     ImGui::SameLine();
     AlienImGui::ToolbarSeparator();
@@ -149,19 +149,19 @@ void SimulationParametersWindow::processToolbar()
     ImGui::SameLine();
     if (AlienImGui::ToolbarButton(ICON_FA_COPY)) {
         _copiedParameters = _simulationFacade->getSimulationParameters();
-        printOverlayMessage("Simulation parameters copied");
+        printOverlayMessage("模拟器参数集已复制");
     }
-    AlienImGui::Tooltip("Copy simulation parameters");
+    AlienImGui::Tooltip("复制模拟器参数集");
 
     ImGui::SameLine();
     ImGui::BeginDisabled(!_copiedParameters);
     if (AlienImGui::ToolbarButton(ICON_FA_PASTE)) {
         _simulationFacade->setSimulationParameters(*_copiedParameters);
         _simulationFacade->setOriginalSimulationParameters(*_copiedParameters);
-        printOverlayMessage("Simulation parameters pasted");
+        printOverlayMessage("模拟器参数集已粘贴");
     }
     ImGui::EndDisabled();
-    AlienImGui::Tooltip("Paste simulation parameters");
+    AlienImGui::Tooltip("粘贴模拟器参数集");
 
     AlienImGui::Separator();
 }
@@ -183,7 +183,7 @@ void SimulationParametersWindow::processTabWidget()
                 if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip)) {
                     scheduleAppendTab = true;
                 }
-                AlienImGui::Tooltip("Add parameter zone");
+                AlienImGui::Tooltip("增加特别参数区");
             }
 
             processBase();
@@ -212,7 +212,7 @@ void SimulationParametersWindow::processTabWidget()
 
 void SimulationParametersWindow::processBase()
 {
-    if (ImGui::BeginTabItem("Base", nullptr, _focusBaseTab ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None)) {
+    if (ImGui::BeginTabItem("基础", nullptr, _focusBaseTab ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None)) {
         auto parameters = _simulationFacade->getSimulationParameters();
         auto origParameters = _simulationFacade->getOriginalSimulationParameters();
         auto lastParameters = parameters;
@@ -222,10 +222,10 @@ void SimulationParametersWindow::processBase()
             /**
              * General
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("General"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("通用"))) {
                 AlienImGui::InputText(
                     AlienImGui::InputTextParameters()
-                        .name("Project name")
+                        .name("模拟器名称")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.projectName),
                     parameters.projectName,
@@ -236,98 +236,98 @@ void SimulationParametersWindow::processBase()
             /**
              * Rendering
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Visualization"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("可视化"))) {
                 AlienImGui::ColorButtonWithPicker(
-                    AlienImGui::ColorButtonWithPickerParameters().name("Background color").textWidth(RightColumnWidth).defaultValue(origParameters.backgroundColor),
+                    AlienImGui::ColorButtonWithPickerParameters().name("背景颜色").textWidth(RightColumnWidth).defaultValue(origParameters.backgroundColor),
                     parameters.backgroundColor,
                     _backupColor,
                     _savedPalette);
                 AlienImGui::Switcher(
                     AlienImGui::SwitcherParameters()
-                        .name("Primary cell coloring")
+                        .name("初步细胞染色设置")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.cellColoring)
                         .values(
-                            {"Energy",
-                             "Standard cell colors",
-                             "Mutants",
-                             "Mutants and cell functions",
-                             "Cell states",
-                             "Genome complexities",
-                             "Single cell function",
-                             "All cell functions"})
+                            {"能量程度",
+                             "标准细胞颜色",
+                             "基因代际",
+                             "基因代际和细胞功能",
+                             "细胞状态",
+                             "基因组复杂度",
+                             "单一细胞功能",
+                             "所有细胞功能"})
                         .tooltip(Const::ColoringParameterTooltip),
                     parameters.cellColoring);
                 if (parameters.cellColoring == CellColoring_CellFunction) {
                     AlienImGui::Switcher(
                         AlienImGui::SwitcherParameters()
-                            .name("Highlighted cell function")
+                            .name("高光细胞功能")
                             .textWidth(RightColumnWidth)
                             .defaultValue(origParameters.highlightedCellFunction)
                             .values(_cellFunctionStrings)
-                            .tooltip("The specific cell function type to be highlighted can be selected here."),
+                            .tooltip("在此所指定的细胞功能将被高光染色"),
                         parameters.highlightedCellFunction);
                 }
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Cell radius")
+                        .name("细胞染色范围")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(0.5f)
                         .defaultValue(&origParameters.cellRadius)
-                        .tooltip("Specifies the radius of the drawn cells in unit length."),
+                        .tooltip("指定一个单位的细胞将被染色的半径"),
                     &parameters.cellRadius);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Zoom level for cell activity")
+                        .name("可视细胞活动的缩放水平")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(32.0f)
                         .infinity(true)
                         .defaultValue(&origParameters.zoomLevelNeuronalActivity)
-                        .tooltip("The zoom level from which the neuronal activities become visible."),
+                        .tooltip("可观察到生物神经活动的缩放水平"),
                     &parameters.zoomLevelNeuronalActivity);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Attack visualization")
+                        .name("攻击可视化")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.attackVisualization)
-                        .tooltip("If activated, successful attacks of attacker cells are visualized."),
+                        .tooltip("如果启用，攻击器细胞发出的成功攻击将可视化。"),
                     parameters.attackVisualization);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Muscle movement visualization")
+                        .name("肌肉运动可视化")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.muscleMovementVisualization)
-                        .tooltip("If activated, the direction in which muscle cells are moving are visualized."),
+                        .tooltip("如果启用，肌肉细胞运动的方向将可视化."),
                     parameters.muscleMovementVisualization);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Borderless rendering")
+                        .name("无边际渲染")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.borderlessRendering)
-                        .tooltip("If activated, the simulation is rendered periodically in the view port."),
+                        .tooltip("如果启用，模拟器将在视口中无限重复渲染。"),
                     parameters.borderlessRendering);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Adaptive space grid")
+                        .name("自动空间网格划分")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.gridLines)
-                        .tooltip("Draws a suitable grid in the background depending on the zoom level."),
+                        .tooltip("根据缩放水平在背景中绘制合适大小的网格。"),
                     parameters.gridLines);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Mark reference domain")
+                        .name("标记实际模拟器区域")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.markReferenceDomain)
-                        .tooltip("Draws borders along the world before it repeats itself."),
+                        .tooltip("绘制包围世界的边界，在启用了无边际渲染的情况下好用。"),
                     parameters.markReferenceDomain);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Show radiation sources")
+                        .name("显示放射性粒子源")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.showRadiationSources)
-                        .tooltip("Draws red crosses in the center of radiation sources."),
+                        .tooltip("在放射性粒子源的中心绘制红十字以标记。"),
                     parameters.showRadiationSources);
                 AlienImGui::EndTreeNode();
             }
@@ -335,16 +335,15 @@ void SimulationParametersWindow::processBase()
             /**
              * Numerics
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Numerics"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("数值"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Time step size")
+                        .name("时序大小")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(1.0f)
                         .defaultValue(&origParameters.timestepSize)
-                        .tooltip(std::string("The time duration calculated in a single simulation step. Smaller values increase the accuracy of the simulation "
-                                             "while larger values can lead to numerical instabilities.")),
+                        .tooltip(std::string("在单次模拟步骤中计算的时间持续长度。较小的值可以提高模拟的精确度，而较大的值可能导致数值不稳定。")),
                     &parameters.timestepSize);
                 AlienImGui::EndTreeNode();
             }
@@ -352,17 +351,15 @@ void SimulationParametersWindow::processBase()
             /**
              * Physics: Motion
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Motion"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：运动"))) {
                 if (AlienImGui::Switcher(
                         AlienImGui::SwitcherParameters()
-                            .name("Motion type")
+                            .name("运动类型")
                             .textWidth(RightColumnWidth)
                             .defaultValue(origParameters.motionType)
-                            .values({"Fluid dynamics", "Collision-based"})
+                            .values({"流体动力", "基于碰撞"})
                             .tooltip(std::string(
-                                "The algorithm for the particle motions is defined here. If 'Fluid dynamics' is selected, an SPH fluid solver is used for the "
-                                "calculation of the forces. The particles then behave like (compressible) liquids or gases. The other option 'Collision-based' "
-                                "calculates the forces based on particle collisions and should be preferred for mechanical simulation with solids.")),
+                                "粒子运动的算法在这里定义。如果选择‘流体动力学’，则使用SPH流体求解器来计算力。此时，粒子会表现得像（可压缩的）液体或气体。另一个选项‘基于碰撞’则基于粒子碰撞计算力，适用于固体的机械模拟。")),
                         parameters.motionType)) {
                     if (parameters.motionType == MotionType_Fluid) {
                         parameters.motionData.fluidMotion = FluidMotion();
@@ -373,74 +370,72 @@ void SimulationParametersWindow::processBase()
                 if (parameters.motionType == MotionType_Fluid) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Smoothing length")
+                            .name("平滑尺度")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(3.0f)
                             .defaultValue(&origParameters.motionData.fluidMotion.smoothingLength)
-                            .tooltip(std::string("The smoothing length determines the region of influence of the neighboring particles for the calculation of "
-                                                 "density, pressure and viscosity. Values that are too small lead to numerical instabilities, while values that "
-                                                 "are too large cause the particles to drift apart.")),
+                            .tooltip(std::string("平滑长度决定了在计算密度、压力和粘度时邻近粒子的影响区域。过小的值会导致数值不稳定，而过大的值会导致粒子相互分离。")),
                         &parameters.motionData.fluidMotion.smoothingLength);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Pressure")
+                            .name("压力")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(0.3f)
                             .defaultValue(&origParameters.motionData.fluidMotion.pressureStrength)
-                            .tooltip(std::string("This parameter allows to control the strength of the pressure.")),
+                            .tooltip(std::string("该参数可以控制压力的大小。")),
                         &parameters.motionData.fluidMotion.pressureStrength);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Viscosity")
+                            .name("粘度")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(0.3f)
                             .defaultValue(&origParameters.motionData.fluidMotion.viscosityStrength)
-                            .tooltip(std::string("This parameter be used to control the strength of the viscosity. Larger values lead to a smoother movement.")),
+                            .tooltip(std::string("该参数可以用来控制粘度的大小。 更大的值导致更平滑的运动。")),
                         &parameters.motionData.fluidMotion.viscosityStrength);
                 } else {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Repulsion strength")
+                            .name("排斥强度")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(0.3f)
                             .defaultValue(&origParameters.motionData.collisionMotion.cellRepulsionStrength)
-                            .tooltip(std::string("The strength of the repulsive forces, between two cells that are not connected.")),
+                            .tooltip(std::string("该参数可以用来控制未连接的两个细胞之间排斥力的强度")),
                         &parameters.motionData.collisionMotion.cellRepulsionStrength);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Maximum collision distance")
+                            .name("最大碰撞距离")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(3.0f)
                             .defaultValue(&origParameters.motionData.collisionMotion.cellMaxCollisionDistance)
-                            .tooltip(std::string("Maximum distance up to which a collision of two cells is possible.")),
+                            .tooltip(std::string("该参数可以用来控制两个细胞可能发生碰撞的最大距离。")),
                         &parameters.motionData.collisionMotion.cellMaxCollisionDistance);
                 }
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Friction")
+                        .name("摩擦力")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(1.0f)
                         .logarithmic(true)
                         .format("%.4f")
                         .defaultValue(&origParameters.baseValues.friction)
-                        .tooltip(std::string("This specifies the fraction of the velocity that is slowed down per time step.")),
+                        .tooltip(std::string("该参数可以用来控制每个步数中物体速度被减慢的比例。T")),
                     &parameters.baseValues.friction);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Rigidity")
+                        .name("刚性")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(1.0f)
                         .format("%.2f")
                         .defaultValue(&origParameters.baseValues.rigidity)
                         .tooltip(std::string(
-                            "Controls the rigidity of connected cells.\nA higher value will cause connected cells to move more uniformly as a rigid body.")),
+                            "该参数可以用来控制单个生物连接的细胞的整体刚性。\n较高的值将使连接的单元更像一个刚体那样更均匀地移动。")),
                     &parameters.baseValues.rigidity);
                 AlienImGui::EndTreeNode();
             }
@@ -448,34 +443,34 @@ void SimulationParametersWindow::processBase()
             /**
              * Physics: Thresholds
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Thresholds"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：阈值"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Maximum velocity")
+                        .name("最大速度")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(6.0f)
                         .defaultValue(&origParameters.cellMaxVelocity)
-                        .tooltip(std::string("Maximum velocity that a cell can reach.")),
+                        .tooltip(std::string("一个细胞能达到的最大速度")),
                     &parameters.cellMaxVelocity);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Maximum force")
+                        .name("最大力度")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(3.0f)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellMaxForce)
-                        .tooltip(std::string("Maximum force that can be applied to a cell without causing it to disintegrate.")),
+                        .tooltip(std::string("在不导致细胞解体的情况下可以施加于细胞的最大力。")),
                     parameters.baseValues.cellMaxForce);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Minimum distance")
+                        .name("最小距离")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(1.0f)
                         .defaultValue(&origParameters.cellMinDistance)
-                        .tooltip(std::string("Minimum distance between two cells.")),
+                        .tooltip(std::string("两个细胞之间的最小距离")),
                     &parameters.cellMinDistance);
                 AlienImGui::EndTreeNode();
             }
@@ -483,29 +478,29 @@ void SimulationParametersWindow::processBase()
             /**
              * Physics: Binding
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Binding"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：连接"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Maximum distance")
+                        .name("最大距离")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(5.0f)
                         .colorDependence(true)
                         .defaultValue(origParameters.cellMaxBindingDistance)
-                        .tooltip(std::string("Maximum distance up to which a connection of two cells is possible.")),
+                        .tooltip(std::string("两个细胞连接仍然有效的最大距离。")),
                     parameters.cellMaxBindingDistance);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Fusion velocity")
+                        .name("连接速度")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(2.0f)
                         .defaultValue(&origParameters.baseValues.cellFusionVelocity)
-                        .tooltip(std::string("Minimum relative velocity of two colliding cells so that a connection can be established.")),
+                        .tooltip(std::string("两个碰撞细胞之间能够建立连接的最小相对速度。")),
                     &parameters.baseValues.cellFusionVelocity);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Maximum energy")
+                        .name("最大能量")
                         .textWidth(RightColumnWidth)
                         .min(50.0f)
                         .max(10000000.0f)
@@ -513,8 +508,7 @@ void SimulationParametersWindow::processBase()
                         .infinity(true)
                         .format("%.0f")
                         .defaultValue(&origParameters.baseValues.cellMaxBindingEnergy)
-                        .tooltip(std::string("Maximum energy of a cell at which it can contain bonds to adjacent cells. If the energy of a cell exceeds this "
-                                             "value, all bonds will be destroyed.")),
+                        .tooltip(std::string("细胞能够维持与相邻细胞结合的最大能量。如果细胞的能量超过这个值，所有连接将会被破坏。")),
                     &parameters.baseValues.cellMaxBindingEnergy);
                 AlienImGui::EndTreeNode();
             }
@@ -522,20 +516,19 @@ void SimulationParametersWindow::processBase()
             /**
              * Physics: Radiation
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Radiation"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：放射性粒子"))) {
                 if (AlienImGui::Button(AlienImGui::ButtonParameters()
-                                           .buttonText("Open editor")
-                                           .name("Radiation sources")
+                                           .buttonText("打开编辑器")
+                                           .name("放射性粒子源")
                                            .textWidth(RightColumnWidth)
                                            .showDisabledRevertButton(true)
-                            .tooltip("If no radiation source is specified, the cells emit energy particles at their respective positions. If, on the other hand, "
-                                     "one or more radiation sources are defined, the energy particles emitted by cells are created at these sources."))) {
+                            .tooltip("如果没有指定辐射源，细胞会在各自的位置释放能量粒子。另一方面，如果定义了一个或多个辐射源，细胞释放的能量粒子将在这些辐射源处产生。"))) {
                     RadiationSourcesWindow::get().setOn(true);
                 }
 
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Absorption factor")
+                        .name("吸收率")
                         .textWidth(RightColumnWidth)
                         .logarithmic(true)
                         .colorDependence(true)
@@ -543,11 +536,11 @@ void SimulationParametersWindow::processBase()
                         .max(1.0)
                         .format("%.4f")
                         .defaultValue(origParameters.baseValues.radiationAbsorption)
-                        .tooltip("The fraction of energy that a cell can absorb from an incoming energy particle can be specified here."),
+                        .tooltip("可以在此指定细胞从入射能量粒子中吸收的能量比例。"),
                     parameters.baseValues.radiationAbsorption);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Radiation type I: Strength")
+                        .name("辐射类型 I：强度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
@@ -555,11 +548,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .format("%.6f")
                         .defaultValue(origParameters.baseValues.radiationCellAgeStrength)
-                        .tooltip("Indicates how energetic the emitted particles of aged cells are."),
+                        .tooltip("控制老化细胞释放的粒子的能量大小。"),
                     parameters.baseValues.radiationCellAgeStrength);
                 AlienImGui::SliderInt(
                     AlienImGui::SliderIntParameters()
-                        .name("Radiation type I: Minimum age")
+                        .name("辐射类型 I： 最小年龄")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .infinity(true)
@@ -567,11 +560,11 @@ void SimulationParametersWindow::processBase()
                         .max(10000000)
                         .logarithmic(true)
                         .defaultValue(origParameters.radiationMinCellAge)
-                        .tooltip("The minimum age of a cell can be defined here, from which it emits energy particles."),
+                        .tooltip("可以在此定义细胞开始发射能量粒子的最小年龄。"),
                     parameters.radiationMinCellAge);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Radiation type II: Strength")
+                        .name("辐射类型 II：强度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
@@ -579,11 +572,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .format("%.6f")
                         .defaultValue(origParameters.highRadiationFactor)
-                        .tooltip("Indicates how energetic the emitted particles of high energy cells are."),
+                        .tooltip("控制高能量细胞释放的粒子的能量大小。"),
                     parameters.highRadiationFactor);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Radiation type II: Energy threshold")
+                        .name("辐射类型 II：最小阈值")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .infinity(true)
@@ -592,11 +585,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .format("%.1f")
                         .defaultValue(origParameters.highRadiationMinCellEnergy)
-                        .tooltip("The minimum energy of a cell can be defined here, from which it emits energy particles."),
+                        .tooltip("可以在此定义细胞开始释放能量粒子的最小能量。"),
                     parameters.highRadiationMinCellEnergy);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Minimum split energy")
+                        .name("最小分裂能量")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .infinity(true)
@@ -605,15 +598,14 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .format("%.0f")
                         .defaultValue(origParameters.particleSplitEnergy)
-                        .tooltip("The minimum energy of an energy particle after which it can split into two particles, whereby it receives a small momentum. The "
-                                 "splitting does not occur immediately, but only after a certain time."),
+                        .tooltip("能量粒子达到某一最低能量后可以分裂成两个粒子，并获得一个小的动量。分裂不会立即发生，而是在经过一定时间后才会发生。"),
                     parameters.particleSplitEnergy);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Energy to cell transformation")
+                        .name("能量是否可以向细胞转化")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.particleTransformationAllowed)
-                        .tooltip("If activated, an energy particle will transform into a cell if the energy of the particle exceeds the normal energy value."),
+                        .tooltip("如果启用，一个能量粒子将在其能量值超过一般水平时转化为细胞。"),
                     parameters.particleTransformationAllowed);
 
                 AlienImGui::EndTreeNode();
@@ -623,10 +615,10 @@ void SimulationParametersWindow::processBase()
              * Cell life cycle
              */
             ImGui::PushID("Transformation");
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell life cycle"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞生命周期"))) {
                 AlienImGui::SliderInt(
                     AlienImGui::SliderIntParameters()
-                        .name("Maximum age")
+                        .name("最大年龄")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .logarithmic(true)
@@ -634,37 +626,34 @@ void SimulationParametersWindow::processBase()
                         .min(1)
                         .max(10000000)
                         .defaultValue(origParameters.cellMaxAge)
-                        .tooltip("Defines the maximum age of a cell. If a cell exceeds this age it will be transformed to an energy particle."),
+                        .tooltip("定义细胞的最大年龄。如果一个细胞超过了最大年龄，它将被转化为能量粒子。"),
                     parameters.cellMaxAge);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Minimum energy")
+                        .name("最小能量")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(10.0f)
                         .max(200.0f)
                         .defaultValue(origParameters.baseValues.cellMinEnergy)
-                        .tooltip("Minimum energy a cell needs to exist."),
+                        .tooltip("一个细胞存在所需的最小能量。"),
                     parameters.baseValues.cellMinEnergy);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Normal energy")
+                        .name("一般能量")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(10.0f)
                         .max(200.0f)
                         .defaultValue(origParameters.cellNormalEnergy)
-                        .tooltip("The normal energy value of a cell is defined here. This is used as a reference value in various contexts: \n\n" ICON_FA_CHEVRON_RIGHT
-                            " Attacker and Transmitter cells: When the energy of these cells is above the normal value, some of their energy is distributed to "
-                                 "surrounding cells.\n\n" ICON_FA_CHEVRON_RIGHT
-                            " Constructor cells: Creating new cells costs energy. The creation of new cells is executed only when the "
-                                 "residual energy of the constructor cell does not fall below the normal value.\n\n" ICON_FA_CHEVRON_RIGHT
-                            " If the transformation of energy particles to "
-                                 "cells is activated, an energy particle will transform into a cell if the energy of the particle exceeds the normal value."),
-                    parameters.cellNormalEnergy);
+                        .tooltip("这里定义了细胞的一般能量值。在多种情况下，这个值被用作参考值：\n\n" ICON_FA_CHEVRON_RIGHT
+            " 攻击者和传输者细胞：当这些细胞的能量高于一般值时，它们的一部分能量会分配给周围的细胞。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 建造者细胞：创建新细胞需要消耗能量。只有当建造者细胞的剩余能量不低于一般值时，才会执行新细胞的创建。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 如果激活了能量粒子向细胞的转化，当粒子的能量超过一般值时，能量粒子将转化为细胞。"),
+    parameters.cellNormalEnergy);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Decay rate of dying cells")
+                        .name("正在死亡的细胞的腐败率")
                         .colorDependence(true)
                         .textWidth(RightColumnWidth)
                         .min(1e-6f)
@@ -672,22 +661,18 @@ void SimulationParametersWindow::processBase()
                         .format("%.6f")
                         .logarithmic(true)
                         .defaultValue(origParameters.baseValues.cellDeathProbability)
-                        .tooltip("The probability per time step with which a cell will disintegrate (i.e. transform into an energy particle) when it is in the "
-                                    "state 'Dying'. This can occur when one of the following conditions is satisfied:\n\n"
-                                    ICON_FA_CHEVRON_RIGHT " The cell has too low energy.\n\n"
-                                    ICON_FA_CHEVRON_RIGHT " The cell has exceeded its maximum age."),
-                    parameters.baseValues.cellDeathProbability);
-                AlienImGui::Switcher(
-                    AlienImGui::SwitcherParameters()
-                        .name("Cell death consequences")
-                        .textWidth(RightColumnWidth)
-                        .defaultValue(origParameters.cellDeathConsequences)
-                        .values({"None", "Entire creature dies", "Detached creature parts die"})
-                        .tooltip("Here one can define what happens to the organism when one of its cells is in the 'Dying' state.\n\n" ICON_FA_CHEVRON_RIGHT
-                                 " None: Only the cell dies.\n\n" ICON_FA_CHEVRON_RIGHT " Entire creature dies: All the cells of the organism will also die.\n\n" ICON_FA_CHEVRON_RIGHT
-                                 " Detached creature parts die: Only the parts of the organism that are no longer connected to a "
-                                 "constructor cell for self-replication die."),
-                    parameters.cellDeathConsequences);
+                        .tooltip("在一个细胞处于“濒死”状态时，每个时间步细胞解体（即转化为能量粒子）的概率。这可能在满足以下条件之一时发生：\n\n"
+                                ICON_FA_CHEVRON_RIGHT " 细胞的能量过低。\n\n"
+                                ICON_FA_CHEVRON_RIGHT " 细胞超过了其最大年龄。"),parameters.baseValues.cellDeathProbability);
+    AlienImGui::Switcher(
+        AlienImGui::SwitcherParameters()
+        .name("细胞死亡判定")
+        .textWidth(RightColumnWidth)
+        .defaultValue(origParameters.cellDeathConsequences)
+        .values({"无", "整个生物体死亡", "分离的生物体部分死亡"})
+        .tooltip("在这里可以定义当某个细胞处于“濒死”状态时，生物体会发生什么。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 无：只有该细胞死亡。\n\n" ICON_FA_CHEVRON_RIGHT " 整个生物体死亡：生物体的所有细胞也将死亡。\n\n" ICON_FA_CHEVRON_RIGHT
+            " 分离的生物体部分死亡：只有不再连接到自我复制的建造者细胞的生物体部分会死亡。"),parameters.cellDeathConsequences);
                 AlienImGui::EndTreeNode();
             }
             ImGui::PopID();
@@ -695,10 +680,10 @@ void SimulationParametersWindow::processBase()
             /**
              * Mutation 
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Genome copy mutations"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("基因组复制时的突变"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Neural net")
+                        .name("神经网络")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -706,12 +691,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationNeuronData)
-                        .tooltip("This type of mutation changes a weight or a bias of the neural networks of a single neuron cell encoded in the genome. The "
-                                 "probability of a change is given by the specified value times the number of coded cells in the genome."),
+                        .tooltip("这种类型的突变会改变基因组中编码的单个神经元细胞的神经网络的权重或偏置。变化的概率由指定值乘以基因组中编码细胞的数量决定。"),
                     parameters.baseValues.cellCopyMutationNeuronData);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Cell properties")
+                        .name("细胞属性")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -719,14 +703,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationCellProperties)
-                        .tooltip("This type of mutation changes a random property (e.g. (input) execution order number, required energy, block output and "
-                                 "function-specific properties such as minimum density for sensors, neural net weights etc.). The spatial structure, color, cell "
-                                 "function type and self-replication capabilities are not changed. The probability of a change is given by the specified value "
-                                 "times the number of coded cells in the genome."),
+                        .tooltip("这种类型的突变会改变一个随机属性（例如，（输入）执行顺序号、所需能量、块输出以及特定功能的属性，如传感器的最小密度、神经网络权重等）。空间结构、颜色、细胞功能类型和自我复制能力不会改变。变化的概率由指定值乘以基因组中编码细胞的数量决定。"),
                     parameters.baseValues.cellCopyMutationCellProperties);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Geometry")
+                        .name("几何形状")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -734,12 +715,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationGeometry)
-                        .tooltip("This type of mutation changes the geometry type, connection distance, stiffness and single construction flag. The probability of "
-                                 "a change is given by the specified value times the number of coded cells in the genome."),
+                        .tooltip("这种类型的突变仅改变自定义几何体的角度和所需连接。变化的概率由指定值乘以基因组中编码细胞的数量决定。"),
                     parameters.baseValues.cellCopyMutationGeometry);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Custom geometry")
+                        .name("自定义几何形状")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -747,12 +727,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationCustomGeometry)
-                        .tooltip("This type of mutation only changes angles and required connections of custom geometries. The probability of a change is given by "
-                                 "the specified value times the number of coded cells in the genome."),
+                        .tooltip("这种类型的突变仅改变自定义几何体的角度和所需连接。变化的概率由指定值乘以基因组中编码细胞的数量决定。"),
                     parameters.baseValues.cellCopyMutationCustomGeometry);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Cell function type")
+                        .name("细胞功能类型")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -760,14 +739,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationCellFunction)
-                        .tooltip("This type of mutation changes the type of cell function. The changed cell function will have random properties. The probability "
-                                 "of a change is given by the specified value times the number of coded cells in the genome. If the flag 'Preserve "
-                                 "self-replication' is disabled it can also alter self-replication capabilities by changing a constructor to "
-                                 "something else or vice versa."),
+                        .tooltip("这种类型的突变改变了细胞功能的类型。改变后的细胞功能将具有随机属性。变化的概率由指定值乘以基因组中编码细胞的数量决定。如果“保留自我复制”标志被禁用，它还可以通过将构造函数更改为其他内容或反之来改变自我复制能力。"),
                     parameters.baseValues.cellCopyMutationCellFunction);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Insertion")
+                        .name("插入")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -775,12 +751,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationInsertion)
-                        .tooltip("This type of mutation inserts a new cell description to the genome at a random position. The probability of a change is given by "
-                                 "the specified value times the number of coded cells in the genome."),
+                        .tooltip("这种类型的突变在基因组的随机位置插入一个新的细胞描述。变化的概率由指定值乘以基因组中编码细胞的数量决定。"),
                     parameters.baseValues.cellCopyMutationInsertion);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Deletion")
+                        .name("删除")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -788,12 +763,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationDeletion)
-                        .tooltip("This type of mutation deletes a cell description from the genome at a random position. The probability of a change is given by "
-                                 "the specified value times the number of coded cells in the genome."),
+                        .tooltip("这种类型的突变会从基因组的随机位置删除一个细胞描述。变化的概率由指定值乘以基因组中编码细胞的数量决定。"),
                     parameters.baseValues.cellCopyMutationDeletion);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Translation")
+                        .name("变换")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -801,11 +775,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationTranslation)
-                        .tooltip("This type of mutation moves a block of cell descriptions from the genome at a random position to a new random position."),
+                        .tooltip("这种类型的突变会将一块细胞描述从基因组的一个随机位置移动到另一个新的随机位置。"),
                     parameters.baseValues.cellCopyMutationTranslation);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Duplication")
+                        .name("复制")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -813,11 +787,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationDuplication)
-                        .tooltip("This type of mutation copies a block of cell descriptions from the genome at a random position to a new random position."),
+                        .tooltip("这种类型的突变会将一块细胞描述从基因组的一个随机位置复制到另一个新的随机位置。"),
                     parameters.baseValues.cellCopyMutationDuplication);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Individual cell color")
+                        .name("单个细胞颜色")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -825,12 +799,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationCellColor)
-                        .tooltip("This type of mutation alters the color of a single cell descriptions in a genome by using the specified color transitions. The "
-                                 "probability of a change is given by the specified value times the number of coded cells in the genome."),
+                        .tooltip("这种类型的突变通过使用指定的颜色转换来改变基因组中单个细胞描述的颜色。变化的概率由指定值乘以基因组中编码细胞的数量决定。"),
                     parameters.baseValues.cellCopyMutationCellColor);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Sub-genome color")
+                        .name("次级基因组颜色")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -838,11 +811,11 @@ void SimulationParametersWindow::processBase()
                         .logarithmic(true)
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationSubgenomeColor)
-                        .tooltip("This type of mutation alters the color of all cell descriptions in a sub-genome by using the specified color transitions."),
+                        .tooltip("这种类型的突变通过使用指定的颜色转换来改变次级基因组中所有细胞描述的颜色。"),
                     parameters.baseValues.cellCopyMutationSubgenomeColor);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Genome color")
+                        .name("基因组颜色")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -851,32 +824,30 @@ void SimulationParametersWindow::processBase()
                         .colorDependence(true)
                         .defaultValue(origParameters.baseValues.cellCopyMutationGenomeColor)
                         .tooltip(
-                            "This type of mutation alters the color of all cell descriptions in a genome by using the specified color transitions."),
+                            "这种类型的突变通过使用指定的颜色转换来改变基因组中所有细胞描述的颜色。"),
                     parameters.baseValues.cellCopyMutationGenomeColor);
                 AlienImGui::CheckboxColorMatrix(
                     AlienImGui::CheckboxColorMatrixParameters()
-                        .name("Color transitions")
+                        .name("颜色转换")
                         .textWidth(RightColumnWidth)
                         .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origParameters.cellFunctionConstructorMutationColorTransitions))
                         .tooltip(
-                            "The color transitions are used for color mutations. The row index indicates the source color and the column index the target color."),
+                            "颜色转换用于颜色突变。行索引表示源颜色，列索引表示目标颜色。"),
                     parameters.cellFunctionConstructorMutationColorTransitions);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Prevent genome depth increase")
+                        .name("防止基因组深度增加")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.cellFunctionConstructorMutationPreventDepthIncrease)
-                        .tooltip(std::string("A genome has a tree-like structure because it can contain sub-genomes. If this flag is activated, the mutations will "
-                                             "not increase the depth of the genome structure.")),
+                        .tooltip(std::string("基因组具有树状结构，因为它可以包含子基因组。如果激活此标志，突变将不会增加基因组结构的深度。")),
                     parameters.cellFunctionConstructorMutationPreventDepthIncrease);
                 auto preserveSelfReplication = !parameters.cellFunctionConstructorMutationSelfReplication;
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Preserve self-replication")
+                        .name("保留自我复制")
                         .textWidth(RightColumnWidth)
                         .defaultValue(!origParameters.cellFunctionConstructorMutationSelfReplication)
-                        .tooltip("If deactivated, a mutation can also alter self-replication capabilities in the genome by changing a constructor cell to "
-                                 "something else or vice versa."),
+                        .tooltip("如果未激活，突变也可以通过将构造细胞更改为其他细胞或反之来改变基因组中的自我复制能力。"),
                     preserveSelfReplication);
                 parameters.cellFunctionConstructorMutationSelfReplication = !preserveSelfReplication;
                 AlienImGui::EndTreeNode();
@@ -886,53 +857,49 @@ void SimulationParametersWindow::processBase()
              * Attacker
              */
             ImGui::PushID("Attacker");
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Attacker"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：攻击器"))) {
                 AlienImGui::InputFloatColorMatrix(
                     AlienImGui::InputFloatColorMatrixParameters()
-                        .name("Food chain color matrix")
+                        .name("食物链颜色矩阵")
                         .max(1)
                         .textWidth(RightColumnWidth)
                         .tooltip(
-                            "This matrix can be used to determine how well one cell can attack another cell. The color of the attacking cell correspond to the row "
-                            "number and the color of the attacked cell to the column number. A value of 0 means that the attacked cell cannot be digested, "
-                            "i.e. no energy can be obtained. A value of 1 means that the maximum energy can be obtained in the digestion process.\n\nExample: If a "
-                            "zero is entered in row 2 (red) and column 3 (green), it means that red cells cannot eat green cells.")
+                            "该矩阵可用于确定一个细胞攻击另一个细胞的效果。攻击细胞的颜色对应行号，被攻击细胞的颜色对应列号。值为0表示被攻击细胞不能被消化，即不能获得能量。值为1表示在消化过程中可以获得最大能量。\n例如：如果在第2行（红色）和第3列（绿色）中输入0，则表示红色细胞不能吃绿色细胞。")
                         .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origParameters.baseValues.cellFunctionAttackerFoodChainColorMatrix)),
                     parameters.baseValues.cellFunctionAttackerFoodChainColorMatrix);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Attack strength")
+                        .name("攻击强度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .logarithmic(true)
                         .min(0)
                         .max(0.5f)
                         .defaultValue(origParameters.cellFunctionAttackerStrength)
-                        .tooltip("Indicates the portion of energy through which a successfully attacked cell is weakened. However, this energy portion can be "
-                                 "influenced by other factors adjustable within the attacker's simulation parameters."),
+                        .tooltip("表示成功攻击细胞后削弱的能量部分。然而，这部分能量可以受到攻击者模拟参数中可调节的其他因素的影响。"),
                     parameters.cellFunctionAttackerStrength);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Attack radius")
+                        .name("攻击范围")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
                         .max(3.0f)
                         .defaultValue(origParameters.cellFunctionAttackerRadius)
-                        .tooltip("The maximum distance over which an attacker cell can attack another cell."),
+                        .tooltip("一个攻击器细胞攻击其他细胞的最大范围。"),
                     parameters.cellFunctionAttackerRadius);
                 AlienImGui::InputFloatColorMatrix(
                     AlienImGui::InputFloatColorMatrixParameters()
-                        .name("Complex creature protection")
+                        .name("复杂生物保护")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(20.0f)
                         .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origParameters.baseValues.cellFunctionAttackerGenomeComplexityBonus))
-                        .tooltip("The larger this parameter is, the less energy can be gained by attacking creatures with more complex genomes."),
+                        .tooltip("该参数越大，通过攻击具有更复杂基因组的生物所获得的能量就越少。"),
                     parameters.baseValues.cellFunctionAttackerGenomeComplexityBonus);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Energy cost")
+                        .name("能量损耗")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
@@ -940,15 +907,15 @@ void SimulationParametersWindow::processBase()
                         .format("%.5f")
                         .logarithmic(true)
                         .defaultValue(origParameters.baseValues.cellFunctionAttackerEnergyCost)
-                        .tooltip("Amount of energy lost by an attempted attack of a cell in form of emitted energy particles."),
+                        .tooltip("尝试攻击细胞时以能量粒子形式损失的能量大小。"),
                     parameters.baseValues.cellFunctionAttackerEnergyCost);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Destroy cells")
+                        .name("毁灭细胞")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.cellFunctionAttackerDestroyCells)
                         .tooltip(
-                            "If activated, the attacker cell is able to destroy other cells. If deactivated, it only damages them."),
+                            "如果启用，攻击细胞可以毁灭细胞。如果关闭，他只能伤害他们。"),
                     parameters.cellFunctionAttackerDestroyCells);
                 AlienImGui::EndTreeNode();
             }
@@ -957,24 +924,23 @@ void SimulationParametersWindow::processBase()
             /**
              * Constructor
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Constructor"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：构筑器"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Connection distance")
+                        .name("连接距离")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0.1f)
                         .max(3.0f)
                         .defaultValue(origParameters.cellFunctionConstructorConnectingCellMaxDistance)
-                        .tooltip("The constructor can automatically connect constructed cells to other cells in the vicinity within this distance."),
+                        .tooltip("构造器可以在此距离内自动将构造的细胞连接到附近的其他细胞。"),
                     parameters.cellFunctionConstructorConnectingCellMaxDistance);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Completeness check")
+                        .name("完成度检查")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.cellFunctionConstructorCheckCompletenessForSelfReplication)
-                        .tooltip("If activated, a self-replication process can only start when all other non-self-replicating constructors in the cell network are "
-                                 "finished."),
+                        .tooltip("如果激活，自我复制过程只能在细胞网络中所有其他非自我复制构造器完成后开始。"),
                     parameters.cellFunctionConstructorCheckCompletenessForSelfReplication);
                 AlienImGui::EndTreeNode();
             }
@@ -982,27 +948,26 @@ void SimulationParametersWindow::processBase()
             /**
              * Defender
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Defender"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：防御器"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Anti-attacker strength")
+                        .name("反攻击器强度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(1.0f)
                         .max(5.0f)
                         .defaultValue(origParameters.cellFunctionDefenderAgainstAttackerStrength)
-                        .tooltip("If an attacked cell is connected to defender cells or itself a defender cell the attack strength is reduced by this factor."),
+                        .tooltip("如果被攻击的细胞连接到防御细胞或自身是防御细胞，则攻击强度会按此因子减少。"),
                     parameters.cellFunctionDefenderAgainstAttackerStrength);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Anti-injector strength")
+                        .name("反注射器强度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(1.0f)
                         .max(5.0f)
                         .defaultValue(origParameters.cellFunctionDefenderAgainstInjectorStrength)
-                        .tooltip("If a constructor cell is attacked by an injector and connected to defender cells, the injection duration is increased by this "
-                                 "factor."),
+                        .tooltip("如果构造细胞被注射器攻击并且连接到防御细胞，则注射持续时间会按此因子增加。"),
                     parameters.cellFunctionDefenderAgainstInjectorStrength);
                 AlienImGui::EndTreeNode();
             }
@@ -1010,26 +975,25 @@ void SimulationParametersWindow::processBase()
             /**
              * Injector
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Injector"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：注射器"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Injection radius")
+                        .name("注射范围")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0.1f)
                         .max(4.0f)
                         .defaultValue(origParameters.cellFunctionInjectorRadius)
-                        .tooltip("The maximum distance over which an injector cell can infect another cell."),
+                        .tooltip("注射器细胞可以感染其他细胞的最大距离。"),
                     parameters.cellFunctionInjectorRadius);
                 AlienImGui::InputIntColorMatrix(
                     AlienImGui::InputIntColorMatrixParameters()
-                        .name("Injection time")
+                        .name("注射时间")
                         .logarithmic(true)
                         .max(100000)
                         .textWidth(RightColumnWidth)
                         .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origParameters.cellFunctionInjectorDurationColorMatrix))
-                        .tooltip("The number of activations an injector cell requires to infect another cell. One activation usually takes 6 time steps. The row "
-                                 "number determines the color of the injector cell, while the column number corresponds to the color of the infected cell."),
+                        .tooltip("注射器细胞需要激活的次数才能感染其他细胞。一次激活通常需要6个时间步长。行号决定注射器细胞的颜色，而列号对应被感染细胞的颜色。"),
                     parameters.cellFunctionInjectorDurationColorMatrix);
                 AlienImGui::EndTreeNode();
             }
@@ -1037,59 +1001,54 @@ void SimulationParametersWindow::processBase()
             /**
              * Muscle
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Muscle"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：运动器（肌肉）"))) {
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Movement toward target")
+                        .name("是否朝向目标移动")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.cellFunctionMuscleMovementTowardTargetedObject)
-                        .tooltip("If activated, a muscle cell in movement mode will only move if the triggering signal originates from a sensor cell that has "
-                                 "targeted an object. The specified angle in the input is interpreted relative to the target."),
+                        .tooltip("如果激活，处于运动模式的肌肉细胞只有在触发信号来自已锁定目标的传感器细胞时才会移动。输入中指定的角度相对于目标进行解释。"),
                     parameters.cellFunctionMuscleMovementTowardTargetedObject);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Movement acceleration")
+                        .name("运动加速度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
                         .max(0.4f)
                         .logarithmic(true)
                         .defaultValue(origParameters.cellFunctionMuscleMovementAcceleration)
-                        .tooltip("The maximum value by which a muscle cell can modify its velocity during activation. This parameter applies only to muscle cells "
-                                 "which are in movement mode."),
+                        .tooltip("肌肉细胞在激活期间可以修改其速度的最大值。此参数仅适用于处于运动模式的肌肉细胞。"),
                     parameters.cellFunctionMuscleMovementAcceleration);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Contraction and expansion delta")
+                        .name("收缩和扩张增量")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
                         .max(0.1f)
                         .defaultValue(origParameters.cellFunctionMuscleContractionExpansionDelta)
-                        .tooltip("The maximum length that a muscle cell can shorten or lengthen a cell connection. This parameter applies only to muscle cells "
-                                 "which are in contraction/expansion mode."),
+                        .tooltip("肌肉细胞可以缩短或延长细胞连接的最大长度。此参数仅适用于处于收缩/扩张模式的肌肉细胞。"),
                     parameters.cellFunctionMuscleContractionExpansionDelta);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Bending angle")
+                        .name("弯曲角度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
                         .max(10.0f)
                         .defaultValue(origParameters.cellFunctionMuscleBendingAngle)
-                        .tooltip("The maximum value by which a muscle cell can increase/decrease the angle between two cell connections. This parameter applies "
-                                 "only to muscle cells which are in bending mode."),
+                        .tooltip("肌肉细胞可以增加/减少两个细胞连接之间角度的最大值。此参数仅适用于处于弯曲模式的肌肉细胞。"),
                     parameters.cellFunctionMuscleBendingAngle);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Bending acceleration")
+                        .name("弯曲加速度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
                         .max(0.5f)
                         .defaultValue(origParameters.cellFunctionMuscleBendingAcceleration)
-                        .tooltip("The maximum value by which a muscle cell can modify its velocity during a bending action. This parameter applies "
-                                 "only to muscle cells which are in bending mode."),
+                        .tooltip("肌肉细胞在弯曲动作期间可以修改其速度的最大值。此参数仅适用于处于弯曲模式的肌肉细胞。"),
                     parameters.cellFunctionMuscleBendingAcceleration);
                 AlienImGui::EndTreeNode();
             }
@@ -1097,16 +1056,16 @@ void SimulationParametersWindow::processBase()
             /**
              * Sensor
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Sensor"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：感知器"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Radius")
+                        .name("范围")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(10.0f)
                         .max(800.0f)
                         .defaultValue(origParameters.cellFunctionSensorRange)
-                        .tooltip("The maximum radius in which a sensor cell can detect mass concentrations."),
+                        .tooltip("传感器细胞可以检测质量集中区域的最大半径。"),
                     parameters.cellFunctionSensorRange);
                 AlienImGui::EndTreeNode();
             }
@@ -1114,33 +1073,33 @@ void SimulationParametersWindow::processBase()
             /**
              * Transmitter
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Transmitter"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：传输器"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Energy distribution radius")
+                        .name("能量传输范围")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
                         .max(5.0f)
                         .defaultValue(origParameters.cellFunctionTransmitterEnergyDistributionRadius)
-                        .tooltip("The maximum distance over which a transmitter cell transfers its additional energy to nearby transmitter or constructor cells."),
+                        .tooltip("传输器细胞将其额外能量传递给附近的传输器或构造器细胞的最大距离。"),
                     parameters.cellFunctionTransmitterEnergyDistributionRadius);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Energy distribution Value")
+                        .name("能量传输值")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
                         .max(20.0f)
                         .defaultValue(origParameters.cellFunctionTransmitterEnergyDistributionValue)
-                        .tooltip("The amount of energy which a transmitter cell can transfer to nearby transmitter or constructor cells or to connected cells."),
+                        .tooltip("传输器细胞可以传递给附近的传输器或构造细胞或连接细胞的能量值。"),
                     parameters.cellFunctionTransmitterEnergyDistributionValue);
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Same creature energy distribution")
+                        .name("同一生物的能量分配")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origParameters.cellFunctionTransmitterEnergyDistributionSameCreature)
-                        .tooltip("If activated, the transmitter cells can only transfer energy to nearby cells belonging to the same creature."),
+                        .tooltip("如果激活，传输器细胞只能将能量传递给属于同一生物的附近细胞。"),
                     parameters.cellFunctionTransmitterEnergyDistributionSameCreature);
                 AlienImGui::EndTreeNode();
             }
@@ -1148,16 +1107,16 @@ void SimulationParametersWindow::processBase()
             /**
              * Reconnector
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Reconnector"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：重连器"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Radius")
+                        .name("范围")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0.0f)
                         .max(3.0f)
                         .defaultValue(origParameters.cellFunctionReconnectorRadius)
-                        .tooltip("The maximum radius in which a reconnector cell can establish or destroy connections to other cells."),
+                        .tooltip("重连器细胞可以建立或破坏与其他细胞连接的最大半径。"),
                     parameters.cellFunctionReconnectorRadius);
                 AlienImGui::EndTreeNode();
             }
@@ -1165,26 +1124,26 @@ void SimulationParametersWindow::processBase()
             /**
              * Detonator
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Detonator"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：爆炸器"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Blast radius")
+                        .name("爆炸半径")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0.0f)
                         .max(10.0f)
                         .defaultValue(origParameters.cellFunctionDetonatorRadius)
-                        .tooltip("The radius of the detonation."),
+                        .tooltip("爆炸器爆炸的范围。"),
                     parameters.cellFunctionDetonatorRadius);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Chain explosion probability")
+                        .name("连锁爆炸可能性")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0.0f)
                         .max(1.0f)
                         .defaultValue(origParameters.cellFunctionDetonatorChainExplosionProbability)
-                        .tooltip("The probability that the explosion of one detonator will trigger the explosion of other detonators within the blast radius."),
+                        .tooltip("一个雷管爆炸会引发爆炸半径内其他雷管爆炸的概率。"),
                     parameters.cellFunctionDetonatorChainExplosionProbability);
                 AlienImGui::EndTreeNode();
             }
@@ -1193,10 +1152,10 @@ void SimulationParametersWindow::processBase()
              * Addon: Advanced absorption control
              */
             if (parameters.features.advancedAbsorptionControl) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Advanced energy absorption control"))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：高级能量吸收控制"))) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Low genome complexity penalty")
+                            .name("基因组低复杂度惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -1207,7 +1166,7 @@ void SimulationParametersWindow::processBase()
                         parameters.baseValues.radiationAbsorptionLowGenomeComplexityPenalty);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Low connection penalty")
+                            .name("低细胞连接程度惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -1215,11 +1174,11 @@ void SimulationParametersWindow::processBase()
                             .format("%.1f")
                             .defaultValue(origParameters.radiationAbsorptionLowConnectionPenalty)
                             .tooltip(
-                                "When this parameter is increased, cells with fewer cell connections will absorb less energy from an incoming energy particle."),
+                                "当此参数增加时，具有较少细胞连接的细胞将从进入的能量粒子中吸收更少的能量。"),
                         parameters.radiationAbsorptionLowConnectionPenalty);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("High velocity penalty")
+                            .name("高速度惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -1227,18 +1186,18 @@ void SimulationParametersWindow::processBase()
                             .logarithmic(true)
                             .format("%.2f")
                             .defaultValue(origParameters.radiationAbsorptionHighVelocityPenalty)
-                            .tooltip("When this parameter is increased, fast moving cells will absorb less energy from an incoming energy particle."),
+                            .tooltip("当此参数增加时，快速移动的细胞将从进入的能量粒子中吸收更少的能量。"),
                         parameters.radiationAbsorptionHighVelocityPenalty);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Low velocity penalty")
+                            .name("低速度惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
                             .max(1.0f)
                             .format("%.2f")
                             .defaultValue(origParameters.baseValues.radiationAbsorptionLowVelocityPenalty)
-                            .tooltip("When this parameter is increased, slowly moving cells will absorb less energy from an incoming energy particle."),
+                            .tooltip("当此参数增加时，慢速移动的细胞将从进入的能量粒子中吸收更少的能量。"),
                         parameters.baseValues.radiationAbsorptionLowVelocityPenalty);
                     AlienImGui::EndTreeNode();
                 }
@@ -1248,85 +1207,79 @@ void SimulationParametersWindow::processBase()
              * Addon: Advanced attacker control
              */
             if (parameters.features.advancedAttackerControl) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Advanced attacker control"))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：高级攻击器控制"))) {
                     AlienImGui::InputFloatColorMatrix(
                         AlienImGui::InputFloatColorMatrixParameters()
-                            .name("Same mutant protection")
+                            .name("同种族保护")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(1.0f)
                             .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origParameters.cellFunctionAttackerSameMutantPenalty))
-                            .tooltip("The larger this parameter is, the less energy can be gained by attacking creatures with the same mutation id."),
+                            .tooltip("此参数越大，通过攻击具有相同突变ID的生物所获得的能量就越少。"),
                         parameters.cellFunctionAttackerSameMutantPenalty);
                     AlienImGui::InputFloatColorMatrix(
                         AlienImGui::InputFloatColorMatrixParameters()
-                            .name("New complex mutant protection")
+                            .name("新种族保护")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(1.0f)
                             .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origParameters.baseValues.cellFunctionAttackerNewComplexMutantPenalty))
-                            .tooltip("A high value protects new mutants with equal or greater genome complexity from being attacked."),
+                            .tooltip("较高的数值可以保护具有相同或更高基因组复杂性的新突变体不被攻击。"),
                         parameters.baseValues.cellFunctionAttackerNewComplexMutantPenalty);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Sensor detection factor")
+                            .name("感知器检测因素")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
                             .max(1.0f)
                             .defaultValue(origParameters.cellFunctionAttackerSensorDetectionFactor)
                             .tooltip(
-                                "This parameter controls whether the target must be previously detected with sensors in order to be attacked. The larger this "
-                                "value is, the less energy can be gained during the attack if the target has not already been detected. For this purpose, the "
-                                "attacker "
-                                "cell searches for connected (or connected-connected) sensor cells to see which cell networks they have detected last time and "
-                                "compares them with the attacked target."),
+                                "此参数控制目标是否必须先通过传感器检测才能被攻击。此值越大，如果目标尚未被检测到，则在攻击期间获得的能量就越少。\n为此，攻击细胞会搜索连接的（或间接连接的）传感器细胞，以查看它们上次检测到的细胞网络，并将其与被攻击目标进行比较。"),
                         parameters.cellFunctionAttackerSensorDetectionFactor);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Geometry penalty")
+                            .name("几何形状惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
                             .max(5.0f)
                             .defaultValue(origParameters.baseValues.cellFunctionAttackerGeometryDeviationExponent)
-                            .tooltip("The larger this value is, the less energy a cell can gain from an attack if the local "
-                                     "geometry of the attacked cell does not match the attacking cell."),
+                            .tooltip("此值越大，如果被攻击细胞的局部几何形状与攻击细胞不匹配，则细胞从攻击中获得的能量就越少。"),
                         parameters.baseValues.cellFunctionAttackerGeometryDeviationExponent);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Connections mismatch penalty")
+                            .name("连接不匹配惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
                             .max(1.0f)
                             .defaultValue(origParameters.baseValues.cellFunctionAttackerConnectionsMismatchPenalty)
-                            .tooltip("The larger this parameter is, the more difficult it is to attack cells that contain more connections."),
+                            .tooltip("此参数越大，攻击包含更多连接的细胞就越困难。"),
                         parameters.baseValues.cellFunctionAttackerConnectionsMismatchPenalty);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Color inhomogeneity factor")
+                            .name("颜色均衡因素")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
                             .max(2.0f)
                             .defaultValue(origParameters.cellFunctionAttackerColorInhomogeneityFactor)
-                            .tooltip("If the attacked cell is connected to cells with different colors, this factor affects the energy of the captured energy."),
+                            .tooltip("如果被攻击的细胞连接到颜色不同的细胞，此因子会影响捕获能量的能量值。"),
                         parameters.cellFunctionAttackerColorInhomogeneityFactor);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Energy distribution radius")
+                            .name("能量传输范围")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
                             .max(5.0f)
                             .defaultValue(origParameters.cellFunctionAttackerEnergyDistributionRadius)
-                            .tooltip("The maximum distance over which an attacker cell transfers its energy captured during an attack to nearby transmitter or "
-                                     "constructor cells."),
+                            .tooltip("攻击细胞在攻击期间捕获的能量传输到附近的传输细胞或构造细胞的最大距离。"),
                         parameters.cellFunctionAttackerEnergyDistributionRadius);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Energy distribution Value")
+                            .name("能量传输值")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -1342,7 +1295,7 @@ void SimulationParametersWindow::processBase()
              * Addon: Cell color transition rules
              */
             if (parameters.features.cellColorTransitionRules) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Cell color transition rules").highlighted(false))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：细胞颜色过渡规则").highlighted(false))) {
                     for (int color = 0; color < MAX_COLORS; ++color) {
                         ImGui::PushID(color);
                         auto widgetParameters = AlienImGui::InputColorTransitionParameters()
@@ -1353,11 +1306,9 @@ void SimulationParametersWindow::processBase()
                                                     .logarithmic(true)
                                                     .infinity(true);
                         if (0 == color) {
-                            widgetParameters.name("Target color and duration")
+                            widgetParameters.name("目标颜色和持续时间")
                                 .tooltip(
-                                    "Rules can be defined that describe how the colors of cells will change over time. For this purpose, a subsequent color can "
-                                    "be defined for each cell color. In addition, durations must be specified that define how many time steps the corresponding "
-                                    "color are kept.");
+                                    "可以定义规则来描述细胞颜色如何随时间变化。为此，可以为每种细胞颜色定义后续颜色。此外，还必须指定持续时间，以定义相应颜色保持的时间步数。");
                         }
                         AlienImGui::InputColorTransition(
                             widgetParameters,
@@ -1374,10 +1325,10 @@ void SimulationParametersWindow::processBase()
              * Addon: Cell age limiter
              */
             if (parameters.features.cellAgeLimiter) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Cell age limiter").highlighted(false))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：细胞年龄限制器").highlighted(false))) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Maximum inactive cell age")
+                            .name("最大非活跃细胞年龄")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(1.0f)
@@ -1388,13 +1339,12 @@ void SimulationParametersWindow::processBase()
                             .disabledValue(parameters.baseValues.cellInactiveMaxAge)
                             .defaultEnabledValue(&origParameters.cellInactiveMaxAgeActivated)
                             .defaultValue(origParameters.baseValues.cellInactiveMaxAge)
-                            .tooltip("Here, you can set the maximum age for a cell whose function or those of its neighbors have not been triggered. Cells which "
-                                     "are in state 'Under construction' are not affected by this option."),
+                            .tooltip("在这里，您可以设置功能或其邻居的功能未被触发的细胞的最大年龄。处于“建设中”状态的细胞不受此选项影响。"),
                         parameters.baseValues.cellInactiveMaxAge,
                         &parameters.cellInactiveMaxAgeActivated);
                     AlienImGui::SliderInt(
                         AlienImGui::SliderIntParameters()
-                            .name("Maximum emergent cell age")
+                            .name("最大新生细胞年龄")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(1)
@@ -1404,22 +1354,19 @@ void SimulationParametersWindow::processBase()
                             .disabledValue(parameters.cellEmergentMaxAge)
                             .defaultEnabledValue(&origParameters.cellEmergentMaxAgeActivated)
                             .defaultValue(origParameters.cellEmergentMaxAge)
-                            .tooltip("The maximal age of cells that arise from energy particles can be set here."),
+                            .tooltip("在这里可以设置由能量粒子产生的细胞的最大年龄。"),
                         parameters.cellEmergentMaxAge,
                         &parameters.cellEmergentMaxAgeActivated);
                     AlienImGui::Checkbox(
                         AlienImGui::CheckboxParameters()
-                            .name("Reset age after construction")
+                            .name("构造后重置年龄")
                             .textWidth(RightColumnWidth)
                             .defaultValue(origParameters.cellResetAgeAfterActivation)
-                            .tooltip("If this option is activated, the age of the cells is reset to 0 after the construction of their cell network is completed, "
-                                     "i.e. when the state of the cells changes from 'Under construction' to 'Ready'. This option is particularly useful if a low 'Maximum "
-                                     "inactive cell age' is set, as cell networks that are under construction are inactive and could die immediately after "
-                                     "completion if their construction takes a long time."),
+                            .tooltip("如果激活此选项，细胞网络构建完成后，细胞的年龄将重置为0，即细胞状态从“建设中”变为“准备就绪”。如果设置了较低的“最大非活跃细胞年龄”，此选项特别有用，因为处于建设中的细胞网络是非活跃的，如果构建时间过长，它们可能在完成后立即死亡。"),
                         parameters.cellResetAgeAfterActivation);
                     AlienImGui::SliderInt(
                         AlienImGui::SliderIntParameters()
-                            .name("Maximum age balancing")
+                            .name("年龄最大值动态平衡")
                             .textWidth(RightColumnWidth)
                             .logarithmic(true)
                             .min(1000)
@@ -1428,8 +1375,7 @@ void SimulationParametersWindow::processBase()
                             .defaultEnabledValue(&origParameters.cellMaxAgeBalancer)
                             .defaultValue(&origParameters.cellMaxAgeBalancerInterval)
                             .tooltip(
-                                "Adjusts the maximum age at regular intervals. It increases the maximum age for the cell color where the fewest replicators exist. "
-                                "Conversely, the maximum age is decreased for the cell color with the most replicators."),
+                                "定期调整最大年龄。它会增加具有最少复制器的细胞颜色的最大年龄。相反，对于具有最多复制器的细胞颜色，最大年龄会减少。"),
                         &parameters.cellMaxAgeBalancerInterval,
                         &parameters.cellMaxAgeBalancer);
                     AlienImGui::EndTreeNode();
@@ -1440,40 +1386,40 @@ void SimulationParametersWindow::processBase()
              * Addon: Cell glow
              */
             if (parameters.features.cellGlow) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Cell glow").highlighted(false))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：细胞光辉").highlighted(false))) {
                     AlienImGui::Switcher(
                         AlienImGui::SwitcherParameters()
-                            .name("Coloring")
+                            .name("染色")
                             .textWidth(RightColumnWidth)
                             .defaultValue(origParameters.cellGlowColoring)
                             .values(
-                                {"Energy",
-                                 "Standard cell colors",
-                                 "Mutants",
-                                 "Mutants and cell functions",
-                                 "Cell states",
-                                 "Genome complexities",
-                                 "Single cell function",
-                                 "All cell functions"})
+                                {"能量",
+                                 "标准细胞颜色",
+                                 "基因代际",
+                                 "基因代际和细胞功能",
+                                 "细胞状态",
+                                 "基因组复杂度",
+                                 "单一细胞功能",
+                                 "全部细胞功能"})
                             .tooltip(Const::ColoringParameterTooltip),
                         parameters.cellGlowColoring);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Radius")
+                            .name("范围")
                             .textWidth(RightColumnWidth)
                             .min(1.0f)
                             .max(8.0f)
                             .defaultValue(&origParameters.cellGlowRadius)
-                            .tooltip("The radius of the glow. Please note that a large radius affects the performance."),
+                            .tooltip("光辉的半径。请注意范围较大时会对性能产生影响。"),
                         &parameters.cellGlowRadius);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Strength")
+                            .name("强度")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(1.0f)
                             .defaultValue(&origParameters.cellGlowStrength)
-                            .tooltip("The strength of the glow."),
+                            .tooltip("光辉的强度。"),
                         &parameters.cellGlowStrength);
                     AlienImGui::EndTreeNode();
                 }
@@ -1483,10 +1429,10 @@ void SimulationParametersWindow::processBase()
              * Addon: External energy control
              */
             if (parameters.features.externalEnergyControl) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: External energy control").highlighted(false))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：额外能量控制").highlighted(false))) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("External energy amount")
+                            .name("额外能量总数")
                             .textWidth(RightColumnWidth)
                             .min(0.0f)
                             .max(100000000.0f)
@@ -1494,14 +1440,11 @@ void SimulationParametersWindow::processBase()
                             .logarithmic(true)
                             .infinity(true)
                             .defaultValue(&origParameters.externalEnergy)
-                            .tooltip("This parameter can be used to set the amount of energy of an external energy pool. This type of energy can then be "
-                                     "transferred to all constructor cells at a certain rate (see inflow settings).\n\nTip: You can explicitly enter a "
-                                     "numerical value by clicking on the slider while holding CTRL.\n\nWarning: Too much external energy can result in a "
-                                     "massive production of cells and slow down or even crash the simulation."),
+                            .tooltip("此参数可用于设置外部能量池的能量量。然后，这种类型的能量可以以一定的速率传输到所有构造细胞（参见流入设置）。\n\n提示：按住 CTRL 点击滑块可以直接输入数值。\n\n警告：过多的外部能量可能导致大量细胞生成，从而减慢甚至崩溃模拟。"),
                         &parameters.externalEnergy);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Inflow")
+                            .name("流入设置")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0.0f)
@@ -1509,14 +1452,11 @@ void SimulationParametersWindow::processBase()
                             .format("%.5f")
                             .logarithmic(true)
                             .defaultValue(origParameters.externalEnergyInflowFactor)
-                            .tooltip("Here one can specify the fraction of energy transferred to constructor cells.\n\nFor example, a value of 0.05 means that "
-                                     "each time "
-                                     "a constructor cell tries to build a new cell, 5% of the required energy is transferred for free from the external energy "
-                                     "source."),
+                            .tooltip("在这里可以指定传输到构造细胞的能量比例。\n\n例如，值为 0.05 表示每次构造细胞尝试构建新细胞时，5% 的所需能量将免费从外部能量源传输。"),
                         parameters.externalEnergyInflowFactor);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Conditional inflow")
+                            .name("条件流入设置")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0.00f)
@@ -1524,33 +1464,28 @@ void SimulationParametersWindow::processBase()
                             .format("%.5f")
                             .defaultValue(origParameters.externalEnergyConditionalInflowFactor)
                             .tooltip(
-                                "Here one can specify the fraction of energy transferred to constructor cells if they can provide the remaining energy for the "
-                                "construction process.\n\nFor example, a value of 0.6 means that a constructor cell receives 60% of the energy required to "
-                                "build the new cell for free from the external energy source. However, it must provide 40% of the energy required by itself. "
-                                "Otherwise, no energy will be transferred."),
+                                "在这里可以指定传输到构造细胞的能量比例，如果它们能够提供剩余的能量用于构建过程。\n\n例如，值为 0.6 表示构造细胞将免费从外部能量源获得构建新细胞所需能量的 60%。然而，它必须自行提供 40% 的所需能量。否则，将不会传输任何能量。"),
                         parameters.externalEnergyConditionalInflowFactor);
                     AlienImGui::Checkbox(
                         AlienImGui::CheckboxParameters()
-                            .name("Inflow only for non-replicators")
+                            .name("非复制器的流入设置")
                             .textWidth(RightColumnWidth)
                             .defaultValue(origParameters.externalEnergyInflowOnlyForNonSelfReplicators)
-                            .tooltip("If activated, external energy can only be transferred to constructor cells that are not self-replicators. "
-                                     "This option can be used to foster the evolution of additional body parts."),
+                            .tooltip("如果激活此选项，外部能量只能传输到非自我复制的构造细胞。此选项可用于促进额外身体部位的进化。"),
                         parameters.externalEnergyInflowOnlyForNonSelfReplicators);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Backflow")
+                            .name("回流设置")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0.0f)
                             .max(1.0f)
                             .defaultValue(origParameters.externalEnergyBackflowFactor)
-                            .tooltip("The proportion of energy that flows back from the simulation to the external energy pool. Each time a cell loses energy or dies a fraction of its energy will be taken. The remaining "
-                                     "fraction of the energy stays in the simulation and will be used to create a new energy particle."),
+                            .tooltip("从模拟中流回到外部能量池的能量比例。每次细胞失去能量或死亡时，其能量的一部分将被取走。剩余的能量将留在模拟中，并用于创建新的能量粒子。"),
                         parameters.externalEnergyBackflowFactor);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Backflow limit")
+                            .name("回流限制")
                             .textWidth(RightColumnWidth)
                             .min(0.0f)
                             .max(100000000.0f)
@@ -1558,7 +1493,7 @@ void SimulationParametersWindow::processBase()
                             .logarithmic(true)
                             .infinity(true)
                             .defaultValue(&origParameters.externalEnergyBackflowLimit)
-                            .tooltip("Energy from the simulation can only flow back into the external energy pool as long as the amount of external energy is below this value."),
+                            .tooltip("只有当外部能量量低于此值时，模拟中的能量才能流回到外部能量池。"),
                         &parameters.externalEnergyBackflowLimit);
                     AlienImGui::EndTreeNode();
                 }
@@ -1568,41 +1503,39 @@ void SimulationParametersWindow::processBase()
              * Addon: Genome complexity measurement
              */
             if (parameters.features.genomeComplexityMeasurement) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Genome complexity measurement").highlighted(false))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：基因组复杂度测量办法").highlighted(false))) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Size factor")
+                            .name("细胞数量因素")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0.0f)
                             .max(1.0f)
                             .format("%.2f")
                             .defaultValue(origParameters.genomeComplexitySizeFactor)
-                            .tooltip("This parameter controls how the number of encoded cells in the genome influences the calculation of its complexity."),
+                            .tooltip("此参数控制基因组中细胞的数量如何影响其复杂度的计算。"),
                         parameters.genomeComplexitySizeFactor);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Ramification factor")
+                            .name("分叉因素")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0.0f)
                             .max(20.0f)
                             .format("%.2f")
                             .defaultValue(origParameters.genomeComplexityRamificationFactor)
-                            .tooltip("With this parameter, the number of ramifications of the cell structure to the genome is taken into account for the "
-                                     "calculation of the genome complexity. For instance, genomes that contain many sub-genomes or many construction branches will "
-                                     "then have a high complexity value."),
+                            .tooltip("通过此参数，细胞结构的分支数量将被纳入基因组复杂性的计算中。例如，包含许多子基因组或许多构造分支的基因组将具有较高的复杂性值。"),
                         parameters.genomeComplexityRamificationFactor);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Neuron factor")
+                            .name("神经元因素")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0.0f)
                             .max(4.0f)
                             .format("%.2f")
                             .defaultValue(origParameters.genomeComplexityNeuronFactor)
-                            .tooltip("This parameter takes into account the number of encoded neurons in the genome for the complexity value."),
+                            .tooltip("此参数将基因组中编码的神经元数量纳入复杂性值的计算中。"),
                         parameters.genomeComplexityNeuronFactor);
                     AlienImGui::EndTreeNode();
                 }
@@ -1612,15 +1545,13 @@ void SimulationParametersWindow::processBase()
              * Addon: Legacy behavior
              */
             if (parameters.features.legacyModes) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Legacy behavior"))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：经典行为"))) {
                     AlienImGui::Checkbox(
                         AlienImGui::CheckboxParameters()
-                            .name("Fetch angle from adjacent sensor")
+                            .name("从相邻传感器获取角度")
                             .textWidth(RightColumnWidth)
                             .defaultValue(origParameters.legacyCellFunctionMuscleMovementAngleFromSensor)
-                            .tooltip("This parameter changes the behavior of the parameter 'Movement toward target'. If activated, the muscle cell fetches the "
-                                     "movement angle directly from a connected (or connected-connected) sensor cell that has previously detected a target "
-                                     "(legacy behavior). If deactivated, the input signal must only originate from a sensor cell and must not be adjacent (new behavior)."),
+                            .tooltip("此参数改变了“朝向目标移动”参数的行为。如果激活，肌肉细胞将直接从连接的（或间接连接的）传感器细胞获取先前检测到目标的移动角度（传统行为）。如果未激活，输入信号只能来自传感器细胞，且不能是相邻的（新行为）。"),
                         parameters.legacyCellFunctionMuscleMovementAngleFromSensor);
                     AlienImGui::EndTreeNode();
                 }
@@ -1641,7 +1572,7 @@ void SimulationParametersWindow::processBase()
 
 bool SimulationParametersWindow::processSpot(int index)
 {
-    std::string name = "Zone " + std::to_string(index + 1);
+    std::string name = "区域 " + std::to_string(index + 1);
     bool isOpen = true;
     if (ImGui::BeginTabItem(name.c_str(), &isOpen, ImGuiTabItemFlags_None)) {
         auto parameters = _simulationFacade->getSimulationParameters();
@@ -1658,20 +1589,20 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Colors and location
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Visualization"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("可视化"))) {
                 AlienImGui::ColorButtonWithPicker(
-                    AlienImGui::ColorButtonWithPickerParameters().name("Background color").textWidth(RightColumnWidth).defaultValue(origSpot.color),
+                    AlienImGui::ColorButtonWithPickerParameters().name("背景颜色").textWidth(RightColumnWidth).defaultValue(origSpot.color),
                     spot.color,
                     _backupColor,
                     _savedPalette);
                 AlienImGui::EndTreeNode();
             }
 
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Location"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("位置"))) {
                 if (AlienImGui::Switcher(
                         AlienImGui::SwitcherParameters()
-                            .name("Shape")
-                            .values({"Circular", "Rectangular"})
+                            .name("形状")
+                            .values({"圆形", "长方形"})
                             .textWidth(RightColumnWidth)
                             .defaultValue(origSpot.shapeType),
                         spot.shapeType)) {
@@ -1684,7 +1615,7 @@ bool SimulationParametersWindow::processSpot(int index)
 
                 AlienImGui::SliderFloat2(
                     AlienImGui::SliderFloat2Parameters()
-                        .name("Position (x,y)")
+                        .name("位置 (x,y)")
                         .textWidth(RightColumnWidth)
                         .min({0, 0})
                         .max(toRealVector2D(worldSize))
@@ -1697,7 +1628,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     spot.posY);
                 AlienImGui::SliderFloat2(
                     AlienImGui::SliderFloat2Parameters()
-                        .name("Velocity (x,y)")
+                        .name("速度 (x,y)")
                         .textWidth(RightColumnWidth)
                         .min({-4.0f, -4.0f})
                         .max({4.0f, 4.0f})
@@ -1709,7 +1640,7 @@ bool SimulationParametersWindow::processSpot(int index)
                 if (spot.shapeType == SpotShapeType_Circular) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Core radius")
+                            .name("核心范围")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(maxRadius)
@@ -1720,7 +1651,7 @@ bool SimulationParametersWindow::processSpot(int index)
                 if (spot.shapeType == SpotShapeType_Rectangular) {
                     AlienImGui::SliderFloat2(
                         AlienImGui::SliderFloat2Parameters()
-                            .name("Size (x,y)")
+                            .name("大小 (x,y)")
                             .textWidth(RightColumnWidth)
                             .min({0, 0})
                             .max({toFloat(worldSize.x), toFloat(worldSize.y)})
@@ -1732,7 +1663,7 @@ bool SimulationParametersWindow::processSpot(int index)
 
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Fade-out radius")
+                        .name("淡出范围")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(maxRadius)
@@ -1745,7 +1676,7 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Flow
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Force field"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("力场"))) {
                 auto isForceFieldActive = spot.flowType != FlowType_None;
 
                 auto forceFieldTypeIntern = std::max(0, spot.flowType - 1);  //FlowType_None should not be selectable in ComboBox
@@ -1758,8 +1689,8 @@ bool SimulationParametersWindow::processSpot(int index)
                 auto posX = ImGui::GetCursorPos().x;
                 if (AlienImGui::Combo(
                         AlienImGui::ComboParameters()
-                            .name("Type")
-                            .values({"Radial", "Central", "Linear"})
+                            .name("类型")
+                            .values({"放射性", "中心性", "线性"})
                             .textWidth(RightColumnWidth)
                             .defaultValue(origForceFieldTypeIntern),
                         forceFieldTypeIntern)) {
@@ -1778,15 +1709,15 @@ bool SimulationParametersWindow::processSpot(int index)
                     ImGui::SetCursorPosX(posX);
                     AlienImGui::Combo(
                         AlienImGui::ComboParameters()
-                            .name("Orientation")
+                            .name("朝向")
                             .textWidth(RightColumnWidth)
                             .defaultValue(origSpot.flowData.radialFlow.orientation)
-                            .values({"Clockwise", "Counter clockwise"}),
+                            .values({"顺时针", "逆时针"}),
                         spot.flowData.radialFlow.orientation);
                     ImGui::SetCursorPosX(posX);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Strength")
+                            .name("强度")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(0.5f)
@@ -1797,7 +1728,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     ImGui::SetCursorPosX(posX);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Drift angle")
+                            .name("漂移角度")
                             .textWidth(RightColumnWidth)
                             .min(-180.0f)
                             .max(180.0f)
@@ -1809,7 +1740,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     ImGui::SetCursorPosX(posX);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Strength")
+                            .name("强度")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(0.5f)
@@ -1822,7 +1753,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     ImGui::SetCursorPosX(posX);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Angle")
+                            .name("角度")
                             .textWidth(RightColumnWidth)
                             .min(-180.0f)
                             .max(180.0f)
@@ -1832,7 +1763,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     ImGui::SetCursorPosX(posX);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Strength")
+                            .name("强度")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(0.5f)
@@ -1848,10 +1779,10 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Physics: Motion
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Motion"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：运动"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Friction")
+                        .name("摩擦力")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(1)
@@ -1863,7 +1794,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.friction);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Rigidity")
+                        .name("刚性")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(1)
@@ -1878,10 +1809,10 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Physics: Thresholds
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Thresholds"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：阈值"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Maximum force")
+                        .name("最大力度")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(3.0f)
@@ -1896,10 +1827,10 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Physics: Binding
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Binding"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：连接"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Binding creation velocity")
+                        .name("连接速度")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(2.0f)
@@ -1909,7 +1840,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellFusionVelocity);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Maximum energy")
+                        .name("最大能量")
                         .textWidth(RightColumnWidth)
                         .min(50.0f)
                         .max(10000000.0f)
@@ -1926,19 +1857,19 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Physics: Radiation
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Physics: Radiation"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("物理：放射性粒子"))) {
                 AlienImGui::Checkbox(
                     AlienImGui::CheckboxParameters()
-                        .name("Disable radiation sources")
+                        .name("禁用放射性粒子源")
                         .textWidth(RightColumnWidth)
                         .defaultValue(origSpot.values.radiationDisableSources)
-                        .tooltip("If activated, all radiation sources within this spot are deactivated."),
+                        .tooltip("如果启用，所有在该区域的放射性粒子源都将被临时禁用。"),
                     spot.values.radiationDisableSources);
                 spot.activatedValues.radiationDisableSources = spot.values.radiationDisableSources;
 
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Absorption factor")
+                        .name("吸收率")
                         .textWidth(RightColumnWidth)
                         .logarithmic(true)
                         .colorDependence(true)
@@ -1952,7 +1883,7 @@ bool SimulationParametersWindow::processSpot(int index)
 
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Radiation type 1: Strength")
+                        .name("辐射类型 I：强度")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
@@ -1969,10 +1900,10 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Cell life cycle
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell life cycle"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞生命周期"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Minimum energy")
+                        .name("最小能量")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(10.0f)
@@ -1983,7 +1914,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellMinEnergy);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Decay rate of dying cells")
+                        .name("正在死亡的细胞的腐败率")
                         .colorDependence(true)
                         .textWidth(RightColumnWidth)
                         .min(1e-6f)
@@ -1999,10 +1930,10 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Mutation 
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Genome copy mutations"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("基因组复制时的突变"))) {
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Neuron weights and biases")
+                        .name("神经元比重和偏差")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2015,7 +1946,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationNeuronData);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Cell properties")
+                        .name("细胞属性")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2028,7 +1959,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationCellProperties);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Geometry")
+                        .name("几何形状")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2041,7 +1972,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationGeometry);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Custom geometry")
+                        .name("自定义几何形状")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2054,7 +1985,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationCustomGeometry);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Cell function type")
+                        .name("细胞功能类型")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2067,7 +1998,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationCellFunction);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Cell insertion")
+                        .name("插入")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2080,7 +2011,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationInsertion);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Cell deletion")
+                        .name("删除")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2093,7 +2024,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationDeletion);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Translation")
+                        .name("变换")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2106,7 +2037,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationTranslation);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Duplication")
+                        .name("复制")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2119,7 +2050,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationDuplication);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Individual cell color")
+                        .name("单个细胞颜色")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2132,7 +2063,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationCellColor);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Sub-genome color")
+                        .name("次级基因组颜色")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2145,7 +2076,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellCopyMutationSubgenomeColor);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Genome color")
+                        .name("基因组颜色")
                         .textWidth(RightColumnWidth)
                         .min(0.0f)
                         .max(1.0f)
@@ -2162,10 +2093,10 @@ bool SimulationParametersWindow::processSpot(int index)
             /**
              * Attacker
              */
-            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Cell function: Attacker"))) {
+            if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("细胞功能：攻击器"))) {
                 AlienImGui::InputFloatColorMatrix(
                     AlienImGui::InputFloatColorMatrixParameters()
-                        .name("Food chain color matrix")
+                        .name("食物链颜色矩阵")
                         .max(1)
                         .textWidth(RightColumnWidth)
                         .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origSpot.values.cellFunctionAttackerFoodChainColorMatrix))
@@ -2174,7 +2105,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellFunctionAttackerFoodChainColorMatrix);
                 AlienImGui::InputFloatColorMatrix(
                     AlienImGui::InputFloatColorMatrixParameters()
-                        .name("Complex creature protection")
+                        .name("复杂生物保护")
                         .textWidth(RightColumnWidth)
                         .min(0)
                         .max(20.0f)
@@ -2184,7 +2115,7 @@ bool SimulationParametersWindow::processSpot(int index)
                     &spot.activatedValues.cellFunctionAttackerGenomeComplexityBonus);
                 AlienImGui::SliderFloat(
                     AlienImGui::SliderFloatParameters()
-                        .name("Energy cost")
+                        .name("能量损耗")
                         .textWidth(RightColumnWidth)
                         .colorDependence(true)
                         .min(0)
@@ -2202,10 +2133,10 @@ bool SimulationParametersWindow::processSpot(int index)
              * Addon: Advanced absorption control
              */
             if (parameters.features.advancedAbsorptionControl) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Advanced energy absorption control"))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：高级能量吸收控制"))) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Low velocity penalty")
+                            .name("低速度惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -2217,7 +2148,7 @@ bool SimulationParametersWindow::processSpot(int index)
                         &spot.activatedValues.radiationAbsorptionLowVelocityPenalty);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Low genome complexity penalty")
+                            .name("基因组低复杂度惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -2235,10 +2166,10 @@ bool SimulationParametersWindow::processSpot(int index)
              * Addon: Advanced attacker control
              */
             if (parameters.features.advancedAttackerControl) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Advanced attacker control"))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：高级攻击器控制"))) {
                     AlienImGui::InputFloatColorMatrix(
                         AlienImGui::InputFloatColorMatrixParameters()
-                            .name("New complex mutant protection")
+                            .name("新种族保护")
                             .textWidth(RightColumnWidth)
                             .min(0)
                             .max(1.0f)
@@ -2249,7 +2180,7 @@ bool SimulationParametersWindow::processSpot(int index)
 
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Geometry penalty")
+                            .name("几何形状惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -2260,7 +2191,7 @@ bool SimulationParametersWindow::processSpot(int index)
                         &spot.activatedValues.cellFunctionAttackerGeometryDeviationExponent);
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Connections mismatch penalty")
+                            .name("连接不匹配惩罚")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(0)
@@ -2277,10 +2208,10 @@ bool SimulationParametersWindow::processSpot(int index)
              * Addon: Cell age limiter
              */
             if (parameters.features.cellAgeLimiter) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Cell age limiter").highlighted(false))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：细胞年龄限制器").highlighted(false))) {
                     AlienImGui::SliderFloat(
                         AlienImGui::SliderFloatParameters()
-                            .name("Maximum inactive cell age")
+                            .name("最大非活跃细胞年龄")
                             .textWidth(RightColumnWidth)
                             .colorDependence(true)
                             .min(1.0f)
@@ -2300,7 +2231,7 @@ bool SimulationParametersWindow::processSpot(int index)
              * Addon: Cell color transition rules
              */
             if (parameters.features.cellColorTransitionRules) {
-                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addon: Cell color transition rules").highlighted(false))) {
+                if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件：细胞颜色过渡规则").highlighted(false))) {
                     ImGui::Checkbox("##cellColorTransition", &spot.activatedValues.cellColorTransition);
                     ImGui::SameLine();
                     ImGui::BeginDisabled(!spot.activatedValues.cellColorTransition);
@@ -2316,7 +2247,7 @@ bool SimulationParametersWindow::processSpot(int index)
                                               .logarithmic(true)
                                               .infinity(true);
                         if (0 == color) {
-                            parameters.name("Target color and duration");
+                            parameters.name("目标颜色和持续时间");
                         }
                         AlienImGui::InputColorTransition(
                             parameters, color, spot.values.cellColorTransitionTargetColor[color], spot.values.cellColorTransitionDuration[color]);
@@ -2358,7 +2289,7 @@ void SimulationParametersWindow::processAddonList()
         AlienImGui::Separator();
     }
 
-    _featureListOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("Addons").highlighted(true).defaultOpen(_featureListOpen));
+    _featureListOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("插件").highlighted(true).defaultOpen(_featureListOpen));
     if (_featureListOpen) {
         if (ImGui::BeginChild("##addons", {scale(0), 0})) {
             auto parameters = _simulationFacade->getSimulationParameters();
@@ -2367,63 +2298,59 @@ void SimulationParametersWindow::processAddonList()
 
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Advanced absorption control")
+                    .name("高级能量吸收控制")
                     .textWidth(0)
                     .defaultValue(origFeatures.advancedAbsorptionControl)
-                    .tooltip("This addon offers extended possibilities for controlling the absorption of energy particles by cells."),
+                    .tooltip("此插件提供了更多控制细胞吸收能量粒子的能力。"),
                 parameters.features.advancedAbsorptionControl);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Advanced attacker control")
+                    .name("高级攻击器控制")
                     .textWidth(0)
                     .defaultValue(origFeatures.advancedAttackerControl)
-                    .tooltip("It contains further settings that influence how much energy can be obtained from an attack by attacker cells."),
+                    .tooltip("它包含影响攻击细胞从攻击中获得的能量数量的进一步的设置。"),
                 parameters.features.advancedAttackerControl);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Cell age limiter")
+                    .name("细胞年龄限制器")
                     .textWidth(0)
                     .defaultValue(origFeatures.cellAgeLimiter)
-                    .tooltip("It enables additional possibilities to control the maximal cell age."),
+                    .tooltip("它提供了更多控制细胞最大年龄的可能性。"),
                 parameters.features.cellAgeLimiter);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Cell color transition rules")
+                    .name("细胞颜色过渡规则")
                     .textWidth(0)
                     .defaultValue(origFeatures.cellColorTransitionRules)
-                    .tooltip("This can be used to define color transitions for cells depending on their age."),
+                    .tooltip("这可以用来根据细胞的年龄定义颜色过渡。"),
                 parameters.features.cellColorTransitionRules);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Cell glow")
+                    .name("细胞光辉")
                     .textWidth(0)
                     .defaultValue(origFeatures.cellGlow)
-                    .tooltip("It enables an additional rendering step that makes the cells glow."),
+                    .tooltip("它启用一个额外的渲染步骤，使细胞发光。"),
                 parameters.features.cellGlow);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("External energy control")
+                    .name("额外能量控制")
                     .textWidth(0)
                     .defaultValue(origFeatures.externalEnergyControl)
-                    .tooltip("This addon is used to add an external energy source. Its energy can be gradually transferred to the constructor cells in the "
-                             "simulation. Vice versa, the energy from radiation and dying cells can also be transferred back to the external source."),
+                    .tooltip("此插件用于添加外部能量源。其能量可以逐渐传输到模拟中的构造细胞。反之，辐射和死亡细胞的能量也可以传输回外部能量源。"),
                 parameters.features.externalEnergyControl);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Genome complexity measurement")
+                    .name("基因组复杂度测量方法")
                     .textWidth(0)
                     .defaultValue(origFeatures.genomeComplexityMeasurement)
-                    .tooltip("Parameters for the calculation of genome complexity are activated here. This genome complexity can be used for 'Advanced "
-                             "absorption control' "
-                             "and 'Advanced attacker control' to favor more complex genomes in natural selection. If it is deactivated, default values are "
-                             "used that simply take the genome size into account."),
+                    .tooltip("这里激活是基因组复杂度计算的参数。此基因组复杂度可以用于“高级能量吸收控制”和“高级攻击器控制”，以在自然选择中偏爱更复杂的基因组。如果未激活，则使用默认值，仅考虑基因组大小。"),
                 parameters.features.genomeComplexityMeasurement);
             AlienImGui::Checkbox(
                 AlienImGui::CheckboxParameters()
-                    .name("Legacy behavior")
+                    .name("经典行为")
                     .textWidth(0)
                     .defaultValue(origFeatures.legacyModes)
-                    .tooltip("It contains features for compatibility with older versions."),
+                    .tooltip("它包含与旧版本兼容的功能。"),
                 parameters.features.legacyModes);
 
             if (parameters.features != lastFeatures) {
@@ -2438,7 +2365,7 @@ void SimulationParametersWindow::processAddonList()
 void SimulationParametersWindow::processStatusBar()
 {
     std::vector<std::string> statusItems;
-    statusItems.emplace_back("CTRL + click on a slider to type in a precise value");
+    statusItems.emplace_back("在滑槽上 CTRL + 点击 可以输入精确值");
 
     AlienImGui::StatusBar(statusItems);
 }
@@ -2475,14 +2402,14 @@ void SimulationParametersWindow::onDeleteTab(int index)
 void SimulationParametersWindow::onOpenParameters()
 {
     GenericFileDialog::get().showOpenFileDialog(
-        "Open simulation parameters", "Simulation parameters (*.parameters){.parameters},.*", _startingPath, [&](std::filesystem::path const& path) {
+        "打开模拟器参数集", "模拟器参数集 (*.parameters){.parameters},.*", _startingPath, [&](std::filesystem::path const& path) {
             auto firstFilename = ifd::FileDialog::Instance().GetResult();
             auto firstFilenameCopy = firstFilename;
             _startingPath = firstFilenameCopy.remove_filename().string();
 
             SimulationParameters parameters;
             if (!SerializerService::get().deserializeSimulationParametersFromFile(parameters, firstFilename.string())) {
-                GenericMessageDialog::get().information("Open simulation parameters", "The selected file could not be opened.");
+                GenericMessageDialog::get().information("打开模拟器参数集", "选中的文件无法被打开。");
             } else {
                 _simulationFacade->setSimulationParameters(parameters);
                 _simulationFacade->setOriginalSimulationParameters(parameters);
@@ -2493,14 +2420,14 @@ void SimulationParametersWindow::onOpenParameters()
 void SimulationParametersWindow::onSaveParameters()
 {
     GenericFileDialog::get().showSaveFileDialog(
-        "Save simulation parameters", "Simulation parameters (*.parameters){.parameters},.*", _startingPath, [&](std::filesystem::path const& path) {
+        "保存模拟器参数集", "模拟器参数集 (*.parameters){.parameters},.*", _startingPath, [&](std::filesystem::path const& path) {
         auto firstFilename = ifd::FileDialog::Instance().GetResult();
         auto firstFilenameCopy = firstFilename;
         _startingPath = firstFilenameCopy.remove_filename().string();
 
         auto parameters = _simulationFacade->getSimulationParameters();
         if (!SerializerService::get().serializeSimulationParametersToFile(firstFilename.string(), parameters)) {
-            GenericMessageDialog::get().information("Save simulation parameters", "The selected file could not be saved.");
+            GenericMessageDialog::get().information("保存模拟器参数集", "选中的文件无法被保存。");
         }
     });
 }
