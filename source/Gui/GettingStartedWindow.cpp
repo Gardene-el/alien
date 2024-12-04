@@ -17,7 +17,7 @@ void GettingStartedWindow::initIntern()
 
 
 GettingStartedWindow::GettingStartedWindow()
-    : AlienWindow("Getting started", "windows.getting started", true)
+    : AlienWindow("入门手册", "windows.getting started", true)
 {}
 
 void GettingStartedWindow::shutdownIntern()
@@ -35,350 +35,222 @@ void GettingStartedWindow::processIntern()
         /**
          * INTRO
          */
-        drawHeading1("Introduction");
+        drawHeading1("介绍");
 
-        ImGui::Text("ALIEN is an artificial life and physics simulation tool based on a CUDA-powered 2D particle engine for soft bodies and fluids.");
+        ImGui::Text("ALIEN 是一个基于 CUDA 驱动的 2D 粒子引擎的人工生命和物理模拟器，可以模拟软体和流体。");
         ImGui::Text(
-            "Each particle can be equipped with higher-level functions including sensors, muscles, neurons, constructors, etc. that allow to "
-            "mimic certain functionalities of biological cells or of robotic components. Multi-cellular organisms are simulated as networks of "
-            "particles that exchange energy and information over their bonds. The engine encompasses a genetic system capable of encoding the "
-            "blueprints of organisms in genomes which are stored in individual cells. The simulator is capable to simulate entire ecosystems inhabited "
-            "by different populations where every object is composed of interacting particles with specific functions (regardless of whether it models a "
-            "plant, herbivore, carnivore, virus, environmental structure, etc.).");
+            "每个粒子都可以配备更高级的功能，包括传感器、肌肉、神经元、构造器等，这些功能允许模拟生物细胞或机器人组件的某些功能。多细胞生物被模拟为通过其连接交换能量和信息的粒子网络。引擎包含一个遗传系统，能够在基因组中编码生物体的蓝图，这些基因组存储在单个细胞中。模拟器能够模拟由不同种群组成的整个生态系统，其中每个对象都是由具有特定功能的相互作用粒子组成的（无论它是植物、草食动物、肉食动物、病毒、环境结构等）。");
 
         /**
          * FIRST STEPS
          */
-        drawHeading1("First steps");
+        drawHeading1("第一步");
 
-        ImGui::Text("The easiest way to get to know the ALIEN simulator is to download and run an existing simulation file. You can then try out different "
-                    "function and modify the simulation according to your wishes.");
+        ImGui::Text("了解 ALIEN 模拟器的最简单方法是下载并运行现有的模拟文件。然后，您可以尝试不同的功能并根据自己的需求修改模拟。");
         ImGui::Text(
-            "Various examples can be found in the in-game simulation browser demonstrating capabilities of the "
-            "engine ranging from pure physics examples, self-deploying structures, self-replicators to evolving ecosystems. If not already open, please "
-            "invoke Network " ICON_FA_LONG_ARROW_ALT_RIGHT " Browser in the menu bar. "
-            "Simulations can be conveniently downloaded and uploaded from/to the connected server (alien-project.org by default). "
-            "In order to upload own simulations to the server or rate other simulations, you need to register a new user, which can be accomplished in "
-            "the login dialog.");
-            
-        ImGui::Text("For the beginning, however, you can use the example already loaded. Initially, it is advisable to become acquainted with the "
-                    "windows for temporal and spatial controls. The handling should be intuitive and requires no deeper knowledge.");
-        drawItemText("In the temporal control window, a simulation can be started or paused. The execution speed "
-                     "may be regulated if necessary. In addition, it is possible to calculate and revert single time steps as "
-                     "well as to make snapshots of a simulation to which one can return at any time without having "
-                     "to reload the simulation from a file.");
-        drawItemText("The spatial control window combines zoom information and settings on the one hand, and "
-                     "scaling functions on the other hand. A quite useful feature in the dialog for "
-                     "scaling/resizing is the option 'Scale content'. If activated, periodic spatial copies of "
-                     "the original world can be made.");
-        ImGui::Text("There are basically two modes of how the user can operate in the view where the simulation is "
-                    "shown: a navigation mode and an edit mode. You can switch between these two modes by invoking "
-                    "the edit button at the bottom left of the screen or in the menu via Editor " ICON_FA_LONG_ARROW_ALT_RIGHT " Activate.");
+            "在游戏模拟浏览器中可以找到各种示例，展示引擎的功能，从纯物理示例、自部署结构、自复制器到进化生态系统。如果尚未打开，请在菜单栏中调用网络 " ICON_FA_LONG_ARROW_ALT_RIGHT " 浏览器。"
+            "可以方便地从连接的服务器（默认情况下为 alien-project.org）下载和上传模拟文件。"
+            "为了将自己的模拟上传到服务器或对其他模拟进行评分，您需要注册一个新用户，这可以在登录对话框中完成。");
+
+        ImGui::Text("不过，开始时，您可以使用已经加载的示例。最初，建议熟悉时间和空间控制窗口。操作应该是直观的，不需要深入的知识。");
+        drawItemText("在时间控制窗口中，可以启动或暂停模拟。如果需要，可以调节执行速度。此外，还可以计算和恢复单个时间步长，并拍摄模拟快照，随时可以返回到这些快照，而无需从文件重新加载模拟。");
+        drawItemText("空间控制窗口结合了缩放信息和设置，以及缩放功能。对话框中的“缩放内容”选项是一个非常有用的功能。如果激活，可以制作原始世界的周期性空间副本。");
+        ImGui::Text("用户在显示模拟的视图中基本上可以以两种模式操作：导航模式和编辑模式。您可以通过点击屏幕左下角的编辑按钮或在菜单中通过编辑器 " ICON_FA_LONG_ARROW_ALT_RIGHT " 激活来切换这两种模式。");
         drawItemText(
-            "The navigation mode is enabled by default and allows you to zoom in (holding the left mouse "
-            "button) and out (holding the right mouse button) continuously. Alternatively, you can also use the mouse wheel. By holding the middle mouse "
-            "button and moving the mouse, you can pan the visualized section of the world.");
+            "默认情况下启用导航模式，允许您连续放大（按住左键）和缩小（按住右键）。或者，您也可以使用鼠标滚轮。按住中键并移动鼠标，可以平移世界的可视化部分。");
         drawItemText(
-            "In the edit mode, it is possible to push bodies around in a running simulation by holding and moving the right mouse button. "
-            "With the left mouse button you can drag and drop objects. Please try this out. It can make a lot of fun! The editing mode also allows you "
-            "to activate lot of editing windows (Pattern editor, Creator, Multiplier, Genome editor, etc.) whose possibilities can be explored over time. "
-            "Practically all properties of each single particle can be manipulated. In addition, there are mass editing functions available.");
+            "在编辑模式下，可以通过按住并移动右键在运行的模拟中推动物体。使用左键可以拖放对象。请尝试一下，这会很有趣！编辑模式还允许您激活许多编辑窗口（模式编辑器、创建器、倍增器、基因组编辑器等），这些窗口的功能可以随着时间的推移进行探索。几乎所有单个粒子的属性都可以被操控。此外，还有大量的编辑功能可用。");
 
-        ImGui::Text("To be able to experiment with existing simulations, it is important to know and change the "
-                    "simulation parameters. This can be accomplished in the window 'Simulation parameters'. For example, "
-                    "the radiation intensity can be increased or the friction can be adjusted. Explanations to the "
-                    "individual parameters can be found in the tooltip next to them.");
+        ImGui::Text("为了能够实验现有的模拟，了解和更改模拟参数非常重要。这可以在“模拟参数”窗口中完成。例如，可以增加辐射强度或调整摩擦力。每个参数旁边的工具提示中可以找到对各个参数的解释。");
 
         ImGui::Text(
-            "ALIEN offers the possibility for users to customize the basic entities through a color system with 7 different colors. More precisely, each "
-            "cell is assigned a specific color, allowing the application of different simulation parameter values based on the cell's color. This "
-            "enables the creation of specific conditions for populations coexisting in a shared world. For example, "
-            "plant-like organisms may have a higher absorption rate for radiation particles, so they can get their energy from that.");
+            "ALIEN 提供了通过 7 种不同颜色的颜色系统自定义基本实体的可能性。更具体地说，每个细胞都被分配了一个特定的颜色，允许根据细胞的颜色应用不同的模拟参数值。这使得在共享世界中为共存的种群创建特定条件成为可能。例如，类植物生物体可能具有更高的辐射粒子吸收率，因此它们可以从中获取能量。");
 
-        drawHeading2("Important");
+        drawHeading2("重要");
         ImGui::Text(
-            "On older graphics cards or when using a high resolution (e.g. 4K), it is recommended to reduce the rendered frames per second, "
-            "as this significantly increases the simulation speed (time steps per second). This adjustment can be made in the display settings.");
+            "在较旧的显卡上或使用高分辨率（例如 4K）时，建议减少渲染的每秒帧数，因为这会显著提高模拟速度（每秒时间步长）。此调整可以在显示设置中进行。");
 
         /**
          * EXAMPLES
          */
-        drawHeading1("Examples");
+        drawHeading1("示例");
         drawParagraph(
-            "ALIEN comes with a lot of simulation files that can be found in the browser window. They are good for experimenting with certain aspects of the "
-            "program. We pick some examples to give a short overview:");
+            "ALIEN 附带了许多可以在浏览器窗口中找到的模拟文件。它们适合用于实验程序的某些方面。我们挑选了一些示例以简要概述：");
 
-        drawHeading2("Fluids, walls and soft bodies");
-        drawParagraph("There are several pure physics simulations demonstrating the engines' capability. They are suitable for testing the influence of "
-                      "simulation parameters such as 'Smoothing length', 'Pressure', 'Viscosity', etc.");
-        drawItemText("Fluids/Pump with Soft-Bodies");
-        drawItemText("Demos/Perpetual Motion Machine");
-        drawItemText("Demos/Stormy Night");
+        drawHeading2("流体、墙壁和软体");
+        drawParagraph("有几个纯物理模拟展示了引擎的能力。它们适合测试模拟参数的影响，例如“平滑长度”、“压力”、“粘度”等。");
+        drawItemText("流体/带软体的泵");
+        drawItemText("演示/永动机");
+        drawItemText("演示/暴风雨之夜");
 
-        drawHeading2("Evolution simulations");
-        drawParagraph("By attaching higher-level functions to particle networks, complex multi-cellular organisms can be modeled. They can evolve over time as "
-                      "they are subject to mutations. The following examples consist of homogeneous as well as changing worlds populated by self-reproducing agents. Different "
-                      "selection pressures control evolution.");
-        drawItemText("Deep Down Below/Selected Results");
-        drawItemText("Primordial Ocean/Selected Results");
-        drawItemText("v4.8-Evolution/Gradient/Selected Results");
-        drawItemText("Evolution Sandbox/Example");
-        drawItemText("Complex Evolution Testbed/Example");
+        drawHeading2("进化模拟");
+        drawParagraph("通过将更高级的功能附加到粒子网络，可以建模复杂的多细胞生物。它们可以随着时间的推移进化，因为它们受到突变的影响。以下示例包括由自我复制的代理填充的同质和变化的世界。不同的选择压力控制进化。");
+        drawItemText("深处/精选结果");
+        drawItemText("原始海洋/精选结果");
+        drawItemText("v4.8-进化/梯度/精选结果");
+        drawItemText("进化沙盒/示例");
+        drawItemText("复杂进化测试床/示例");
 
-        drawHeading2("Plant-herbivore ecosystems");
-        drawParagraph("By customizing the cells according to their color, it is possible to specify different types of organisms. There are many examples that "
-                      "feature two classes: plants and herbivores. Plants are able to consume radiation particles, while herbivores can consume plants. This "
-                      "simple relationship already provides interesting dynamics, as the following examples show.");
-        drawItemText("Twin Worlds/Example");
-        drawItemText("Bugs and Flowers/Example");
-        drawItemText("Self-replicating Fluid/Initial Setting");
+        drawHeading2("植物-草食动物生态系统");
+        drawParagraph("通过根据颜色自定义细胞，可以指定不同类型的生物体。有许多示例展示了两类生物：植物和草食动物。植物能够消耗辐射粒子，而草食动物可以消耗植物。这种简单的关系已经提供了有趣的动态，如以下示例所示。");
+        drawItemText("双子世界/示例");
+        drawItemText("虫子和花朵/示例");
+        drawItemText("自我复制流体/初始设置");
 
-        drawHeading2("Swarming");
-        drawParagraph("There are powerful sensors available as cell functions for detecting concentrations of specific colors in the surroundings. "
-                      "Organisms equipped with these sensors can perceive their environment, nourish their neural networks, and respond accordingly.");
-        drawItemText("Swarms/Space Invaders");
-        drawItemText("Evolving Swarms/Example");
+        drawHeading2("蜂群");
+        drawParagraph("作为细胞功能，有强大的传感器可用于检测周围特定颜色的浓度。配备这些传感器的生物体可以感知环境，滋养它们的神经网络，并做出相应的反应。");
+        drawItemText("蜂群/太空入侵者");
+        drawItemText("进化蜂群/示例");
 
         /**
          * BASIC NOTION
          */
-        drawHeading1("Basic notion");
+        drawHeading1("基本概念");
 
-        ImGui::Text("Generally, in an ALIEN simulation, all objects as well as thermal radiation are modeled by different types of particles moving through an "
-                    "empty space. The following terms are frequently used:");
-
-        ImGui::Spacing();
-        drawHeading2("World");
-        ImGui::Text("An ALIEN world is two-dimensional rectangular domain with periodic boundary conditions. The space is modeled as a continuum.");
+        ImGui::Text("通常，在 ALIEN 模拟中，所有对象以及热辐射都是由不同类型的粒子在空旷空间中移动来建模的。以下术语经常使用：");
 
         ImGui::Spacing();
-        drawHeading2("Cell");
+        drawHeading2("世界");
+        ImGui::Text("ALIEN 世界是一个具有周期性边界条件的二维矩形域。空间被建模为一个连续体。");
+
+        ImGui::Spacing();
+        drawHeading2("细胞");
         ImGui::Text(
-            "Cells are the basic building blocks that make up everything. They can be connected to each others, possibly attached to the background "
-            "(to model barriers), possess special functions and transport signals. Additionally, cells have various physical properties, including");
-        drawItemText("Position in space");
-        drawItemText("Velocity");
-        drawItemText("Internal energy (may be interpreted as its temperature)");
-        drawItemText("Upper limit of connections");
-        drawItemText("Living state");
+            "细胞是构成一切的基本构建块。它们可以相互连接，可能附着在背景上（用于建模障碍物），具有特殊功能并传输信号。此外，细胞具有各种物理属性，包括");
+        drawItemText("空间中的位置");
+        drawItemText("速度");
+        drawItemText("内部能量（可以解释为其温度）");
+        drawItemText("连接的上限");
+        drawItemText("生存状态");
 
         ImGui::Spacing();
-        drawHeading2("Cell connection");
+        drawHeading2("细胞连接");
         ImGui::Text(
-            "A cell connection is a bond between two cells. It stores the reference distance and on each side a reference angle to a possibly further cell "
-            "connection. The reference distance and angles are calculated when the connection is established. As soon as the actual distance deviates from "
-            "the reference distance, a pulling/pushing force is applied at both ends. Furthermore, tangential forces are applied at both ends in the "
-            "case of an angle mismatch.");
+            "细胞连接是两个细胞之间的键。它存储参考距离，并在每一侧存储到可能的进一步细胞连接的参考角度。参考距离和角度在建立连接时计算。一旦实际距离偏离参考距离，在两端施加拉/推力。此外，在角度不匹配的情况下，在两端施加切向力。");
 
         ImGui::Spacing();
-        drawHeading2("Cell function");
-        ImGui::Text("It is possible to assign a special function to a cell, which will be executed at regular time intervals. The following functions are "
-                    "implemented:");
-        drawItemText("Neuron: It equips the cell with a small network of 8 neurons. It processes input gained from the signals of connected cells and provides an "
-                     "output signal to other connected cells.");
-        drawItemText(
-            "Transmitter: It distributes energy to other constructors, transmitters or surrounding cells. In particular, it can be used to power active "
-            "constructors. No signal is required for triggering.");
-        drawItemText("Constructor: A constructor can build a cell network based on a built-in genome. The construction is done cell by cell and requires "
-                     "energy. A constructor can either be controlled via signals or become active automatically (default).");
-        drawItemText("Injector: It can infect other constructor cells to inject its own built-in genome.");
-        drawItemText("Nerve: On the one hand, it transfers signals from connected input cells and on the other hand, it can optionally generate "
-                     "signals at specific intervals.");
-        drawItemText("Attacker: It attacks surrounding cells from other cell networks by stealing energy from them.");
-        drawItemText("Defender: It reduces the attack strength when another cell in the vicinity performs an attack.");
-        drawItemText("Muscle: When a muscle cell is activated, it can produce either a movement, a bending or a change in length of the cell connection.");
-        drawItemText("Sensor: If activated, it performs a long-range scan for the concentration of cells with a certain color.");
-        drawItemText("Reconnector: Has the ability to dynamically create or destroy connections to other cells with a specified color.");
-        drawItemText(
-            "Detonator: A cell which can explode by a signal. It generates a large amount of kinetic energy for the objects in its surroundings.");
+        drawHeading2("细胞功能");
+        ImGui::Text("可以为细胞分配一个特殊功能，该功能将在定期时间间隔内执行。以下功能已实现：");
+        drawItemText("神经元：它为细胞配备了一个由 8 个神经元组成的小型网络。它处理从连接细胞的信号中获得的输入，并向其他连接细胞提供输出信号。");
+        drawItemText("传输器：它将能量分配给其他构造器、传输器或周围的细胞。特别是，它可以用于为活动构造器供电。不需要信号触发。");
+        drawItemText("构造器：构造器可以基于内置基因组构建细胞网络。构造是逐个细胞完成的，需要能量。构造器可以通过信号控制或自动激活（默认）。");
+        drawItemText("注射器：它可以感染其他构造器细胞以注入其内置基因组。");
+        drawItemText("反应神经：一方面，它传输来自连接输入细胞的信号，另一方面，它可以选择性地在特定时间间隔生成信号。");
+        drawItemText("攻击者：它通过从其他细胞网络的周围细胞中窃取能量来攻击它们。");
+        drawItemText("防御者：当附近的另一个细胞执行攻击时，它会减少攻击强度。");
+        drawItemText("运动器（肌肉）：当肌肉细胞被激活时，它可以产生运动、弯曲或改变细胞连接的长度。");
+        drawItemText("感知器：如果激活，它会对特定颜色的细胞浓度进行远程扫描。");
+        drawItemText("重连器：能够动态创建或破坏与指定颜色的其他细胞的连接。");
+        drawItemText("爆炸器：可以通过信号爆炸的细胞。它为周围的物体产生大量的动能。");
 
         ImGui::Spacing();
-        drawHeading2("Signals");
+        drawHeading2("信号");
         drawParagraph(
-            "Cells can produce signals comprising of 8 values, primarily utilized for controlling cell functions and sometimes referred to as channel #0 "
-            "to channel #7. The states are refreshed periodically, specifically when the cell functions are executed. To be more precise, each cell function "
-            "is executed at regular time intervals (every 6 time steps). The 'execution order number' specifies the exact time offset within those intervals.");
-        drawParagraph("The process for updating the values of a signal is as follows: Firstly, the values of all input signals (i.e. "
-                    "signals from connected cells which matches with the input execution number) are summed up. The resulted sum is then employed as input for "
-                    "the cell function, which may potentially alter the values. Subsequently, the outcome is used to generate an output signal.");
+            "细胞可以产生包含 8 个值的信号，主要用于控制细胞功能，有时称为通道 #0 到通道 #7。状态定期刷新，特别是在执行细胞功能时。更确切地说，每个细胞功能在定期时间间隔内执行（每 6 个时间步长）。“执行顺序号”指定了这些间隔内的确切时间偏移。");
+        drawParagraph("更新信号值的过程如下：首先，所有输入信号（即来自连接细胞的信号，与输入执行号匹配）的值相加。结果的总和然后用作细胞功能的输入，可能会改变这些值。随后，结果用于生成输出信号。");
 
         ImGui::Spacing();
-        drawHeading2("Cell color");
-        drawParagraph("In addition to cell functions, a color can be used to perform additional user-defined customization of cells. For this purpose, most "
-                    "simulation parameters can be adjusted separately for each color, if desired. As a result, cells of different colors may have individual "
-                    "properties.");
+        drawHeading2("细胞颜色");
+        drawParagraph("除了细胞功能外，还可以使用颜色来执行额外的用户定义的细胞自定义。为此，如果需要，大多数模拟参数可以分别为每种颜色调整。因此，不同颜色的细胞可能具有个体属性。");
 
         ImGui::Spacing();
-        drawHeading2("Cell network");
-        drawParagraph("A cell network is a connected graph consisting of cells and cell connections. Two cells in a network are therefore "
-                    "connected to each other directly or via other cells. A cell network physically represents a particular body.");
+        drawHeading2("细胞网络");
+        drawParagraph("细胞网络是由细胞和细胞连接组成的连接图。因此，网络中的两个细胞通过其他细胞直接或间接连接在一起。细胞网络在物理上代表特定的身体。");
 
         ImGui::Spacing();
-        drawHeading2("Genome");
-        drawParagraph("The blueprints for entire cell networks can be stored in genomes. These genomes are translated into real cell networks by constructor "
-              "cells and, if necessary, copied to their offspring. Furthermore, injector cells are able to inject their own genome into other "
-              "constructor cells, which allows to model virus behaviors.");
-        drawParagraph("A genome in ALIEN may describe several cell networks, which are hierarchically structured und possibly connected when constructed. More "
-                      "precisely, it means that there is a top-level blueprint describing a certain network. If there are further constructor cells "
-                      "within this network, they can also contain further genomes, which in turn describe other cell networks and so on.");
+        drawHeading2("基因组");
+        drawParagraph("整个细胞网络的蓝图可以存储在基因组中。这些基因组由构造器细胞翻译成真实的细胞网络，并在必要时复制到它们的后代中。此外，注射器细胞能够将其自身的基因组注入其他构造器细胞中，这允许建模病毒行为。");
+        drawParagraph("ALIEN 中的基因组可以描述多个细胞网络，这些网络是分层结构的，并且在构建时可能连接在一起。更确切地说，这意味着有一个顶级蓝图描述了某个网络。如果这个网络中有进一步的构造器细胞，它们也可以包含进一步的基因组，这些基因组可以在单独的选项卡中编辑，依此类推。");
 
         ImGui::Spacing();
-        drawHeading2("Energy particle");
+        drawHeading2("能量粒子");
         drawParagraph(
-            "An energy particle is a particle which has only an energy value, position and velocity. Unlike cells, they cannot form networks or perform any "
-            "additional functions. Energy particles are produced by cells as radiation or during decay and can, in turn, also be absorbed.");
+            "能量粒子是一种只有能量值、位置和速度的粒子。与细胞不同，它们不能形成网络或执行任何附加功能。能量粒子由细胞作为辐射或在衰变过程中产生，并且可以被吸收。");
 
         ImGui::Spacing();
-        drawHeading2("Pattern");
-        drawParagraph("A pattern is a set of cell networks and energy particles.");
+        drawHeading2("模式");
+        drawParagraph("模式是一组细胞网络和能量粒子。");
 
         /**
          * SIMULATION PARAMETERS
          */
-        drawHeading1("Simulation parameters");
+        drawHeading1("模拟参数");
         drawParagraph(
-            "All parameters relevant to the simulation can be adjusted here. By default, the parameters are set uniformly for the entire world. However, it is "
-            "also possible to allow certain parameters to vary locally in special zones. To do this, you can create a new tab in the simulation parameter window by clicking on "
-            "the '+' button. It adds a spatially (fuzzy) delimited area where the global parameters can be overwritten. This zone is also visible by a "
-            "different color.");
-        drawParagraph("Regardless of this, many parameters can also be set depending on the cell color. For this purpose click the '+' button beside the "
-                      "parameter. This customization is useful when you want to define different classes of species.");
-        drawParagraph("Sometimes it is difficult to set precise values in a slider. In this case, you can click on the slider while holding the CTRL key. This "
-                      "allows you to enter the exact value in an input field and confirm it by pressing ENTER.");
-        drawParagraph("In general, the following types of parameters can be set.");
-        drawHeading2("Rendering");
+            "所有与模拟相关的参数都可以在这里调整。默认情况下，参数在整个世界中统一设置。然而，也可以允许某些参数在特殊区域内局部变化。为此，您可以通过点击“+”按钮在模拟参数窗口中创建一个新选项卡。它添加了一个空间（模糊）限定区域，其中可以覆盖全局参数。该区域也通过不同的颜色可见。");
+        drawParagraph("除此之外，许多参数也可以根据细胞颜色设置。为此，请点击参数旁边的“+”按钮。当您想定义不同类别的物种时，此自定义非常有用。");
+        drawParagraph("有时在滑块中设置精确值很困难。在这种情况下，您可以在按住 CTRL 键的同时点击滑块。这允许您在输入字段中输入精确值并按 ENTER 确认。");
+        drawParagraph("一般来说，可以设置以下类型的参数。");
+        drawHeading2("渲染");
         drawParagraph(
-            "In addition to the background color, you can determine the coloring of the cells here. Each cell is assigned a specific color, which can be used "
-            "for customization and which is also used by default for rendering. However, in evolution simulations, it can be very useful to color mutants "
-            "differently. This allows for better visual evaluation of diversities, mutation rates, and successful mutants, etc. For this purpose, you can "
-            "switch the cell coloring to the mutation id.");
-        drawHeading2("Physics");
-        drawParagraph("Basic physical properties can be modified in these settings. This includes adjusting the radiation intensity, various thresholds, and "
-                     "the motion algorithm. Changes can have significant effects on performance and, in the worst case, may lead to program crashes.");
-        drawHeading2("Radiation sources");
-        drawParagraph("Optionally, you can define radiation sources by opening the corresponding editor. Typically, all cells lose energy over time by "
-                      "emitting particles. These energy particles travel through space and can be absorbed by other cells under certain conditions. When no "
-                      "radiation source is defined, energy particles are emitted at the cell's position, resulting in a more or less uniform distribution of "
-                      "energy particles throughout space over time. For certain simulations, especially in modeling plant species, it is beneficial to specify "
-                      "explicit sources where energy particles should be generated. This can be achieved in the 'Radiation sources' window. Even when a source "
-                      "is defined, cells continue to lose the same amount of energy as before. The difference is that particles are now spawned at the "
-                      "specified source. The energy conservation principle remains intact.");
-        drawHeading2("Cell specific parameters");
-        drawParagraph("These parameter types are particularly important when simulating (self-replicating) agents composed of cell networks, going beyond pure "
-                      "physical simulations. Many of the different cell functions depend on specific parameters, which can be adjusted here. Particularly "
-                      "important are the parameters for mutation rates and the attack functions.With the latter, the food chain between cells of different "
-                      "colors can be configured. For example, in the 'Food chain color matrix' one could specify that cells with a certain color can only "
-                      "consume cells with a certain other color but not themselves.");
-        drawParagraph("The mutation rates influence the probability of modifying a genome for the underlying cells. When adjusting these rates, it should "
-                      "be noted that different types of mutations also have different impacts. For instance, a 'Duplication' mutation affects the genome much "
-                      "more invasively than a 'Neural net' mutation, which only adjusts weights and biases. Furthermore, it should be considered that for "
-                      "evolutionary simulations, where individuals require a long time for self-replication, high mutation rates should be "
-                      "avoided. The correct values are best determined through experimentation.");
+            "除了背景颜色，您还可以在这里确定细胞的着色。每个细胞都被分配了一个特定的颜色，可以用于自定义，并且默认情况下也用于渲染。然而，在进化模拟中，将突变体着色为不同颜色非常有用。这允许更好地可视化评估多样性、突变率和成功的突变体等。为此，您可以将细胞着色切换为突变 ID。");
+        drawHeading2("物理");
+        drawParagraph("这些设置中可以修改基本的物理属性。这包括调整辐射强度、各种阈值和运动算法。更改可能对性能产生重大影响，在最坏的情况下，可能导致程序崩溃。");
+        drawHeading2("辐射源");
+        drawParagraph("可选地，您可以通过打开相应的编辑器来定义辐射源。通常，所有细胞通过发射粒子随着时间的推移失去能量。这些能量粒子在空间中移动，并在某些条件下被其他细胞吸收。当未定义辐射源时，能量粒子在细胞的位置产生，随着时间的推移，能量粒子在空间中更或少均匀分布。对于某些模拟，特别是在建模植物物种时，指定能量粒子应生成的显式源是有益的。这可以在“辐射源”窗口中实现。即使定义了源，细胞仍然会像以前一样失去相同数量的能量。不同之处在于粒子现在在指定的源处生成。能量守恒原理保持不变。");
+        drawHeading2("细胞特定参数");
+        drawParagraph("这些参数类型在模拟由细胞网络组成的（自我复制）代理时特别重要，超出了纯物理模拟的范围。许多不同的细胞功能依赖于特定参数，可以在这里调整。特别重要的是突变率和攻击功能的参数。后者可以配置不同颜色细胞之间的食物链。例如，在“食物链颜色矩阵”中，可以指定某种颜色的细胞只能消耗某种其他颜色的细胞，而不能消耗自身。");
+        drawParagraph("突变率影响修改基础细胞基因组的概率。在调整这些率时，应注意不同类型的突变也有不同的影响。例如，“复制”突变比“神经网络”突变更具侵入性，后者仅调整权重和偏差。此外，应考虑到对于需要长时间自我复制的进化模拟，应避免高突变率。最佳值最好通过实验确定。");
+
 
         /**
          * EDITORS
          */
-        drawHeading1("Editors");
+drawHeading1("编辑器");
         drawParagraph(
-            "If you want to design your own worlds, sceneries or organisms, there are many different editors available, which partially require deeper "
-            "knowledge. To open the editors, you have to switch to the edit mode (e.g. a click on the icon at the bottom left). A short overview of the "
-            "possibilities are given below.");
-        drawHeading2("Drag and drop");
+            "如果您想设计自己的世界、场景或生物体，有许多不同的编辑器可用，这些编辑器部分需要更深入的知识。要打开编辑器，您需要切换到编辑模式（例如，点击左下角的图标）。以下是可能性的简要概述。");
+        drawHeading2("拖放");
         drawParagraph(
-            "The easiest way is to select and move objects with the mouse. You can simply drag and drop cell networks in the simulation view. This "
-            "also works during running simulations. When the simulation is paused, you can select a rectangular area to be highlighted by holding "
-            "down the right mouse button. The selection is visually highlighted and can be moved via drag and drop. By holding down the SHIFT button during"
-            "a mouse action, only the selected cells and not the associated cell networks are shifted. This can lead to the destruction or formation of cell "
-            "connections which are not selected.");
-        drawHeading2("Creator");
-        drawParagraph("If you want to create individual cells, cell networks, or energy particles, you can open the 'Creator' window. In this window you also "
-                      "find a mode for creating cell structures by freehand drawing on the simulation area. The created cells are equipped with default values "
-                      "and can be modified later if desired.");
-        drawHeading2("Pattern editor");
-        drawParagraph("Physical properties of already selected cells and energy particles, such as center velocities, positions, colors, etc., can be "
-                      "conveniently changed in the 'Pattern editor'. In addition, selections can be saved, loaded, copied and pasted.");
-        drawHeading2("Genome editor");
-        drawParagraph("In the 'Genome editor', genomes describing cell networks can be created and modified. Each tab shows the principal part of the genome. "
-                      "It is a sequence of cells that are supposed to be constructed in that order. If one of these cells is a constructor cell, it contains "
-                      "an additional genome that can be edited in a separate tab, if desired.");
-        drawParagraph("To translate a genome into an actual structure, there are two options:");
-        drawItemText("You can generate a spore using the corresponding toolbar button. A spore is a single constructor cell containing the specific genome and "
-                     "possessing enough energy to create the main structure described within.");
+            "最简单的方法是使用鼠标选择和移动对象。您可以在模拟视图中简单地拖放细胞网络。这在运行模拟期间也有效。当模拟暂停时，您可以按住右键选择一个矩形区域。选择区域会被高亮显示，并且可以通过拖放移动。在鼠标操作期间按住 SHIFT 键，仅移动选定的细胞而不是关联的细胞网络。这可能导致未选择的细胞连接的破坏或形成。");
+        drawHeading2("创建器");
+        drawParagraph("如果您想创建单个细胞、细胞网络或能量粒子，可以打开“创建器”窗口。在此窗口中，您还可以通过在模拟区域上自由绘制来创建细胞结构。创建的细胞配备了默认值，如果需要，可以稍后修改。");
+        drawHeading2("模式编辑器");
+        drawParagraph("已经选择的细胞和能量粒子的物理属性，如中心速度、位置、颜色等，可以在“模式编辑器”中方便地更改。此外，选择可以保存、加载、复制和粘贴。");
+        drawHeading2("基因组编辑器");
+        drawParagraph("在“基因组编辑器”中，可以创建和修改描述细胞网络的基因组。每个选项卡显示基因组的主要部分。它是按顺序构建的细胞序列。如果其中一个细胞是构造器细胞，它包含一个可以在单独选项卡中编辑的附加基因组。");
+        drawParagraph("将基因组转化为实际结构有两种选择：");
+        drawItemText("您可以使用相应的工具栏按钮生成孢子。孢子是一个包含特定基因组并具有足够能量来创建主要结构的单个构造器细胞。");
         drawItemText(
-            "Another option is to inject the genome into an existing organism. To do this, you must select the organism and click on 'Inspect principal "
-            "genome' in the editor menu. A window will open where you see the existing genome of that creature. Then you can inject your own genome by "
-            "invoking the 'Inject from editor' button.");
-        drawHeading2("Object inspection");
-        drawParagraph("Nearly every property of each particle can be viewed and edited. For this purpose, special editing windows can be attached to a "
-                      "particle. To do this, you have to select one or more particles (not too many) and invoke 'Inspect objects' from the editor menu. Each "
-                      "selected particle is now connected to a window. It is even possible to view these editing windows during a running simulation. In this "
-                      "way, you can monitor in real-time how properties of individual particles change over time.");
-        drawHeading2("Mass operations");
-        drawParagraph("Various mass editing functions are available. On the one hand, the pattern editor allows to change different physical properties of an "
-                      "entire selection. On the other hand, through the 'Tools' menu, the 'Mass operations' dialog can be opened. Here, colors of cells and "
-                      "genomes, energy values, and other properties can be globally modified. The new values will be randomly chosen from a specified range. "
-                      "Cells within a cell networks will be assigned the same value.");
-        drawParagraph("In addition, simulations can be scaled up by increasing the size of the world and filling the resulting empty space with copies of the "
-                      "original world. This functionality is available via the resize dialog in the 'Spatial control' window, if you set a new size there and "
-                      "activate 'Scale content'.");
+            "另一种选择是将基因组注入现有生物体中。为此，您必须选择生物体并在编辑器菜单中点击“检查主要基因组”。会打开一个窗口，您可以在其中看到该生物体的现有基因组。然后，您可以通过调用“从编辑器注入”按钮注入自己的基因组。");
+        drawHeading2("对象检查");
+        drawParagraph("几乎每个粒子的每个属性都可以查看和编辑。为此，可以将特殊的编辑窗口附加到粒子上。为此，您需要选择一个或多个粒子（不要太多）并从编辑器菜单中调用“检查对象”。每个选定的粒子现在都连接到一个窗口。甚至可以在运行模拟期间查看这些编辑窗口。通过这种方式，您可以实时监控单个粒子属性随时间的变化。");
+        drawHeading2("批量操作");
+        drawParagraph("有各种批量编辑功能可用。一方面，模式编辑器允许更改整个选择的不同物理属性。另一方面，通过“工具”菜单可以打开“批量操作”对话框。在这里，可以全局修改细胞和基因组的颜色、能量值和其他属性。新值将从指定范围内随机选择。细胞网络内的细胞将分配相同的值。");
+        drawParagraph("此外，可以通过增加世界的大小并用原始世界的副本填充生成的空白空间来扩展模拟。此功能可以通过在“空间控制”窗口中的调整对话框中设置新大小并激活“缩放内容”来实现。");
         /**
-         * FREQUENTLY ASK QUESTIONS
+         * 常见问题
          */
-        drawHeading1("Frequently asked questions");
+        drawHeading1("FAQ 常见问题");
 
-        drawHeading2("How does a simple self-replicating organism work?");
-        drawParagraph("In general, an organism in ALIEN consists of a network of cells where the cells work together by communicating with each other through "
-                      "signals.");
+        drawHeading2("简单的自我复制生物体如何工作？");
+        drawParagraph("一般来说，ALIEN 中的生物体由细胞网络组成，这些细胞通过信号相互通信协同工作。");
         drawParagraph(
-            "A simple creature first needs a constructor cell that contains its genome and is responsible for self-replication. The constructor cell "
-            "is automatically triggered and generates (as soon as enough energy is available) the cell network of the offspring built cell by cell as described in "
-            "its genome. The genome for the offspring is also copied and placed into the constructor cell of the offspring.");
+            "一个简单的生物体首先需要一个包含其基因组并负责自我复制的构造器细胞。构造器细胞会自动触发，并在有足够能量时生成后代的细胞网络，按基因组描述逐个细胞构建。后代的基因组也会被复制并放置在后代的构造器细胞中。");
         drawParagraph(
-            "Self-replication requires energy, which must be obtained in some way. On the one hand, energy can be acquired by the absorption of "
-            "energy particles flying around. This can be the main source of energy for plant-like species. On the other hand, there is the possibility to utilize "
-            "attacker cells. They can attack cells from other organisms by stealing energy from them. If an attacker cell is part of the creature, it must be "
-            "explicitly triggered by a signal. This signal may come, for example, from another cell equipped with a neural network. The energy "
-            "obtained by an attacker cell is distributed to nearby constructor or transmitter cells.");
-        drawParagraph("To perform movements, an organism requires muscle cells. These are also controlled by signals. Muscle cells can work in "
-                      "various modes: they can bend, contract/expand, or generate an impulse.");
-        drawParagraph("For the perception of the environment, sensor cells are available. When such a cell is triggered by a signal, it provide "
-                      "information about the relative position of cell concentrations with respect to a specific color, which can be further processed by e.g. "
-                      "cell with neural network.");
+            "自我复制需要能量，必须通过某种方式获取。一方面，能量可以通过吸收飞行的能量粒子获得。这可以是类植物物种的主要能量来源。另一方面，可以利用攻击细胞。它们可以通过从其他生物体的细胞中窃取能量来攻击它们。如果攻击细胞是生物体的一部分，它必须通过信号显式触发。例如，这个信号可能来自另一个配备神经网络的细胞。攻击细胞获得的能量会分配给附近的构造器或发射器细胞。");
+        drawParagraph("为了进行运动，生物体需要肌肉细胞。这些细胞也由信号控制。肌肉细胞可以以各种模式工作：它们可以弯曲、收缩/扩展或产生冲动。");
+        drawParagraph("为了感知环境，可以使用传感器细胞。当这种细胞被信号触发时，它会提供关于特定颜色细胞浓度相对位置的信息，这些信息可以进一步处理，例如由配备神经网络的细胞处理。");
 
-        drawHeading2("Why does the radiation source generates no energy particles?");
-        drawParagraph("The principle of energy conservation holds true in a simulation, which means that energy particles cannot spontaneously come into "
-                      "existence out of nothingness. This principle plays a vital role in ensuring the stability of long-term simulations. If a radiation "
-                      "source is defined, it will emit a particle only when a cell somewhere loses energy. Conversely, in the absence of a radiation source, "
-                      "any emitted energy particle would originate directly in the spatial vicinity of the corresponding cell.");
-        drawParagraph("The existence of matter in the form of cells is a prerequisite for the radiation source to emit particles. Furthermore, the simulation "
-                      "parameters should be adjusted in a way that guarantees a gradual loss of energy from cells over time.");
+        drawHeading2("为什么辐射源不产生能量粒子？");
+        drawParagraph("能量守恒原理在模拟中成立，这意味着能量粒子不能凭空自发产生。这个原理在确保长期模拟的稳定性方面起着至关重要的作用。如果定义了辐射源，它只会在某个细胞失去能量时发射粒子。相反，在没有辐射源的情况下，任何发射的能量粒子都会直接在相应细胞的空间附近产生。");
+        drawParagraph("细胞形式的物质存在是辐射源发射粒子的前提。此外，模拟参数应调整为确保细胞随时间逐渐失去能量。");
 
-        drawHeading2("How can neural networks be incorporated?");
-        drawParagraph("Neural networks are available as cell functions. If a cell is assigned the function 'Neuron', it possesses a small neural network "
-                      "consisting of 8 neurons. However, these networks can be interconnected to form arbitrarily large networks, as each cell receives input "
-                      "from the output of certain connected cells.");
-        drawParagraph("Furthermore, these networks can be fed by sensors and, in turn, control muscle and attacker cells.");
+        drawHeading2("如何整合神经网络？");
+        drawParagraph("神经网络作为细胞功能可用。如果为细胞分配了“神经元”功能，它将拥有一个由 8 个神经元组成的小型神经网络。然而，这些网络可以互连形成任意大的网络，因为每个细胞从某些连接细胞的输出接收输入。");
+        drawParagraph("此外，这些网络可以由传感器提供输入，并反过来控制肌肉和攻击细胞。");
 
-        drawHeading2("For how long should I run a simulation to see evolutionary changes?");
+        drawHeading2("我应该运行模拟多长时间才能看到进化变化？");
         drawParagraph(
-            "This depends on many factors: On the size of the simulated world, on the mutation rates, on various selection pressures that can be influenced "
-            "by the simulation parameters and on the self-replication duration. Usually one should wait for several dozen generations, which may correspond to hundreds of thousands or million time steps."
-            "In small worlds with smaller organisms and high mutation rates, evolutionary changes can sometimes be observed every minute depending on the hardware. With more complex "
-            "simulations, you should rather expect a few hours.");
+            "这取决于许多因素：模拟世界的大小、突变率、可以通过模拟参数影响的各种选择压力以及自我复制的持续时间。通常应该等待几十代，这可能对应于数十万或数百万时间步长。"
+            "在具有较小生物体和高突变率的小世界中，根据硬件的不同，有时每分钟都可以观察到进化变化。对于更复杂的模拟，您应该预期需要几个小时。");
 
-        drawHeading2("How can I add energy to a simulation?");
-        drawParagraph("Adding energy to a simulation can increase the available resources and thus the population. There is a convenient way to directly feed "
-                      "all constructor cells with additional energy. This can be achieved by enabling the 'External Energy Control' addon in the simulation "
-                      "parameter window. Next, set the amount of energy to be added (for instance, 1M could sustain 10K cells if each cell has 100 energy "
-                      "units). The external energy is not added instantly but at a rate that can be specified under 'inflow'.");
+        drawHeading2("如何向模拟中添加能量？");
+        drawParagraph("向模拟中添加能量可以增加可用资源，从而增加人口。有一种方便的方法可以直接为所有构造器细胞提供额外能量。这可以通过在模拟参数窗口中启用“外部能量控制”插件来实现。接下来，设置要添加的能量量（例如，如果每个细胞有 100 个能量单位，1M 可以维持 10K 个细胞）。外部能量不是立即添加的，而是以可以在“流入”下指定的速率添加。");
 
-        drawHeading2("How can I create a cell signal in the first place?");
-        drawParagraph("To activate most cell functions, an input from a connected cell in the form of a signal is required. The simplest methods "
-                      "to generate a signal are as follows:");
-        drawItemText("The most direct approach involves using a nerve cell that generates an signal at regular time intervals. The advantage here is that "
-            "you can precisely configure the length of the time intervals.");
-        drawItemText("Signals can also be generated within a neuron cell using bias values.");
-        drawParagraph("Additionally, other cells such as constructor cells provide an output signal as soon as they are triggered (automatically).");
+        drawHeading2("如何首先创建细胞信号？");
+        drawParagraph("要激活大多数细胞功能，需要来自连接细胞的信号输入。生成信号的最简单方法如下：");
+        drawItemText("最直接的方法是使用神经细胞，它会在定期时间间隔生成信号。这里的优点是您可以精确配置时间间隔的长度。");
+        drawItemText("信号也可以在神经元细胞中使用偏置值生成。");
+        drawParagraph("此外，其他细胞如构造器细胞在被触发（自动）时会提供输出信号。");
 
         //ImGui::Text("There is a lot to explore. ALIEN features an extensive graph and particle editor in order to build custom worlds with desired "
         //            "environmental structures and machines. A documentation with tutorial-like introductions to various topics can be found at");
@@ -402,7 +274,7 @@ void GettingStartedWindow::processIntern()
     ImGui::EndChild();
 
     AlienImGui::Separator();
-    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("Show after startup"), _showAfterStartup);
+    AlienImGui::ToggleButton(AlienImGui::ToggleButtonParameters().name("启动后显示"), _showAfterStartup);
 }
 
 void GettingStartedWindow::drawTitle()
@@ -410,46 +282,46 @@ void GettingStartedWindow::drawTitle()
     ImGui::PushStyleColor(ImGuiCol_Text, (ImU32)Const::HeadlineColor);
 
     ImGui::PushFont(StyleRepository::get().getMediumFont());
-    ImGui::Text("What is ");
+    ImGui::Text("什么是");
     ImGui::PopFont();
 
     ImGui::SameLine();
     AlienImGui::NegativeSpacing();
     ImGui::PushFont(StyleRepository::get().getMediumBoldFont());
-    ImGui::Text("A");
+    ImGui::Text("人");
     ImGui::PopFont();
 
     ImGui::SameLine();
     AlienImGui::NegativeSpacing();
     AlienImGui::NegativeSpacing();
     ImGui::PushFont(StyleRepository::get().getMediumFont());
-    ImGui::Text("rtificial ");
+    ImGui::Text("工");
     ImGui::PopFont();
 
     ImGui::SameLine();
     AlienImGui::NegativeSpacing();
     ImGui::PushFont(StyleRepository::get().getMediumBoldFont());
-    ImGui::Text("LI");
+    ImGui::Text("生");
     ImGui::PopFont();
 
     ImGui::SameLine();
     AlienImGui::NegativeSpacing();
     AlienImGui::NegativeSpacing();
     ImGui::PushFont(StyleRepository::get().getMediumFont());
-    ImGui::Text("fe ");
+    ImGui::Text("命");
     ImGui::PopFont();
 
     ImGui::SameLine();
     AlienImGui::NegativeSpacing();
     ImGui::PushFont(StyleRepository::get().getMediumBoldFont());
-    ImGui::Text("EN");
+    ImGui::Text("模拟器");
     ImGui::PopFont();
 
     ImGui::SameLine();
     AlienImGui::NegativeSpacing();
     AlienImGui::NegativeSpacing();
     ImGui::PushFont(StyleRepository::get().getMediumFont());
-    ImGui::Text("vironment ?");
+    ImGui::Text("ALIEN？");
     ImGui::PopFont();
 
     ImGui::PopStyleColor();
