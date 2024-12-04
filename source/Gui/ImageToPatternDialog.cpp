@@ -80,7 +80,7 @@ namespace
 void ImageToPatternDialog::show()
 {
     GenericFileDialog::get().showOpenFileDialog(
-        "Open image", "Image (*.png){.png},.*", _startingPath, [&](std::filesystem::path const& path) {
+        "打开图像", "图像 (*.png){.png},.*", _startingPath, [&](std::filesystem::path const& path) {
 
         auto firstFilename = ifd::FileDialog::Instance().GetResult();
         auto firstFilenameCopy = firstFilename;

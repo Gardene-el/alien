@@ -580,7 +580,7 @@ void MainLoopController::processMenubar()
     AlienImGui::BeginMenu(" " ICON_FA_TOOLS "  工具 ", _toolsMenuOpened);
     AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("大量操作").keyAlt(true).key(ImGuiKey_H), [&] { MassOperationsDialog::get().open(); });
     AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("图式分析").keyAlt(true).key(ImGuiKey_P), [&] { PatternAnalysisDialog::get().show(); });
-    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("图像生成器").keyAlt(true).key(ImGuiKey_G), [&] { ImageToPatternDialog::get().show(); });
+    AlienImGui::MenuItem(AlienImGui::MenuItemParameters().name("从图像生成图示").keyAlt(true).key(ImGuiKey_G), [&] { ImageToPatternDialog::get().show(); });
     AlienImGui::EndMenu();
 
     AlienImGui::BeginMenu(" " ICON_FA_COG "  设置 ", _settingsMenuOpened, false);
