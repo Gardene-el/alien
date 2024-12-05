@@ -35,10 +35,12 @@ void StyleRepository::setup()
     static const ImWchar ranges[] = {
         0x0020, 0x007E,  // Basic Latin (包含空格、标点符号、数字和基本的英文字母)
         0x00A0, 0x00FF,  // Latin-1 Supplement (包含一些常用的符号)
+        0x3000, 0x303F,  // CJK Symbols and Punctuation (包含中文标点符号)
         0x4E00, 0x9FA5,  // CJK Unified Ideographs (常用汉字)
         0xFF00, 0xFFEF,  // Halfwidth and Fullwidth Forms (全角符号)
         0  // 终止符
     };
+
     ImFontConfig config;
 
     ImGuiIO& io = ImGui::GetIO();
@@ -52,16 +54,20 @@ void StyleRepository::setup()
     }
 
     //small bold font
-    _smallBoldFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 16.0f * scaleFactor);
+    _smallBoldFont = _defaultFont;
+    // io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 16.0f * scaleFactor);
 
     //medium bold font
-    _mediumBoldFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 24.0f * scaleFactor);
+    _mediumBoldFont = io.Fonts->AddFontFromMemoryCompressedTTF(SmileySans_compressed_data, SmileySans_compressed_size, 24.0f * scaleFactor,&config, ranges);
+    //io.Fonts->AddFontFromMemoryCompressedTTF(DroidSansBold_compressed_data, DroidSansBold_compressed_size, 24.0f * scaleFactor);
 
     //medium font
-    _mediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 24.0f * scaleFactor);
+    _mediumFont = _mediumBoldFont;
+    //io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 24.0f * scaleFactor);
 
     //large font
-    _largeFont = io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 48.0f * scaleFactor);
+    _largeFont = io.Fonts->AddFontFromMemoryCompressedTTF(SmileySans_compressed_data, SmileySans_compressed_size, 48.0f * scaleFactor,&config, ranges);
+    //io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 48.0f * scaleFactor);
 
     //icon font
     _iconFont = io.Fonts->AddFontFromMemoryCompressedTTF(AlienIconFont_compressed_data, AlienIconFont_compressed_size, 24.0f * scaleFactor);
@@ -76,9 +82,12 @@ void StyleRepository::setup()
     _monospaceMediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(Cousine_Regular_compressed_data, Cousine_Regular_compressed_size, 14.0f * scaleFactor);
 
     //monospace large font
-    _monospaceLargeFont = io.Fonts->AddFontFromMemoryCompressedTTF(Cousine_Regular_compressed_data, Cousine_Regular_compressed_size, 128.0f * scaleFactor);
+    _monospaceLargeFont =_largeFont;
+    // io.Fonts->AddFontFromMemoryCompressedTTF(SmileySans_compressed_data, SmileySans_compressed_size, 128.0f * scaleFactor,&config, ranges);
+    // io.Fonts->AddFontFromMemoryCompressedTTF(Cousine_Regular_compressed_data, Cousine_Regular_compressed_size, 128.0f * scaleFactor);
 
-    _reefMediumFont = io.Fonts->AddFontFromMemoryCompressedTTF(Reef_compressed_data, Reef_compressed_size, 24.0f * scaleFactor);
+    _reefMediumFont = _mediumBoldFont;
+    // io.Fonts->AddFontFromMemoryCompressedTTF(Reef_compressed_data, Reef_compressed_size, 24.0f * scaleFactor);
     _reefLargeFont = io.Fonts->AddFontFromMemoryCompressedTTF(Reef_compressed_data, Reef_compressed_size, 64.0f * scaleFactor);
 }
 
