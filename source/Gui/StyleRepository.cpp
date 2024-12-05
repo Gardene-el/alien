@@ -17,6 +17,8 @@
 #include "Fonts/IconsFontAwesome5.h"
 #include "Fonts/Reef.h"
 
+#include "Fonts/SmileySans.h"
+
 #include "WindowController.h"
 
 void StyleRepository::setup()
