@@ -32,11 +32,19 @@ void StyleRepository::setup()
     ImFontConfig configMerge;
     configMerge.MergeMode = true;
     configMerge.FontBuilderFlags = ImGuiFreeTypeBuilderFlags_LightHinting;
+    static const ImWchar ranges[] = {
+        0x0020, 0x007E,  // Basic Latin (包含空格、标点符号、数字和基本的英文字母)
+        0x00A0, 0x00FF,  // Latin-1 Supplement (包含一些常用的符号)
+        0x4E00, 0x9FA5,  // CJK Unified Ideographs (常用汉字)
+        0xFF00, 0xFFEF,  // Halfwidth and Fullwidth Forms (全角符号)
+        0  // 终止符
+    };
+    ImFontConfig config;
 
     ImGuiIO& io = ImGui::GetIO();
 
     //default font (small with icons)
-    io.Fonts->AddFontFromMemoryCompressedTTF(DroidSans_compressed_data, DroidSans_compressed_size, 16.0f * scaleFactor);
+    _defaultFont=io.Fonts->AddFontFromMemoryCompressedTTF(SmileySans_compressed_data, SmileySans_compressed_size, 16.0f * scaleFactor,&config, ranges);
     {
         static const ImWchar rangesIcons[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
         io.Fonts->AddFontFromMemoryCompressedTTF(

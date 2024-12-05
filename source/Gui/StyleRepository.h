@@ -133,6 +133,7 @@ public :
     float scaleInverse(float value) const;
 
 private:
+    ImFont* _defaultFont = nullptr;
     ImFont* _iconFont = nullptr;
     ImFont* _smallBoldFont = nullptr;
     ImFont* _mediumBoldFont = nullptr;
