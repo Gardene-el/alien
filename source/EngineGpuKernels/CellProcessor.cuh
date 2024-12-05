@@ -626,7 +626,9 @@ __inline__ __device__ void CellProcessor::livingStateTransition_calcNextState(Si
         auto origLivingState = cell->livingState;
         auto livingState = origLivingState;
 
-        if (origLivingState == LivingState_Activating) {
+        if (cell->barrier) {
+            livingState = LivingState_Ready;
+        } else if (origLivingState == LivingState_Activating) {
             livingState = LivingState_Ready;
             if (cudaSimulationParameters.features.cellAgeLimiter && cudaSimulationParameters.cellResetAgeAfterActivation) {
                 atomicExch(&cell->age, 0);
