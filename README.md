@@ -1,3 +1,7 @@
+<p>
+  <b>ALIEN</b> 是一个基于 CUDA 的人工生命模拟工具，使用专门的 2D 粒子引擎来模拟软体和流体。每个模拟体由一个粒子网络组成，可以升级为更高级的功能，从纯信息处理能力到物理设备（如传感器、肌肉、武器、构造器等），这些设备的执行由神经网络协调。可以将这些模拟体视为在共同环境中运行的代理或数字生物。它们的蓝图可以存储在基因组中并传递给后代。
+</p>
+
 <h1 align="center">
 <a href="https://alien-project.org" target="_blank">ALIEN - Explore worlds of artificial life</a>
 </h1>
