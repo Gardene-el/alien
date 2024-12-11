@@ -18,6 +18,8 @@ private:
     __inline__ __device__ static void movement(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal& signal);
     __inline__ __device__ static void contractionExpansion(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal);
     __inline__ __device__ static void bending(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal);
+    __inline__ __device__ static void sucting(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal);
+
 
     __inline__ __device__ static int getConnectionIndex(Cell* cell, Cell* otherCell);
     __inline__ __device__ static bool hasTriangularConnection(Cell* cell, Cell* otherCell);
@@ -53,6 +55,9 @@ __device__ __inline__ void MuscleProcessor::processCell(SimulationData& data, Si
     } break;
     case MuscleMode_Bending: {
         bending(data, statistics, cell, signal);
+    } break;
+    case MuscleMode_Suction: {
+        sucting(data, statistics, cell, signal);
     } break;
     }
 
@@ -249,4 +254,21 @@ __inline__ __device__ bool MuscleProcessor::hasTriangularConnection(Cell* cell, 
 __inline__ __device__ float MuscleProcessor::getTruncatedUnitValue(Signal const& signal, int channel)
 {
     return max(-0.3f, min(0.3f, signal.channels[channel])) / 0.3f;
+}
+
+__inline__ __device__ void MuscleProcessor::sucting(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal)
+{
+    if (abs(signal.channels[0]) < NEAR_ZERO) {
+        return;
+    }
+    if (!cell->tryLock()) {
+        return;
+    }
+
+    // Sucting
+    cell->vel.x=-cell->vel.x;
+    cell->vel.y=-cell->vel.y;
+
+    cell->releaseLock();
+    statistics.incNumMuscleActivities(cell->color);
 }
