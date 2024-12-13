@@ -316,7 +316,10 @@ __device__ __inline__ void MuscleProcessor::servo(SimulationData& data, Simulati
         int resultX=cell->cellFunctionData.muscle.lastMovementX;
         int resultY=cell->cellFunctionData.muscle.lastMovementY;
 
-        if (abs(signal.channels[1])>0){
+        if(abs(signal.channels[1])<NEAR_ZERO){
+            resultX += max(-1.f, min(1.f, signal.channels[2]));
+            resultY += max(-1.f, min(1.f, signal.channels[3]));
+        }else if(signal.channels[1]>0){
             float normalizedValue = (signal.channels[2] + 2.0f) / 4.0f;
             float mappedValue = 0.5f * expf(normalizedValue * logf(4.0f));
             resultX*=mappedValue;
