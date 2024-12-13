@@ -72,6 +72,8 @@ enum MuscleMode_
     MuscleMode_Movement,
     MuscleMode_ContractionExpansion,
     MuscleMode_Bending,
+    MuscleMode_ReverseMovement,
+    MuscleMode_Servo,
     MuscleMode_Suction,
     MuscleMode_Count
 };

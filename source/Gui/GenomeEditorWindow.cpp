@@ -704,7 +704,7 @@ void GenomeEditorWindow::processNode(
             AlienImGui::Combo(
                 AlienImGui::ComboParameters()
                     .name("Mode")
-                    .values({"Movement to sensor target", "Expansion and contraction", "Bending","Suction"})
+                    .values({"Movement to sensor target", "Expansion and contraction", "Bending","Move away to sensor target","Servo motor","Suction"})
                     .textWidth(ContentTextWidth)
                     .tooltip(Const::GenomeMuscleModeTooltip),
                 muscle.mode);

@@ -3,6 +3,7 @@
 #include "EngineInterface/CellFunctionConstants.h"
 
 #include "Object.cuh"
+#include "Math.cuh"
 #include "SimulationData.cuh"
 #include "CellFunctionProcessor.cuh"
 #include "SimulationStatistics.cuh"
@@ -18,6 +19,8 @@ private:
     __inline__ __device__ static void movement(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal& signal);
     __inline__ __device__ static void contractionExpansion(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal);
     __inline__ __device__ static void bending(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal);
+    __inline__ __device__ static void reverse_movement(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal& signal);
+    __inline__ __device__ static void servo(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal& signal);
     __inline__ __device__ static void sucting(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal);
 
 
@@ -43,8 +46,8 @@ __device__ __inline__ void MuscleProcessor::processCell(SimulationData& data, Si
     auto signal = CellFunctionProcessor::calcInputSignal(cell);
     CellFunctionProcessor::updateInvocationState(cell, signal);
 
-    cell->cellFunctionData.muscle.lastMovementX = 0;
-    cell->cellFunctionData.muscle.lastMovementY = 0;
+    // cell->cellFunctionData.muscle.lastMovementX = 0;
+    // cell->cellFunctionData.muscle.lastMovementY = 0;
 
     switch (cell->cellFunctionData.muscle.mode) {
     case MuscleMode_Movement: {
@@ -56,7 +59,13 @@ __device__ __inline__ void MuscleProcessor::processCell(SimulationData& data, Si
     case MuscleMode_Bending: {
         bending(data, statistics, cell, signal);
     } break;
-    case MuscleMode_Suction: {
+    case MuscleMode_ReverseMovement:{
+        reverse_movement(data, statistics, cell, signal);
+    }break;
+    case MuscleMode_Servo:{
+        servo(data, statistics, cell, signal);
+    }break;
+    case  MuscleMode_Suction : {
         sucting(data, statistics, cell, signal);
     } break;
     }
@@ -256,7 +265,9 @@ __inline__ __device__ float MuscleProcessor::getTruncatedUnitValue(Signal const&
     return max(-0.3f, min(0.3f, signal.channels[channel])) / 0.3f;
 }
 
-__inline__ __device__ void MuscleProcessor::sucting(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal)
+//additional add
+
+__device__ __inline__ void MuscleProcessor::reverse_movement(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal& signal)
 {
     if (abs(signal.channels[0]) < NEAR_ZERO) {
         return;
@@ -265,10 +276,102 @@ __inline__ __device__ void MuscleProcessor::sucting(SimulationData& data, Simula
         return;
     }
 
-    // Sucting
-    cell->vel.x=-cell->vel.x;
-    cell->vel.y=-cell->vel.y;
-
+    auto direction = float2{0, 0};
+    auto acceleration = 0.0f;
+    if (cudaSimulationParameters.cellFunctionMuscleMovementTowardTargetedObject) {
+        if (cudaSimulationParameters.features.legacyModes && cudaSimulationParameters.legacyCellFunctionMuscleMovementAngleFromSensor) {
+            if (auto sensorCell = findNearbySensor(cell)) {
+                auto const& sensorData = sensorCell->cellFunctionData.sensor;
+                if (sensorData.memoryTargetX != 0 || sensorData.memoryTargetY != 0) {
+                    direction = {sensorData.memoryTargetX, sensorData.memoryTargetY};
+                    acceleration = cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
+                }
+            }
+        } else {
+            if (signal.origin == SignalOrigin_Sensor && (signal.targetX != 0 || signal.targetY != 0)) {
+                direction = {signal.targetX, signal.targetY};
+                acceleration = cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
+            }
+        }
+    } else {
+        direction = CellFunctionProcessor::calcSignalDirection(data, cell);
+        acceleration = cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
+    }
+    // Adjust the angle by 180 degrees to reverse direction
+    float angle = max(-0.5f, min(0.5f, signal.channels[3])) * 360.0f + 180.0f;
+    direction = Math::normalized(Math::rotateClockwise(direction, angle)) * acceleration * getTruncatedUnitValue(signal);
+    cell->vel += direction;
+    cell->cellFunctionData.muscle.lastMovementX = direction.x;
+    cell->cellFunctionData.muscle.lastMovementY = direction.y;
     cell->releaseLock();
     statistics.incNumMuscleActivities(cell->color);
+}
+__device__ __inline__ void MuscleProcessor::servo(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal& signal)
+{
+
+    if (!cell->tryLock()) {
+        return;
+    }
+    if (abs(signal.channels[0]) > NEAR_ZERO) {
+        int resultX=cell->cellFunctionData.muscle.lastMovementX;
+        int resultY=cell->cellFunctionData.muscle.lastMovementY;
+
+        if (abs(signal.channels[1])>0){
+            float normalizedValue = (signal.channels[2] + 2.0f) / 4.0f;
+            float mappedValue = 0.5f * expf(normalizedValue * logf(4.0f));
+            resultX*=mappedValue;
+            resultY*=mappedValue;
+        }
+        else{
+            // Map signal.channels[2] from [-4, 4] to [-180, 180]
+            float angle = (signal.channels[2] / 4.0f) * 180.0f;
+            // Convert angle to radians using the predefined constant
+            float angleRadians = angle * Const::DEG_TO_RAD;
+
+            // Calculate new movement based on the angle
+            float cosAngle = cos(angleRadians);
+            float sinAngle = sin(angleRadians);
+
+            // Assuming you want to rotate the movement vector (resultX, resultY)
+            int newResultX = static_cast<int>(resultX * cosAngle - resultY * sinAngle);
+            int newResultY = static_cast<int>(resultX * sinAngle + resultY * cosAngle);
+            resultX=newResultX;
+            resultY=newResultY;
+        }
+        cell->cellFunctionData.muscle.lastMovementX=resultX;
+        cell->cellFunctionData.muscle.lastMovementY=resultY;
+        statistics.incNumMuscleActivities(cell->color);
+    }
+    cell->vel.x=cell->cellFunctionData.muscle.lastMovementX;
+    cell->vel.y=cell->cellFunctionData.muscle.lastMovementY;
+    cell->releaseLock();
+}
+
+__inline__ __device__ void MuscleProcessor::sucting(SimulationData& data, SimulationStatistics& statistics, Cell* cell, Signal const& signal)
+{
+    if (!cell->tryLock()) {
+        return;
+    }
+
+    //using lastBendingSourceIndex to store the sucting state
+    //using lastMovement to store the 
+    if (abs(signal.channels[0]) < NEAR_ZERO) {
+        if( cell->cellFunctionData.muscle.lastBendingSourceIndex != 0){
+            cell->vel.x=0;
+            cell->vel.y=0;
+            cell->pos.x= cell->cellFunctionData.muscle.lastMovementX;
+            cell->pos.y= cell->cellFunctionData.muscle.lastMovementY;
+        }
+    }else{
+        if( cell->cellFunctionData.muscle.lastBendingSourceIndex == 0){
+             cell->cellFunctionData.muscle.lastBendingSourceIndex=1;
+             cell->cellFunctionData.muscle.lastMovementX=cell->pos.x;
+             cell->cellFunctionData.muscle.lastMovementY=cell->pos.y;
+        }
+        else{
+             cell->cellFunctionData.muscle.lastBendingSourceIndex=0;
+        }
+        statistics.incNumMuscleActivities(cell->color);
+    }
+    cell->releaseLock();
 }
