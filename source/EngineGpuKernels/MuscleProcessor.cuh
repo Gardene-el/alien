@@ -317,8 +317,8 @@ __device__ __inline__ void MuscleProcessor::servo(SimulationData& data, Simulati
         int resultY=cell->cellFunctionData.muscle.lastMovementY;
 
         if(abs(signal.channels[1])<NEAR_ZERO){
-            resultX += max(-1.f, min(1.f, signal.channels[2]));
-            resultY += max(-1.f, min(1.f, signal.channels[3]));
+            resultX += max(-2.f, min(2.f, signal.channels[2]))*cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
+            resultY += max(-2.f, min(2.f, signal.channels[3]))*cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
         }else if(signal.channels[1]>0){
             float normalizedValue = (signal.channels[2] + 2.0f) / 4.0f;
             float mappedValue = 0.5f * expf(normalizedValue * logf(4.0f));
@@ -327,7 +327,7 @@ __device__ __inline__ void MuscleProcessor::servo(SimulationData& data, Simulati
         }
         else{
             // Map signal.channels[2] from [-4, 4] to [-180, 180]
-            float angle = (signal.channels[2] / 4.0f) * 180.0f;
+            float angle = (max(-4.f, min(4.f, signal.channels[2])) / 4.0f) * 180.0f;
             // Convert angle to radians using the predefined constant
             float angleRadians = angle * Const::DEG_TO_RAD;
 
