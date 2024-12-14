@@ -313,31 +313,29 @@ __device__ __inline__ void MuscleProcessor::servo(SimulationData& data, Simulati
         return;
     }
     if (abs(signal.channels[0]) > NEAR_ZERO) {
-        int resultX=cell->cellFunctionData.muscle.lastMovementX;
-        int resultY=cell->cellFunctionData.muscle.lastMovementY;
+        float resultX=cell->cellFunctionData.muscle.lastMovementX;
+        float resultY=cell->cellFunctionData.muscle.lastMovementY;
 
         if(abs(signal.channels[1])<NEAR_ZERO){
-            resultX += max(-2.f, min(2.f, signal.channels[2]))*cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
-            resultY += max(-2.f, min(2.f, signal.channels[3]))*cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
+            resultX += signal.channels[2]*cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
+            resultY +=  signal.channels[3]*cudaSimulationParameters.cellFunctionMuscleMovementAcceleration[cell->color];
         }else if(signal.channels[1]>0){
-            float normalizedValue = (signal.channels[2] + 2.0f) / 4.0f;
-            float mappedValue = 0.5f * expf(normalizedValue * logf(4.0f));
-            resultX*=mappedValue;
-            resultY*=mappedValue;
+            float mappedValue = powf(2.0f, signal.channels[2]);
+            resultX *= mappedValue;
+            resultY *= mappedValue;
         }
         else{
-            // Map signal.channels[2] from [-4, 4] to [-180, 180]
-            float angle = (max(-4.f, min(4.f, signal.channels[2])) / 4.0f) * 180.0f;
+
             // Convert angle to radians using the predefined constant
-            float angleRadians = angle * Const::DEG_TO_RAD;
+            float angleRadians =  signal.channels[2] * 180.0f* Const::DEG_TO_RAD;
 
             // Calculate new movement based on the angle
             float cosAngle = cos(angleRadians);
             float sinAngle = sin(angleRadians);
 
             // Assuming you want to rotate the movement vector (resultX, resultY)
-            int newResultX = static_cast<int>(resultX * cosAngle - resultY * sinAngle);
-            int newResultY = static_cast<int>(resultX * sinAngle + resultY * cosAngle);
+            float newResultX = resultX * cosAngle - resultY * sinAngle;
+            float newResultY = resultX * sinAngle + resultY * cosAngle;
             resultX=newResultX;
             resultY=newResultY;
         }
@@ -366,13 +364,13 @@ __inline__ __device__ void MuscleProcessor::sucting(SimulationData& data, Simula
             cell->pos.y= cell->cellFunctionData.muscle.lastMovementY;
         }
     }else{
-        if( cell->cellFunctionData.muscle.lastBendingSourceIndex == 0){
+        if( cell->cellFunctionData.muscle.lastBendingSourceIndex != 0){
+             cell->cellFunctionData.muscle.lastBendingSourceIndex=0;
+        }
+        else{
              cell->cellFunctionData.muscle.lastBendingSourceIndex=1;
              cell->cellFunctionData.muscle.lastMovementX=cell->pos.x;
              cell->cellFunctionData.muscle.lastMovementY=cell->pos.y;
-        }
-        else{
-             cell->cellFunctionData.muscle.lastBendingSourceIndex=0;
         }
         statistics.incNumMuscleActivities(cell->color);
     }
