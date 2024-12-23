@@ -173,4 +173,8 @@ enum SignalOrigin_
     SignalOrigin_Sensor
 };
 
-auto constexpr MaxActivationTime = 256 * 4;
+namespace Const
+{
+    auto constexpr MaxActivationTime = 256 * 4;
+    auto constexpr MutationIdForFreeCell = 1;
+}

@@ -86,7 +86,7 @@ void OverlayController::processProgressAnimation()
         ImDrawList* drawList = ImGui::GetBackgroundDrawList();
 
         auto viewSize = toRealVector2D(Viewport::get().getViewSize());
-        auto width = viewSize.x / 6 + 1.0f;
+        auto width = scale(300.0f);
         auto height = scale(15.0f);
         auto center = ImVec2{viewSize.x / 2, viewSize.y - scale(60.0f)};
 
@@ -120,8 +120,8 @@ void OverlayController::processProgressAnimation()
             ImColor::HSV(0.66f, 1.0f, 0.1f, 0.0f));
         auto N = 16 + toInt(powf(sinf(duration / 500.0f - Const::Pi / 4) + 1, 3.0f) * 5);
         for (int i = 0; i < N; ++i) {
-            auto amplitude1 = sinf(toFloat(i) * 10.0f / toFloat(N) - duration / 700.0f * (1.0f + 0.3f * sinf(std::min(5000.0f, duration) / 1000)));
-            auto amplitude2 = sinf(toFloat(i) * 14.0f / toFloat(N) - duration / 100.0f * (1.0f + 0.3f * cosf(std::min(5000.0f, duration) / 1000)));
+            auto amplitude1 = sinf(toFloat(i) * 10.0f / toFloat(N) - duration / 700.0f /** (1.0f + 0.3f * sinf(std::min(5000.0f, duration) / 1000))*/);
+            auto amplitude2 = sinf(toFloat(i) * 14.0f / toFloat(N) - duration / 100.0f /** (1.0f + 0.3f * cosf(std::min(5000.0f, duration) / 1000))*/);
             //auto hue = toFloat((i * 1000 / N + toInt(duration)) % 3000) / 4500.0f;
             //hue = hue < 0.33f ? 0.66f + hue : 0.66f + 0.66f - hue; 
             auto y1 = center.y + height / 2 - amplitude1 * height;
