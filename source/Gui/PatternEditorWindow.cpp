@@ -45,7 +45,7 @@ void PatternEditorWindow::processIntern()
     }
 
     //load button
-    if (AlienImGui::ToolbarButton(ICON_FA_FOLDER_OPEN)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_FOLDER_OPEN))) {
         onOpenPattern();
     }
     AlienImGui::Tooltip("打开图式");
@@ -53,7 +53,7 @@ void PatternEditorWindow::processIntern()
     //save button
     ImGui::BeginDisabled(EditorModel::get().isSelectionEmpty());
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(ICON_FA_SAVE)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_SAVE))) {
         onSavePattern();
     }
     ImGui::EndDisabled();
@@ -65,7 +65,7 @@ void PatternEditorWindow::processIntern()
     //copy button
     ImGui::SameLine();
     ImGui::BeginDisabled(EditorModel::get().isSelectionEmpty());
-    if (AlienImGui::ToolbarButton(ICON_FA_COPY)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_COPY))) {
         onCopy();
     }
     ImGui::EndDisabled();
@@ -74,7 +74,7 @@ void PatternEditorWindow::processIntern()
     //paste button
     ImGui::SameLine();
     ImGui::BeginDisabled(!_copiedSelection.has_value());
-    if (AlienImGui::ToolbarButton(ICON_FA_PASTE)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PASTE))) {
         onPaste();
     }
     ImGui::EndDisabled();
@@ -83,7 +83,7 @@ void PatternEditorWindow::processIntern()
     //delete button
     ImGui::SameLine();
     ImGui::BeginDisabled(EditorModel::get().isSelectionEmpty());
-    if (AlienImGui::ToolbarButton(ICON_FA_TRASH)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_TRASH))) {
         onDelete();
     }
     ImGui::EndDisabled();
@@ -95,7 +95,7 @@ void PatternEditorWindow::processIntern()
     //inspect objects button
     ImGui::SameLine();
     ImGui::BeginDisabled(!isObjectInspectionPossible());
-    if (AlienImGui::ToolbarButton(ICON_FA_MICROSCOPE)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_MICROSCOPE))) {
         EditorController::get().onInspectSelectedObjects();
     }
     ImGui::EndDisabled();
@@ -104,7 +104,7 @@ void PatternEditorWindow::processIntern()
     //inspect genomes button
     ImGui::SameLine();
     ImGui::BeginDisabled(!isGenomeInspectionPossible());
-    if (AlienImGui::ToolbarButton(ICON_FA_DNA)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_DNA))) {
         EditorController::get().onInspectSelectedGenomes();
     }
     ImGui::EndDisabled();
@@ -310,6 +310,11 @@ void PatternEditorWindow::processIntern()
     }
     ImGui::SameLine();
     AlienImGui::HelpMarker("如果开启，所有在此窗口或使用鼠标光标所做的更改将应用于所选单元格的单元格网络。\n 如果禁用此选项，更改将仅应用于所选单元格。在这种情况下，当位置更改时，单元格与邻近单元格之间的连接将重新计算。\n 如果按住 SHIFT 键，此切换按钮将暂时关闭。");
+}
+
+bool PatternEditorWindow::isShown()
+{
+    return _on && EditorController::get().isOn();
 }
 
 void PatternEditorWindow::onOpenPattern()

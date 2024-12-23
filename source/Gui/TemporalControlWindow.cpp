@@ -131,7 +131,7 @@ void TemporalControlWindow::processTpsRestriction()
 void TemporalControlWindow::processRunButton()
 {
     ImGui::BeginDisabled(_simulationFacade->isSimulationRunning());
-    auto result = AlienImGui::ToolbarButton(ICON_FA_PLAY);
+    auto result = AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PLAY));
     AlienImGui::Tooltip("运行");
     if (result) {
         _history.clear();
@@ -144,7 +144,7 @@ void TemporalControlWindow::processRunButton()
 void TemporalControlWindow::processPauseButton()
 {
     ImGui::BeginDisabled(!_simulationFacade->isSimulationRunning());
-    auto result = AlienImGui::ToolbarButton(ICON_FA_PAUSE);
+    auto result = AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PAUSE));
     AlienImGui::Tooltip("暂停");
     if (result) {
         _simulationFacade->pauseSimulation();
@@ -156,7 +156,7 @@ void TemporalControlWindow::processPauseButton()
 void TemporalControlWindow::processStepBackwardButton()
 {
     ImGui::BeginDisabled(_history.empty() || _simulationFacade->isSimulationRunning());
-    auto result = AlienImGui::ToolbarButton(ICON_FA_CHEVRON_LEFT);
+    auto result = AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_CHEVRON_LEFT));
     AlienImGui::Tooltip("载入上一个步数");
     if (result) {
         auto const& snapshot = _history.back();
@@ -171,7 +171,7 @@ void TemporalControlWindow::processStepBackwardButton()
 void TemporalControlWindow::processStepForwardButton()
 {
     ImGui::BeginDisabled(_simulationFacade->isSimulationRunning());
-    auto result = AlienImGui::ToolbarButton(ICON_FA_CHEVRON_RIGHT);
+    auto result = AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_CHEVRON_RIGHT));
     AlienImGui::Tooltip("执行单个步数");
     if (result) {
         _history.emplace_back(createSnapshot());
@@ -182,7 +182,7 @@ void TemporalControlWindow::processStepForwardButton()
 
 void TemporalControlWindow::processCreateFlashbackButton()
 {
-    auto result = AlienImGui::ToolbarButton(ICON_FA_CAMERA);
+    auto result = AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_CAMERA));
     AlienImGui::Tooltip("创建内容快照：它将当前世界的内容保存到内存中。");
     if (result) {
         delayedExecution([this] { onSnapshot(); });
@@ -194,7 +194,7 @@ void TemporalControlWindow::processCreateFlashbackButton()
 void TemporalControlWindow::processLoadFlashbackButton()
 {
     ImGui::BeginDisabled(!_snapshot);
-    auto result = AlienImGui::ToolbarButton(ICON_FA_UNDO);
+    auto result = AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_UNDO));
     AlienImGui::Tooltip("加载内容快照：它会从内存中加载已保存的世界。静态模拟参数不会被改变。非静态参数（例如移动区域的位置）也会被恢复。");
     if (result) {
         delayedExecution([this] { applySnapshot(*_snapshot); });
@@ -224,13 +224,13 @@ void TemporalControlWindow::applySnapshot(Snapshot const& snapshot)
 
     if (origParameters.numRadiationSources == parameters.numRadiationSources) {
         for (int i = 0; i < parameters.numRadiationSources; ++i) {
-            restorePosition(parameters.radiationSources[i], origParameters.radiationSources[i], snapshot.timestep);
+            restorePosition(parameters.radiationSource[i], origParameters.radiationSource[i], snapshot.timestep);
         }
     }
 
-    if (origParameters.numSpots == parameters.numSpots) {
-        for (int i = 0; i < parameters.numSpots; ++i) {
-            restorePosition(parameters.spots[i], origParameters.spots[i], snapshot.timestep);
+    if (origParameters.numZones == parameters.numZones) {
+        for (int i = 0; i < parameters.numZones; ++i) {
+            restorePosition(parameters.zone[i], origParameters.zone[i], snapshot.timestep);
         }
     }
 

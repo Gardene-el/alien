@@ -143,5 +143,5 @@ float StyleRepository::scale(float value) const
 
 float StyleRepository::scaleInverse(float value) const
 {
-    return WindowController::get().getContentScaleFactor() / value;
+    return value / WindowController::get().getContentScaleFactor();
 }

@@ -29,6 +29,7 @@
 #include "HelpStrings.h"
 #include "UploadSimulationDialog.h"
 #include "ChangeColorDialog.h"
+#include "EditorController.h"
 
 namespace
 {
@@ -114,6 +115,11 @@ void GenomeEditorWindow::processIntern()
     processEditor();
 }
 
+bool GenomeEditorWindow::isShown()
+{
+    return _on && EditorController::get().isOn();
+}
+
 void GenomeEditorWindow::processToolbar()
 {
     if (_tabDatas.empty()) {
@@ -121,19 +127,19 @@ void GenomeEditorWindow::processToolbar()
     }
     auto& selectedTab = _tabDatas.at(_selectedTabIndex);
 
-    if (AlienImGui::ToolbarButton(ICON_FA_FOLDER_OPEN)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_FOLDER_OPEN))) {
         onOpenGenome();
     }
     AlienImGui::Tooltip("从文件中打开基因组");
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(ICON_FA_SAVE)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_SAVE))) {
         onSaveGenome();
     }
     AlienImGui::Tooltip("保存基因组至文件");
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(ICON_FA_UPLOAD)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_UPLOAD))) {
         onUploadGenome();
     }
     AlienImGui::Tooltip("分享你的基因组给其他用户：\n你当前的基因组将被上传至服务器并在浏览器中可见。");
@@ -142,7 +148,7 @@ void GenomeEditorWindow::processToolbar()
     AlienImGui::ToolbarSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(ICON_FA_COPY)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_COPY))) {
         _copiedGenome = GenomeDescriptionService::get().convertDescriptionToBytes(selectedTab.genome);
         printOverlayMessage("已复制基因组");
     }
@@ -152,23 +158,26 @@ void GenomeEditorWindow::processToolbar()
     AlienImGui::ToolbarSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(ICON_FA_PLUS)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PLUS))) {
         onAddNode();
     }
     AlienImGui::Tooltip("添加细胞");
 
     ImGui::SameLine();
     ImGui::BeginDisabled(selectedTab.genome.cells.empty());
-    if (AlienImGui::ToolbarButton(ICON_FA_MINUS)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_MINUS))) {
         onDeleteNode();
     }
     ImGui::EndDisabled();
     AlienImGui::Tooltip("删除细胞");
 
     ImGui::SameLine();
+    AlienImGui::ToolbarSeparator();
+
+    ImGui::SameLine();
     auto& selectedNode = selectedTab.selectedNode;
     ImGui::BeginDisabled(!(selectedNode && *selectedNode > 0));
-    if (AlienImGui::ToolbarButton(ICON_FA_CHEVRON_UP)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_CHEVRON_UP))) {
         onNodeDecreaseSequenceNumber();
     }
     ImGui::EndDisabled();
@@ -176,7 +185,7 @@ void GenomeEditorWindow::processToolbar()
 
     ImGui::SameLine();
     ImGui::BeginDisabled(!(selectedNode && *selectedNode < selectedTab.genome.cells.size() - 1));
-    if (AlienImGui::ToolbarButton(ICON_FA_CHEVRON_DOWN)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_CHEVRON_DOWN))) {
         onNodeIncreaseSequenceNumber();
     }
     ImGui::EndDisabled();
@@ -187,7 +196,7 @@ void GenomeEditorWindow::processToolbar()
 
     ImGui::SameLine();
     ImGui::BeginDisabled(selectedTab.genome.cells.empty());
-    if (AlienImGui::ToolbarButton(ICON_FA_EXPAND_ARROWS_ALT)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_EXPAND_ARROWS_ALT))) {
         _expandNodes = true;
     }
     ImGui::EndDisabled();
@@ -195,7 +204,7 @@ void GenomeEditorWindow::processToolbar()
 
     ImGui::SameLine();
     ImGui::BeginDisabled(selectedTab.genome.cells.empty());
-    if (AlienImGui::ToolbarButton(ICON_FA_COMPRESS_ARROWS_ALT)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_COMPRESS_ARROWS_ALT))) {
         _expandNodes = false;
     }
     ImGui::EndDisabled();
@@ -206,7 +215,7 @@ void GenomeEditorWindow::processToolbar()
 
     ImGui::SameLine();
     ImGui::BeginDisabled(selectedTab.genome.cells.empty());
-    if (AlienImGui::ToolbarButton(ICON_FA_PALETTE)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PALETTE))) {
         ChangeColorDialog::get().open();
     }
     ImGui::EndDisabled();
@@ -216,7 +225,7 @@ void GenomeEditorWindow::processToolbar()
     AlienImGui::ToolbarSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(ICON_FA_SEEDLING)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_SEEDLING))) {
         onCreateSpore();
     }
     AlienImGui::Tooltip("用当前的基因组创建一个生物种子");
@@ -288,7 +297,7 @@ void GenomeEditorWindow::processTab(TabData& tab)
     }
     ImGui::EndChild();
 
-    AlienImGui::MovableSeparator(_previewHeight);
+    AlienImGui::MovableSeparator(AlienImGui::MovableSeparatorParameters().additive(false), _previewHeight);
 
     AlienImGui::Group("预览（参考配置）", Const::GenomePreviewTooltip);
     ImGui::SameLine();
@@ -974,7 +983,7 @@ void GenomeEditorWindow::validateAndCorrect(CellGenomeDescription& cell) const
         if (constructor.mode < 0) {
             constructor.mode = 0;
         }
-        constructor.constructionActivationTime = ((constructor.constructionActivationTime % MaxActivationTime) + MaxActivationTime) % MaxActivationTime;
+        constructor.constructionActivationTime = ((constructor.constructionActivationTime % Const::MaxActivationTime) + Const::MaxActivationTime) % Const::MaxActivationTime;
     } break;
     case CellFunction_Sensor: {
         auto& sensor = std::get<SensorGenomeDescription>(*cell.cellFunction);
