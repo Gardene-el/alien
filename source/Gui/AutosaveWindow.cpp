@@ -125,7 +125,7 @@ void AutosaveWindow::processToolbar()
 
     ImGui::SameLine();
     ImGui::BeginDisabled(!_savepointTable.has_value() || _savepointTable->isEmpty());
-    if (AlienImGui::ToolbarButton(ICON_FA_BROOM)) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_BROOM))) {
         GenericMessageDialog::get().yesNo("删除", "你是否真的想要删除所有的保存点？", [&]() { scheduleCleanup(); });
     }
     AlienImGui::Tooltip("删除所有的保存点");
@@ -239,7 +239,7 @@ void AutosaveWindow::processSettings()
         AlienImGui::MovableSeparator(AlienImGui::MovableSeparatorParameters().additive(false), _settingsHeight);
     }
 
-    _settingsOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().text("设置").highlighted(true).defaultOpen(_settingsOpen));
+    _settingsOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("设置").rank(AlienImGui::TreeNodeRank::High).defaultOpen(_settingsOpen));
     if (_settingsOpen) {
         if (ImGui::BeginChild("##autosaveSettings", {scale(0), 0})) {
             if (AlienImGui::InputInt(
