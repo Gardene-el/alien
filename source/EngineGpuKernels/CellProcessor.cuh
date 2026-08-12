@@ -34,7 +34,7 @@ public:
     __inline__ __device__ static void verletVelocityUpdate(SimulationData& data);
 
     __inline__ __device__ static void aging(SimulationData& data);
-    __inline__ __device__ static void livingStateTransition_calcNextState(SimulationData& data);
+    __inline__ __device__ static void livingStateTransition_calcFutureState(SimulationData& data);
     __inline__ __device__ static void livingStateTransition_applyNextState(SimulationData& data);
 
     __inline__ __device__ static void applyInnerFriction(SimulationData& data);
@@ -593,7 +593,7 @@ __inline__ __device__ void CellProcessor::aging(SimulationData& data)
 }
 
 
-__inline__ __device__ void CellProcessor::livingStateTransition_calcNextState(SimulationData& data)
+__inline__ __device__ void CellProcessor::livingStateTransition_calcFutureState(SimulationData& data)
 {
     auto& cells = data.objects.cellPointers;
     auto partition = calcAllThreadsPartition(cells.getNumEntries());
@@ -759,12 +759,12 @@ __inline__ __device__ void CellProcessor::radiation(SimulationData& data)
                     float2 particleVel = cell->vel * cudaSimulationParameters.radiationVelocityMultiplier
                         + Math::unitVectorOfAngle(data.numberGen1.random() * 360) * cudaSimulationParameters.radiationVelocityPerturbation;
                     float2 particlePos = cell->pos + Math::normalized(particleVel) * 1.5f
-                        - particleVel;  //"- particleVel" because particle will still be moved in current time step
+                        - particleVel;  // minus particleVel because particle will still be moved in current time step
                     data.cellMap.correctPosition(particlePos);
                     if (energyLoss > cellEnergy - 1) {
                         energyLoss = cellEnergy - 1;
                     }
-                    RadiationProcessor::radiate(data, particlePos, particleVel, cell->color, energyLoss);
+                    RadiationProcessor::createEnergyParticle(data, particlePos, particleVel, cell->color, energyLoss);
                     cell->energy -= energyLoss;
                 }
             }

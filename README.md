@@ -90,7 +90,7 @@ Further information and artwork:
 An Nvidia graphics card with compute capability 6.0 or higher is needed. Please check [https://en.wikipedia.org/wiki/CUDA#GPUs_supported](https://en.wikipedia.org/wiki/CUDA#GPUs_supported).
 
 # 💽 Installer
-Installer for Windows: [alien-installer.msi](https://alien-project.org/media/files/alien-installer.msi) (updated: 2024-11-24)
+Installer for Windows: [alien-installer.msi](https://alien-project.org/media/files/alien-installer.msi) (updated: 2025-01-03)
 
 In the case that the program crashes for an unknown reason, please refer to the troubleshooting section below.
 
@@ -175,13 +175,15 @@ A short architectural overview of the source code can be found in the [documenta
 
 # 💎 Credits and dependencies
 
-ALIEN has been initiated, mainly developed and maintained by [Christian Heinemann](mailto:heinemann.christian@gmail.com). Thanks to all the others who contributed to this repository:
-- [tlemo](https://github.com/tlemo)
+ALIEN has been initiated, mainly developed and maintained by [Christian Heinemann](mailto:heinemann.christian@gmail.com). Many thanks to everyone who has contributed to this project in any way. In alphabetical order:
+- [dguerizec](https://github.com/dguerizec)
+- [Enitoni](https://github.com/Enitoni) via Discord
 - [Gardene-el](https://github.com/Gardene-el)
 - [mpersano](https://github.com/mpersano)
-- [dguerizec](https://github.com/dguerizec)
+- [TheBarret](https://github.com/TheBarret) via Discord
+- tilsk via Discord
+- [tlemo](https://github.com/tlemo)
 - [Will Allen](https://github.com/willjallen)
-- [TheBarret](https://github.com/TheBarret)
 
 The following external libraries are used:
 - [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit)

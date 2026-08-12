@@ -169,12 +169,14 @@ void AutosaveWindow::processTable()
                 // project name
                 ImGui::TableNextColumn();
                 if (entry->state == SavepointState_InQueue) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, Const::TextLightDecentColor.Value);
                     AlienImGui::Text("在队列中");
-                }
-                if (entry->state == SavepointState_InProgress) {
+                    ImGui::PopStyleColor();
+                } else if (entry->state == SavepointState_InProgress) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, Const::TextLightDecentColor.Value);
                     AlienImGui::Text("在进程中");
-                }
-                if (entry->state == SavepointState_Persisted) {
+                    ImGui::PopStyleColor();
+                } else if (entry->state == SavepointState_Persisted) {
                     auto triggerLoadSavepoint = AlienImGui::ActionButton(AlienImGui::ActionButtonParameters().buttonText(ICON_FA_DOWNLOAD));
                     AlienImGui::Tooltip("载入保存点", false);
                     if (triggerLoadSavepoint) {
@@ -183,10 +185,11 @@ void AutosaveWindow::processTable()
 
                     ImGui::SameLine();
                     AlienImGui::Text(entry->name);
-                }
-                if (entry->state == SavepointState_Error) {
+                } else if (entry->state == SavepointState_Error) {
                     AlienImGui::Text("错误");
                 }
+                ImGui::SameLine();
+                ImGui::Dummy({0, scale(22.0f)});
 
                 ImGui::SameLine();
                 auto selected = _selectedEntry == entry;

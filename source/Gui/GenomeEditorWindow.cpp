@@ -735,6 +735,7 @@ void GenomeEditorWindow::processNode(
             AlienImGui::ComboOptionalColor(
                 AlienImGui::ComboColorParameters().name("根据颜色限制").textWidth(ContentTextWidth).tooltip(Const::GenomeReconnectorRestrictToColorTooltip),
                 reconnector.restrictToColor);
+            table.next();
             AlienImGui::Combo(
                 AlienImGui::ComboParameters()
                     .name("根据种族限制")

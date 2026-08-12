@@ -423,7 +423,7 @@ void _InspectorWindow::processCellGenomeTab(Description& desc)
             if (ImGui::TreeNodeEx("属性（主基因组）", TreeNodeFlags)) {
 
                 auto genomeDesc = GenomeDescriptionService::get().convertBytesToDescription(desc.genome);
-                auto numBranches= genomeDesc.header.numBranches;
+                auto numBranches = genomeDesc.header.getNumBranches();
                 AlienImGui::InputInt(
                     AlienImGui::InputIntParameters()
                         .name("分支的数量")

@@ -130,7 +130,8 @@ void SimulationParametersMainWindow::processToolbar()
                                       .secondText(ICON_FA_UNDO)
                                       .secondTextOffset(RealVector2D{32.0f, 28.0f})
                                       .secondTextScale(0.3f)
-                                      .tooltip("Replace reference values by values from the clipboard")
+                                      .tooltip("Replace reference values by values from the clipboard. This is useful to see the diff between the current "
+                                               "parameters and those from the clipboard.")
                                       .disabled(!_copiedParameters))) {
         auto parameters = _simulationFacade->getSimulationParameters();
         if (_copiedParameters->numZones == parameters.numZones && _copiedParameters->numRadiationSources == parameters.numRadiationSources) {
@@ -400,10 +401,18 @@ void SimulationParametersMainWindow::processExpertSettings()
             .tooltip("It enables an additional rendering step that makes the cells glow."),
         parameters.features.cellGlow);
     AlienImGui::Checkbox(
-        AlienImGui::CheckboxParameters().name("Customize deletion mutations").textWidth(0).defaultValue(origFeatures.customizeDeletionMutations),
+        AlienImGui::CheckboxParameters()
+            .name("Customize deletion mutations")
+            .textWidth(0)
+            .defaultValue(origFeatures.customizeDeletionMutations)
+            .tooltip("It enables further settings for deletion mutations. If disabled, defaults are used (displayed in the tooltip of the specific parameters)."),
         parameters.features.customizeDeletionMutations);
     AlienImGui::Checkbox(
-        AlienImGui::CheckboxParameters().name("Customize neuron mutations").textWidth(0).defaultValue(origFeatures.customizeNeuronMutations),
+        AlienImGui::CheckboxParameters()
+            .name("Customize neuron mutations")
+            .textWidth(0)
+            .defaultValue(origFeatures.customizeNeuronMutations)
+            .tooltip("It enables further settings for neuron mutations. If disabled, defaults are used (displayed in the tooltip of the specific parameters)."),
         parameters.features.customizeNeuronMutations);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()

@@ -33,6 +33,7 @@ public:
 
     __inline__ __device__ static bool existCrossingConnections(SimulationData& data, float2 pos1, float2 pos2, int detached, int color);
     __inline__ __device__ static bool wouldResultInOverlappingConnection(Cell* cell1, float2 otherCellPos);
+    __inline__ __device__ static bool hasAngleSpace(SimulationData& data, Cell* cell, float angle, ConstructorAngleAlignment angleAlignment);
     __inline__ __device__ static bool isConnectedConnected(Cell* cell, Cell* otherCell);
 
 private:
@@ -153,7 +154,7 @@ __inline__ __device__ void CellConnectionProcessor::processDeleteCellOperations(
             Cell* empty = nullptr;
             auto origCell = alienAtomicExch(&data.objects.cellPointers.at(cellIndex), empty);
             if (origCell) {
-                RadiationProcessor::radiate(data, origCell->pos, origCell->vel, origCell->color, origCell->energy);
+                RadiationProcessor::createEnergyParticle(data, origCell->pos, origCell->vel, origCell->color, origCell->energy);
 
                 for (int i = 0; i < origCell->numConnections; ++i) {
                     StructuralOperation operation;
@@ -279,6 +280,13 @@ __inline__ __device__ bool CellConnectionProcessor::tryAddConnectionOneWay(
     float desiredAngleOnCell1,
     ConstructorAngleAlignment angleAlignment)
 {
+    if (cell1->numConnections == MAX_CELL_BONDS) {
+        return false;
+    }
+    if (ConstructorAngleAlignment_None != angleAlignment && cell1->numConnections >= angleAlignment + 1) {
+        return false;
+    }
+
     if (wouldResultInOverlappingConnection(cell1, cell2->pos)) {
         return false;
     }
@@ -290,6 +298,9 @@ __inline__ __device__ bool CellConnectionProcessor::tryAddConnectionOneWay(
         desiredDistance = Math::length(posDelta);
     }
 
+    // *****
+    // special case: cell1 has no connections
+    // *****
     if (0 == cell1->numConnections) {
         cell1->numConnections++;
         cell1->connections[0].cell = cell2;
@@ -297,6 +308,10 @@ __inline__ __device__ bool CellConnectionProcessor::tryAddConnectionOneWay(
         cell1->connections[0].angleFromPrevious = 360.0f;
         return true;
     }
+
+    // *****
+    // special case: cell1 has one connection
+    // *****
     if (1 == cell1->numConnections) {
         auto connectedCellDelta = cell1->connections[0].cell->pos - cell1->pos;
         data.cellMap.correctDirection(connectedCellDelta);
@@ -323,7 +338,11 @@ __inline__ __device__ bool CellConnectionProcessor::tryAddConnectionOneWay(
         return true;
     }
 
-    //find appropriate index for new connection
+    // *****
+    // process general case
+    // *****
+
+    // find appropriate index for new connection
     int index = 0;
     float prevAngle = 0;
     float nextAngle = 0;
@@ -331,63 +350,78 @@ __inline__ __device__ bool CellConnectionProcessor::tryAddConnectionOneWay(
         auto prevIndex = (index + cell1->numConnections - 1) % cell1->numConnections;
         prevAngle = Math::angleOfVector(data.cellMap.getCorrectedDirection(cell1->connections[prevIndex].cell->pos - cell1->pos));
         nextAngle = Math::angleOfVector(data.cellMap.getCorrectedDirection(cell1->connections[index].cell->pos - cell1->pos));
-        if (Math::isAngleInBetween(prevAngle, nextAngle, newAngle)) {
+        if (Math::isAngleInBetween(prevAngle, nextAngle, newAngle) || prevIndex == index) {
             break;
         }
     }
 
-    //create connection object
+    // create new connection object
     CellConnection newConnection;
     newConnection.cell = cell2;
     newConnection.distance = desiredDistance;
-    auto angleFromPrevious = 0.0f;
+
+    float angleFromPrevious;
     auto refAngle = cell1->connections[index].angleFromPrevious;
-    if (Math::isAngleInBetween(prevAngle, nextAngle, newAngle)) {
+    if (0 == desiredAngleOnCell1) {
         auto angleDiff1 = Math::subtractAngle(newAngle, prevAngle);
         auto angleDiff2 = Math::subtractAngle(nextAngle, prevAngle);
-        auto factor = angleDiff2 != 0 ? angleDiff1 / angleDiff2 : 0.5f;
-        if (0 == desiredAngleOnCell1) {
-            angleFromPrevious = refAngle * factor;
-        } else {
-            angleFromPrevious = desiredAngleOnCell1;
-        }
-        angleFromPrevious = min(angleFromPrevious, refAngle);
-
-        angleFromPrevious = Math::alignAngle(angleFromPrevious, angleAlignment);
-        angleFromPrevious = Math::alignAngleOnBoundaries(angleFromPrevious, refAngle, angleAlignment);
+        auto newAngleFraction = angleDiff2 != 0 ? angleDiff1 / angleDiff2 : 0.5f;
+        angleFromPrevious = refAngle * newAngleFraction;
+    } else {
+        angleFromPrevious = desiredAngleOnCell1;
     }
+    angleFromPrevious = min(angleFromPrevious, refAngle);
+
     if (angleFromPrevious < NEAR_ZERO) {
         return false;
     }
     newConnection.angleFromPrevious = angleFromPrevious;
 
-    //adjust reference angle of next connection
-    auto nextAngleFromPrevious = refAngle - angleFromPrevious;
-    auto nextAngleFromPreviousAligned = Math::alignAngle(nextAngleFromPrevious, angleAlignment);
-    auto angleDiff = nextAngleFromPreviousAligned - nextAngleFromPrevious;
-
-    auto nextIndex = index % cell1->numConnections;
-    auto nextNextIndex = (index + 1) % cell1->numConnections;
-    auto nextNextAngleFromPrevious = cell1->connections[nextNextIndex].angleFromPrevious;
-    if (nextNextAngleFromPrevious - angleDiff >= 0.0f && nextNextAngleFromPrevious - angleDiff <= 360.0f) {
-        if (nextAngleFromPreviousAligned < NEAR_ZERO || nextNextAngleFromPrevious - angleDiff < NEAR_ZERO) {
-            return false;
-        }
-        cell1->connections[nextIndex].angleFromPrevious = nextAngleFromPreviousAligned;
-        cell1->connections[nextNextIndex].angleFromPrevious = nextNextAngleFromPrevious - angleDiff;
-    } else {
-        if (nextAngleFromPrevious < NEAR_ZERO) {
-            return false;
-        }
-        cell1->connections[nextIndex].angleFromPrevious = nextAngleFromPrevious;
+    // insert new connection to a clone of the existing connection array
+    if (index == 0) {
+        index = cell1->numConnections;  // connection at index 0 should be an invariant
     }
-
-    //add connection
     for (int j = cell1->numConnections; j > index; --j) {
         cell1->connections[j] = cell1->connections[j - 1];
     }
     cell1->connections[index] = newConnection;
-    ++cell1->numConnections;
+    cell1->connections[(index + 1) % (cell1->numConnections + 1)].angleFromPrevious = refAngle - angleFromPrevious;
+
+    // align angles
+    if (angleAlignment != ConstructorAngleAlignment_None) {
+        auto const angleUnit = 360.0f / toFloat(angleAlignment + 1);
+        for (int i = 0; i < cell1->numConnections + 1; ++i) {
+            cell1->connections[i].angleFromPrevious = Math::alignAngle(cell1->connections[i].angleFromPrevious, angleAlignment);
+            if (abs(cell1->connections[i].angleFromPrevious) < NEAR_ZERO) {
+                cell1->connections[i].angleFromPrevious = angleUnit;
+            }
+        }
+
+        for (int repetition = 0; repetition < MAX_CELL_BONDS; ++repetition) {
+            float sumAngle = 0;
+            for (int i = 0, j = cell1->numConnections + 1; i < j; ++i) {
+                sumAngle += cell1->connections[i].angleFromPrevious;
+            }
+            if (sumAngle > 360.0f + NEAR_ZERO || sumAngle < 360.0f - NEAR_ZERO) {
+                int indexWithMaxAngle = -1;
+                float maxAngle = 0;
+                for (int k = 0, l = cell1->numConnections + 1; k < l; ++k) {
+                    if (cell1->connections[k].angleFromPrevious > maxAngle) {
+                        maxAngle = cell1->connections[k].angleFromPrevious;
+                        indexWithMaxAngle = k;
+                    }
+                }
+                if (sumAngle > 360.0f + NEAR_ZERO) {
+                    cell1->connections[indexWithMaxAngle].angleFromPrevious -= angleUnit;
+                } else {
+                    cell1->connections[indexWithMaxAngle].angleFromPrevious += angleUnit;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+    cell1->numConnections++;
 
     return true;
 }
@@ -463,6 +497,27 @@ __inline__ __device__ bool CellConnectionProcessor::wouldResultInOverlappingConn
         }
     }
     return false;
+}
+
+__inline__ __device__ bool CellConnectionProcessor::hasAngleSpace(SimulationData& data, Cell* cell, float angle, ConstructorAngleAlignment angleAlignment)
+{
+    if (angleAlignment == ConstructorAngleAlignment_None) {
+        return true;
+    }
+
+    int index = 0;
+    float prevAngle;
+    float nextAngle;
+    for (; index < cell->numConnections; ++index) {
+        auto prevIndex = (index + cell->numConnections - 1) % cell->numConnections;
+        prevAngle = Math::angleOfVector(data.cellMap.getCorrectedDirection(cell->connections[prevIndex].cell->pos - cell->pos));
+        nextAngle = Math::angleOfVector(data.cellMap.getCorrectedDirection(cell->connections[index].cell->pos - cell->pos));
+        if (Math::isAngleInBetween(prevAngle, nextAngle, angle) || prevIndex == index) {
+            auto const angleUnit = 360.0f / toFloat(angleAlignment + 1);
+            return cell->connections[index].angleFromPrevious > angleUnit + NEAR_ZERO;
+        }
+    }
+    return true;
 }
 
 __inline__ __device__ bool CellConnectionProcessor::isConnectedConnected(Cell* cell, Cell* otherCell)
