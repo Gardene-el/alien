@@ -120,7 +120,7 @@ std::string LocationHelper::generateZoneName(SimulationParameters& parameters)
     std::string result;
     do {
         alreadyUsed = false;
-        result = "Zone " + std::to_string(++counter);
+        result = "区域 " + std::to_string(++counter);
         for (int i = 0; i < parameters.numZones; ++i) {
             auto name = std::string(parameters.zone[i].name);
             if (result == name) {
@@ -140,7 +140,7 @@ std::string LocationHelper::generateSourceName(SimulationParameters& parameters)
     std::string result;
     do {
         alreadyUsed = false;
-        result = "Radiation " + std::to_string(++counter);
+        result = "辐射源 " + std::to_string(++counter);
         for (int i = 0; i < parameters.numRadiationSources; ++i) {
             auto name = std::string(parameters.radiationSource[i].name);
             if (result == name) {

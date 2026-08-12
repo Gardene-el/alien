@@ -602,7 +602,7 @@ void GenomeEditorWindow::processNode(
             table.next();
             AlienImGui::InputInt(
                 AlienImGui::InputIntParameters()
-                    .name("Offspring activation time")
+                    .name("后代激活时间")
                     .textWidth(ContentTextWidth)
                     .tooltip(Const::GenomeConstructorOffspringActivationTime),
                 constructor.constructionActivationTime);
@@ -748,7 +748,7 @@ void GenomeEditorWindow::processNode(
             table.next();
             auto& detonator = std::get<DetonatorGenomeDescription>(*cell.cellFunction);
             AlienImGui::InputInt(
-                AlienImGui::InputIntParameters().name("Countdown").textWidth(ContentTextWidth).tooltip(Const::GenomeDetonatorCountdownTooltip),
+                AlienImGui::InputIntParameters().name("倒计时").textWidth(ContentTextWidth).tooltip(Const::GenomeDetonatorCountdownTooltip),
                 detonator.countdown);
             detonator.countdown = std::min(65535, std::max(0, detonator.countdown));
         } break;

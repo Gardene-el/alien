@@ -432,7 +432,7 @@ bool AlienImGui::InputText(InputTextParameters const& parameters, std::string& t
 bool AlienImGui::InputFilter(InputFilterParameters const& parameters, std::string& filter)
 {
     auto result = AlienImGui::InputText(
-        AlienImGui::InputTextParameters().hint("Filter (case insensitive)").bold(!filter.empty()).textWidth(0).width(parameters._width - 28.0f), filter);
+        AlienImGui::InputTextParameters().hint("筛选（不区分大小写）").bold(!filter.empty()).textWidth(0).width(parameters._width - 28.0f), filter);
     ImGui::SameLine();
 
     ImGui::BeginDisabled(filter.empty());
@@ -1935,22 +1935,22 @@ void AlienImGui::NeuronSelection(
         if (table.begin()) {
             AlienImGui::Combo(
                 AlienImGui::ComboParameters()
-                    .name("Activation function")
+                    .name("激活函数")
                     .textWidth(editorColumnTextWidth)
                     .values(Const::ActivationFunctions)
                     .tooltip(Const::GenomeNeuronActivationFunctionTooltip),
                 activationFunctions.at(selectedOutput));
             table.next();
             AlienImGui::InputFloat(
-                AlienImGui::InputFloatParameters().name("Weight").step(0.05f).textWidth(editorColumnTextWidth).tooltip(Const::GenomeNeuronWeightAndBiasTooltip),
+                AlienImGui::InputFloatParameters().name("权重").step(0.05f).textWidth(editorColumnTextWidth).tooltip(Const::GenomeNeuronWeightAndBiasTooltip),
                 weights.at(selectedOutput).at(selectedInput));
             table.next();
             AlienImGui::InputFloat(
-                AlienImGui::InputFloatParameters().name("Bias").step(0.05f).textWidth(editorColumnTextWidth).tooltip(Const::GenomeNeuronWeightAndBiasTooltip),
+                AlienImGui::InputFloatParameters().name("偏置").step(0.05f).textWidth(editorColumnTextWidth).tooltip(Const::GenomeNeuronWeightAndBiasTooltip),
                 biases.at(selectedOutput));
             table.end();
         }
-        if (AlienImGui::Button("Clear")) {
+        if (AlienImGui::Button("清除")) {
             for (int i = 0; i < MAX_CHANNELS; ++i) {
                 for (int j = 0; j < MAX_CHANNELS; ++j) {
                     weights[i][j] = 0;
@@ -1960,7 +1960,7 @@ void AlienImGui::NeuronSelection(
             }
         }
         ImGui::SameLine();
-        if (AlienImGui::Button("Identity")) {
+        if (AlienImGui::Button("恒等")) {
             for (int i = 0; i < MAX_CHANNELS; ++i) {
                 for (int j = 0; j < MAX_CHANNELS; ++j) {
                     weights[i][j] = i == j ? 1.0f : 0.0f;
@@ -1970,7 +1970,7 @@ void AlienImGui::NeuronSelection(
             }
         }
         ImGui::SameLine();
-        if (AlienImGui::Button("Randomize")) {
+        if (AlienImGui::Button("随机化")) {
             for (int i = 0; i < MAX_CHANNELS; ++i) {
                 for (int j = 0; j < MAX_CHANNELS; ++j) {
                     weights[i][j] = NumberGenerator::get().getRandomFloat(-4.0f, 4.0f);

@@ -38,9 +38,9 @@ void _SimulationParametersSourceWidgets::process()
     /**
      * General
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("General"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("常规"))) {
         AlienImGui::InputText(
-            AlienImGui::InputTextParameters().name("Name").textWidth(RightColumnWidth).defaultValue(origSource.name),
+            AlienImGui::InputTextParameters().name("名称").textWidth(RightColumnWidth).defaultValue(origSource.name),
             source.name,
             sizeof(Char64) / sizeof(char));
 
@@ -50,11 +50,11 @@ void _SimulationParametersSourceWidgets::process()
     /**
      * Location
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Location"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("位置"))) {
         if (AlienImGui::Switcher(
                 AlienImGui::SwitcherParameters()
-                    .name("Shape")
-                    .values({"Circular", "Rectangular"})
+                    .name("形状")
+                    .values({"圆形", "矩形"})
                     .textWidth(RightColumnWidth)
                     .defaultValue(origSource.shapeType),
                 source.shapeType)) {
@@ -71,7 +71,7 @@ void _SimulationParametersSourceWidgets::process()
         auto getMousePickerPositionFunc = [&]() { return SimulationInteractionController::get().getPositionSelectionData(); };
         AlienImGui::SliderFloat2(
             AlienImGui::SliderFloat2Parameters()
-                .name("Position (x,y)")
+                .name("位置 (x,y)")
                 .textWidth(RightColumnWidth)
                 .min({0, 0})
                 .max(toRealVector2D(worldSize))
@@ -84,7 +84,7 @@ void _SimulationParametersSourceWidgets::process()
             source.posY);
         AlienImGui::SliderFloat2(
             AlienImGui::SliderFloat2Parameters()
-                .name("Velocity (x,y)")
+                .name("速度 (x,y)")
                 .textWidth(RightColumnWidth)
                 .min({-4.0f, -4.0f})
                 .max({4.0f, 4.0f})
@@ -96,7 +96,7 @@ void _SimulationParametersSourceWidgets::process()
             auto maxRadius = toFloat(std::min(worldSize.x, worldSize.y));
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Radius")
+                    .name("半径")
                     .textWidth(RightColumnWidth)
                     .min(1)
                     .max(maxRadius)
@@ -107,7 +107,7 @@ void _SimulationParametersSourceWidgets::process()
         if (source.shapeType == RadiationSourceShapeType_Rectangular) {
             AlienImGui::SliderFloat2(
                 AlienImGui::SliderFloat2Parameters()
-                    .name("Size (x,y)")
+                    .name("尺寸 (x,y)")
                     .textWidth(RightColumnWidth)
                     .min({0, 0})
                     .max({toFloat(worldSize.x), toFloat(worldSize.y)})
@@ -122,19 +122,18 @@ void _SimulationParametersSourceWidgets::process()
     /**
      * Radiation
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Radiation"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("辐射"))) {
         auto origStrengths = editService.getRadiationStrengths(parameters);
         if (AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Relative strength")
+                    .name("相对强度")
                     .textWidth(RightColumnWidth)
                     .min(0.0f)
                     .max(1.0f)
                     .format("%.3f")
                     .defaultValue(&origSource.strength)
-                    .tooltip("Cells can emit energy particles over time. A portion of this energy can be released directly near the cell, while the rest is "
-                             "utilized by one of the available radiation sources. This parameter determines the fraction of energy assigned to the emitted "
-                             "energy particle for the selected radiation source. Values between 0 and 1 are permitted."),
+                    .tooltip("细胞会随着时间的推移发射能量粒子。其中一部分能量可以直接释放在细胞附近，而其余部分则由可用的辐射源之一利用。"
+                             "该参数决定了分配给所选辐射源的发射能量粒子的能量比例。允许 0 到 1 之间的值。"),
                 &source.strength,
                 nullptr,
                 &source.strengthPinned)) {
@@ -146,7 +145,7 @@ void _SimulationParametersSourceWidgets::process()
 
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Radiation angle")
+                .name("辐射角度")
                 .textWidth(RightColumnWidth)
                 .min(-180.0f)
                 .max(180.0f)
@@ -171,7 +170,7 @@ void _SimulationParametersSourceWidgets::process()
 
 std::string _SimulationParametersSourceWidgets::getLocationName()
 {
-    return "Simulation parameters for '" + _sourceName + "'";
+    return "“" + _sourceName + "”的模拟器参数";
 }
 
 int _SimulationParametersSourceWidgets::getLocationIndex() const

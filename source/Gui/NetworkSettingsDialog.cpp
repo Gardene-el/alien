@@ -20,7 +20,7 @@ NetworkSettingsDialog::NetworkSettingsDialog()
 void NetworkSettingsDialog::processIntern()
 {
     AlienImGui::InputText(
-        AlienImGui::InputTextParameters().name("Blocks").defaultValue(_origServerAddress).name("服务器网址").textWidth(RightColumnWidth), _serverAddress);
+        AlienImGui::InputTextParameters().name("服务器网址").defaultValue(_origServerAddress).textWidth(RightColumnWidth), _serverAddress);
 
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();

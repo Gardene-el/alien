@@ -50,9 +50,9 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * General
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("General"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("常规"))) {
         AlienImGui::InputText(
-            AlienImGui::InputTextParameters().name("Name").textWidth(RightColumnWidth).defaultValue(origZone.name), zone.name, sizeof(Char64) / sizeof(char));
+            AlienImGui::InputTextParameters().name("名称").textWidth(RightColumnWidth).defaultValue(origZone.name), zone.name, sizeof(Char64) / sizeof(char));
 
     }
     AlienImGui::EndTreeNode();
@@ -60,18 +60,18 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Visualization and location
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Visualization"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("可视化"))) {
         AlienImGui::ColorButtonWithPicker(
-            AlienImGui::ColorButtonWithPickerParameters().name("Background color").textWidth(RightColumnWidth).defaultValue(origZone.color),
+            AlienImGui::ColorButtonWithPickerParameters().name("背景颜色").textWidth(RightColumnWidth).defaultValue(origZone.color),
             zone.color,
             _backupColor,
             _zoneColorPalette.getReference());
     }
     AlienImGui::EndTreeNode();
 
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Location"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("位置"))) {
         if (AlienImGui::Switcher(
-                AlienImGui::SwitcherParameters().name("Shape").values({"Circular", "Rectangular"}).textWidth(RightColumnWidth).defaultValue(origZone.shapeType),
+                AlienImGui::SwitcherParameters().name("形状").values({"圆形", "矩形"}).textWidth(RightColumnWidth).defaultValue(origZone.shapeType),
                 zone.shapeType)) {
             setDefaultSpotData(zone);
         }
@@ -82,7 +82,7 @@ void _SimulationParametersZoneWidgets::process()
 
         AlienImGui::SliderFloat2(
             AlienImGui::SliderFloat2Parameters()
-                .name("Position (x,y)")
+                .name("位置 (x,y)")
                 .textWidth(RightColumnWidth)
                 .min({0, 0})
                 .max(toRealVector2D(worldSize))
@@ -95,7 +95,7 @@ void _SimulationParametersZoneWidgets::process()
             zone.posY);
         AlienImGui::SliderFloat2(
             AlienImGui::SliderFloat2Parameters()
-                .name("Velocity (x,y)")
+                .name("速度 (x,y)")
                 .textWidth(RightColumnWidth)
                 .min({-4.0f, -4.0f})
                 .max({4.0f, 4.0f})
@@ -107,7 +107,7 @@ void _SimulationParametersZoneWidgets::process()
         if (zone.shapeType == SpotShapeType_Circular) {
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Core radius")
+                    .name("核心半径")
                     .textWidth(RightColumnWidth)
                     .min(0)
                     .max(maxRadius)
@@ -118,7 +118,7 @@ void _SimulationParametersZoneWidgets::process()
         if (zone.shapeType == SpotShapeType_Rectangular) {
             AlienImGui::SliderFloat2(
                 AlienImGui::SliderFloat2Parameters()
-                    .name("Size (x,y)")
+                    .name("尺寸 (x,y)")
                     .textWidth(RightColumnWidth)
                     .min({0, 0})
                     .max({toFloat(worldSize.x), toFloat(worldSize.y)})
@@ -130,7 +130,7 @@ void _SimulationParametersZoneWidgets::process()
 
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Fade-out radius")
+                .name("淡出半径")
                 .textWidth(RightColumnWidth)
                 .min(0)
                 .max(maxRadius)
@@ -143,7 +143,7 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Force field
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Force field"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("力场"))) {
         {
             auto forceFieldTypeIntern = std::max(0, zone.flowType - 1);  //FlowType_None should not be selectable in ComboBox
             auto origForceFieldTypeIntern = std::max(0, origZone.flowType - 1);
@@ -152,8 +152,8 @@ void _SimulationParametersZoneWidgets::process()
             auto origIsEnabled = origZone.flowType != 0;
             if (AlienImGui::Combo(
                     AlienImGui::ComboParameters()
-                        .name("Field type")
-                        .values({"Radial", "Central", "Linear"})
+                        .name("场类型")
+                        .values({"径向", "中心", "线性"})
                         .textWidth(RightColumnWidth)
                         .defaultValue(origForceFieldTypeIntern)
                         .defaultEnabledValue(&origIsEnabled),
@@ -181,15 +181,15 @@ void _SimulationParametersZoneWidgets::process()
             ImGui::SetCursorPosX(posX);
             AlienImGui::Combo(
                 AlienImGui::ComboParameters()
-                    .name("Orientation")
+                    .name("方向")
                     .textWidth(RightColumnWidth)
                     .defaultValue(origZone.flowData.radialFlow.orientation)
-                    .values({"Clockwise", "Counter clockwise"}),
+                    .values({"顺时针", "逆时针"}),
                 zone.flowData.radialFlow.orientation);
             ImGui::SetCursorPosX(posX);
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Strength")
+                    .name("强度")
                     .textWidth(RightColumnWidth)
                     .min(0)
                     .max(0.5f)
@@ -200,7 +200,7 @@ void _SimulationParametersZoneWidgets::process()
             ImGui::SetCursorPosX(posX);
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Drift angle")
+                    .name("漂移角度")
                     .textWidth(RightColumnWidth)
                     .min(-180.0f)
                     .max(180.0f)
@@ -212,7 +212,7 @@ void _SimulationParametersZoneWidgets::process()
             ImGui::SetCursorPosX(posX);
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Strength")
+                    .name("强度")
                     .textWidth(RightColumnWidth)
                     .min(0)
                     .max(0.5f)
@@ -225,7 +225,7 @@ void _SimulationParametersZoneWidgets::process()
             ImGui::SetCursorPosX(posX);
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Angle")
+                    .name("角度")
                     .textWidth(RightColumnWidth)
                     .min(-180.0f)
                     .max(180.0f)
@@ -235,7 +235,7 @@ void _SimulationParametersZoneWidgets::process()
             ImGui::SetCursorPosX(posX);
             AlienImGui::SliderFloat(
                 AlienImGui::SliderFloatParameters()
-                    .name("Strength")
+                    .name("强度")
                     .textWidth(RightColumnWidth)
                     .min(0)
                     .max(0.5f)
@@ -251,10 +251,10 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Physics: Motion
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Physics: Motion"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("物理：运动"))) {
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Friction")
+                .name("摩擦")
                 .textWidth(RightColumnWidth)
                 .min(0)
                 .max(1)
@@ -266,7 +266,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.friction);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Rigidity")
+                .name("刚性")
                 .textWidth(RightColumnWidth)
                 .min(0)
                 .max(1)
@@ -281,10 +281,10 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Physics: Thresholds
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Physics: Thresholds"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("物理：阈值"))) {
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Maximum force")
+                .name("最大力")
                 .textWidth(RightColumnWidth)
                 .min(0)
                 .max(3.0f)
@@ -299,10 +299,10 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Physics: Binding
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Physics: Binding"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("物理：连接"))) {
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Binding creation velocity")
+                .name("连接建立速度")
                 .textWidth(RightColumnWidth)
                 .min(0)
                 .max(2.0f)
@@ -312,7 +312,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellFusionVelocity);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Maximum energy")
+                .name("最大能量")
                 .textWidth(RightColumnWidth)
                 .min(50.0f)
                 .max(10000000.0f)
@@ -330,19 +330,19 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Physics: Radiation
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Physics: Radiation"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("物理：辐射"))) {
         AlienImGui::Checkbox(
             AlienImGui::CheckboxParameters()
-                .name("Disable radiation sources")
+                .name("停用辐射源")
                 .textWidth(RightColumnWidth)
                 .defaultValue(origZone.values.radiationDisableSources)
-                .tooltip("If activated, all radiation sources within this zone are deactivated."),
+                .tooltip("如果激活，此区域内的所有辐射源都将被停用。"),
             zone.values.radiationDisableSources);
         zone.activatedValues.radiationDisableSources = zone.values.radiationDisableSources;
 
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Absorption factor")
+                .name("吸收因子")
                 .textWidth(RightColumnWidth)
                 .logarithmic(true)
                 .colorDependence(true)
@@ -356,7 +356,7 @@ void _SimulationParametersZoneWidgets::process()
 
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Radiation type 1: Strength")
+                .name("辐射类型 1：强度")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(0)
@@ -373,10 +373,10 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Cell life cycle
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Cell life cycle"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("细胞生命周期"))) {
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Minimum energy")
+                .name("最小能量")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(10.0f)
@@ -387,7 +387,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellMinEnergy);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Decay rate of dying cells")
+                .name("垂死细胞的衰变率")
                 .colorDependence(true)
                 .textWidth(RightColumnWidth)
                 .min(1e-6f)
@@ -404,10 +404,10 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Mutation 
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Genome copy mutations"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("基因组复制变异"))) {
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Neuron weights and biases")
+                .name("神经元权重和偏置")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -420,7 +420,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationNeuronData);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Cell properties")
+                .name("细胞属性")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -433,7 +433,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationCellProperties);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Geometry")
+                .name("几何")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -446,7 +446,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationGeometry);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Custom geometry")
+                .name("自定义几何")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -459,7 +459,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationCustomGeometry);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Cell function type")
+                .name("细胞功能类型")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -472,7 +472,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationCellFunction);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Cell insertion")
+                .name("细胞插入")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -485,7 +485,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationInsertion);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Cell deletion")
+                .name("细胞删除")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -498,7 +498,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationDeletion);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Translation")
+                .name("平移")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -511,7 +511,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationTranslation);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Duplication")
+                .name("复制")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -524,7 +524,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationDuplication);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Individual cell color")
+                .name("单个细胞颜色")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -537,7 +537,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationCellColor);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Sub-genome color")
+                .name("子基因组颜色")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -550,7 +550,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellCopyMutationSubgenomeColor);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Genome color")
+                .name("基因组颜色")
                 .textWidth(RightColumnWidth)
                 .min(0.0f)
                 .max(1.0f)
@@ -567,10 +567,10 @@ void _SimulationParametersZoneWidgets::process()
     /**
      * Attacker
      */
-    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("Cell function: Attacker"))) {
+    if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters().name("细胞功能：攻击者"))) {
         AlienImGui::InputFloatColorMatrix(
             AlienImGui::InputFloatColorMatrixParameters()
-                .name("Food chain color matrix")
+                .name("食物链颜色矩阵")
                 .max(1)
                 .textWidth(RightColumnWidth)
                 .defaultValue(toVector<MAX_COLORS, MAX_COLORS>(origZone.values.cellFunctionAttackerFoodChainColorMatrix))
@@ -579,7 +579,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellFunctionAttackerFoodChainColorMatrix);
         AlienImGui::InputFloatColorMatrix(
             AlienImGui::InputFloatColorMatrixParameters()
-                .name("Complex creature protection")
+                .name("复杂生物保护")
                 .textWidth(RightColumnWidth)
                 .min(0)
                 .max(20.0f)
@@ -589,7 +589,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellFunctionAttackerGenomeComplexityBonus);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Energy cost")
+                .name("能量消耗")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(0)
@@ -607,12 +607,12 @@ void _SimulationParametersZoneWidgets::process()
      * Expert settings: Advanced absorption control
      */
     if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters()
-                                      .name("Expert settings: Advanced energy absorption control")
+                                      .name("专家设置：高级能量吸收控制")
                                       .visible(parameters.features.advancedAbsorptionControl)
                                       .blinkWhenActivated(true))) {
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Low velocity penalty")
+                .name("低速度惩罚")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(0)
@@ -624,7 +624,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.radiationAbsorptionLowVelocityPenalty);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Low genome complexity penalty")
+                .name("低基因组复杂度惩罚")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(0)
@@ -641,12 +641,12 @@ void _SimulationParametersZoneWidgets::process()
      * Expert settings: Advanced attacker control
      */
     if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters()
-                                      .name("Expert settings: Advanced attacker control")
+                                      .name("专家设置：高级攻击者控制")
                                       .visible(parameters.features.advancedAttackerControl)
                                       .blinkWhenActivated(true))) {
         AlienImGui::InputFloatColorMatrix(
             AlienImGui::InputFloatColorMatrixParameters()
-                .name("New complex mutant protection")
+                .name("新复杂突变体保护")
                 .textWidth(RightColumnWidth)
                 .min(0)
                 .max(1.0f)
@@ -657,7 +657,7 @@ void _SimulationParametersZoneWidgets::process()
 
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Geometry penalty")
+                .name("几何惩罚")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(0)
@@ -668,7 +668,7 @@ void _SimulationParametersZoneWidgets::process()
             &zone.activatedValues.cellFunctionAttackerGeometryDeviationExponent);
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Connections mismatch penalty")
+                .name("连接不匹配惩罚")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(0)
@@ -684,12 +684,12 @@ void _SimulationParametersZoneWidgets::process()
      * Expert settings: Cell age limiter
      */
     if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters()
-                                      .name("Expert settings: Cell age limiter")
+                                      .name("专家设置：细胞年龄限制器")
                                       .visible(parameters.features.cellAgeLimiter)
                                       .blinkWhenActivated(true))) {
         AlienImGui::SliderFloat(
             AlienImGui::SliderFloatParameters()
-                .name("Maximum inactive cell age")
+                .name("最大非活动细胞年龄")
                 .textWidth(RightColumnWidth)
                 .colorDependence(true)
                 .min(1.0f)
@@ -708,7 +708,7 @@ void _SimulationParametersZoneWidgets::process()
      * Expert settings: Cell color transition rules
      */
     if (AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters()
-                                      .name("Expert settings: Cell color transition rules")
+                                      .name("专家设置：细胞颜色转换规则")
                                       .visible(parameters.features.cellColorTransitionRules)
                                       .blinkWhenActivated(true))) {
         ImGui::Checkbox("##cellColorTransition", &zone.activatedValues.cellColorTransition);
@@ -726,7 +726,7 @@ void _SimulationParametersZoneWidgets::process()
                                   .logarithmic(true)
                                   .infinity(true);
             if (0 == color) {
-                parameters.name("Target color and duration");
+                parameters.name("目标颜色和持续时间");
             }
             AlienImGui::InputColorTransition(
                 parameters, color, zone.values.cellColorTransitionTargetColor[color], zone.values.cellColorTransitionDuration[color]);
@@ -753,7 +753,7 @@ void _SimulationParametersZoneWidgets::process()
 
 std::string _SimulationParametersZoneWidgets::getLocationName()
 {
-    return "Simulation parameters for '" + _zoneName + "'";
+    return "“" + _zoneName + "”的模拟器参数";
 }
 
 int _SimulationParametersZoneWidgets::getLocationIndex() const

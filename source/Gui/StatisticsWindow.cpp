@@ -374,7 +374,7 @@ void StatisticsWindow::processTimelineStatistics()
         ImGui::TableSetColumnIndex(0);
         processPlot(row++, &DataPointCollection::numFreeCells);
         ImGui::TableSetColumnIndex(1);
-        AlienImGui::Text("Free cells");
+        AlienImGui::Text("自由细胞");
 
         ImPlot::PopColormap();
 

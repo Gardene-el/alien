@@ -16,12 +16,12 @@ void ChangeColorDialog::initIntern(std::function<GenomeDescription()> getGenomeF
 }
 
 ChangeColorDialog::ChangeColorDialog()
-    : AlienDialog("Change color")
+    : AlienDialog("更改颜色")
 {}
 
 void ChangeColorDialog::processIntern()
 {
-    AlienImGui::Group("Color transition rule");
+    AlienImGui::Group("颜色转换规则");
     if (ImGui::BeginTable("##", 3, ImGuiTableFlags_SizingStretchProp)) {
         ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 0);
         ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, scale(20));
@@ -43,15 +43,15 @@ void ChangeColorDialog::processIntern()
 
         ImGui::EndTable();
     }
-    AlienImGui::Group("Options");
+    AlienImGui::Group("选项");
     ImGui::Checkbox("##includeSubgenomes", &_includeSubGenomes);
     ImGui::SameLine(0, ImGui::GetStyle().FramePadding.x * 4);
-    AlienImGui::Text("Include sub-genomes");
+    AlienImGui::Text("包含子基因组");
     
     ImGui::Dummy({0, ImGui::GetContentRegionAvail().y - scale(50.0f)});
     AlienImGui::Separator();
 
-    if (AlienImGui::Button("OK")) {
+    if (AlienImGui::Button("确定")) {
         auto genome = _getGenomeFunc();
         onChangeColor(genome);
         _setGenomeFunc(genome);
@@ -59,7 +59,7 @@ void ChangeColorDialog::processIntern()
     }
     ImGui::SetItemDefaultFocus();
     ImGui::SameLine();
-    if (AlienImGui::Button("Cancel")) {
+    if (AlienImGui::Button("取消")) {
         close();
     }
 }

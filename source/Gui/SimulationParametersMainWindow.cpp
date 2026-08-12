@@ -32,7 +32,7 @@ namespace
 }
 
 SimulationParametersMainWindow::SimulationParametersMainWindow()
-    : AlienWindow("Simulation parameters", "windows.simulation parameters", false)
+    : AlienWindow("模拟器参数", "windows.simulation parameters", false)
 {}
 
 void SimulationParametersMainWindow::initIntern(SimulationFacade simulationFacade)
@@ -98,12 +98,12 @@ void SimulationParametersMainWindow::shutdownIntern()
 
 void SimulationParametersMainWindow::processToolbar()
 {
-    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_FOLDER_OPEN).tooltip("Open simulation parameters from file"))) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_FOLDER_OPEN).tooltip("从文件中打开模拟器参数"))) {
         onOpenParameters();
     }
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_SAVE).tooltip("Save simulation parameters to file"))) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_SAVE).tooltip("将模拟器参数保存到文件"))) {
         onSaveParameters();
     }
 
@@ -111,17 +111,17 @@ void SimulationParametersMainWindow::processToolbar()
     AlienImGui::ToolbarSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_COPY).tooltip("Copy simulation parameters to clipboard"))) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_COPY).tooltip("将模拟器参数复制到剪贴板"))) {
         _copiedParameters = _simulationFacade->getSimulationParameters();
-        printOverlayMessage("Simulation parameters copied");
+        printOverlayMessage("模拟器参数已复制");
     }
 
     ImGui::SameLine();
     if (AlienImGui::ToolbarButton(
-            AlienImGui::ToolbarButtonParameters().text(ICON_FA_PASTE).tooltip("Paste simulation parameters from clipboard").disabled(!_copiedParameters))) {
+            AlienImGui::ToolbarButtonParameters().text(ICON_FA_PASTE).tooltip("从剪贴板粘贴模拟器参数").disabled(!_copiedParameters))) {
         _simulationFacade->setSimulationParameters(*_copiedParameters);
         _simulationFacade->setOriginalSimulationParameters(*_copiedParameters);
-        printOverlayMessage("Simulation parameters pasted");
+        printOverlayMessage("模拟器参数已粘贴");
     }
 
     ImGui::SameLine();
@@ -130,16 +130,15 @@ void SimulationParametersMainWindow::processToolbar()
                                       .secondText(ICON_FA_UNDO)
                                       .secondTextOffset(RealVector2D{32.0f, 28.0f})
                                       .secondTextScale(0.3f)
-                                      .tooltip("Replace reference values by values from the clipboard. This is useful to see the diff between the current "
-                                               "parameters and those from the clipboard.")
+                                      .tooltip("用剪贴板中的值替换参考值。这有助于查看当前参数与剪贴板中参数之间的差异。")
                                       .disabled(!_copiedParameters))) {
         auto parameters = _simulationFacade->getSimulationParameters();
         if (_copiedParameters->numZones == parameters.numZones && _copiedParameters->numRadiationSources == parameters.numRadiationSources) {
             _simulationFacade->setOriginalSimulationParameters(*_copiedParameters);
-            printOverlayMessage("Reference simulation parameters replaced");
+            printOverlayMessage("参考模拟器参数已替换");
         } else {
             GenericMessageDialog::get().information(
-                "Error", "The number of zones and radiation sources of the current simulation parameters must match with those from the clipboard.");
+                "错误", "当前模拟器参数的区域和辐射源数量必须与剪贴板中的参数一致。");
         }
     }
 
@@ -147,12 +146,12 @@ void SimulationParametersMainWindow::processToolbar()
     AlienImGui::ToolbarSeparator();
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PLUS).secondText(ICON_FA_LAYER_GROUP).tooltip("Add parameter zone"))) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PLUS).secondText(ICON_FA_LAYER_GROUP).tooltip("添加参数区域"))) {
         onAddZone();
     }
 
     ImGui::SameLine();
-    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PLUS).secondText(ICON_FA_SUN).tooltip("Add radiation source"))) {
+    if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters().text(ICON_FA_PLUS).secondText(ICON_FA_SUN).tooltip("添加辐射源"))) {
         onAddSource();
     }
 
@@ -161,13 +160,13 @@ void SimulationParametersMainWindow::processToolbar()
                                       .text(ICON_FA_PLUS)
                                       .secondText(ICON_FA_CLONE)
                                       .disabled(_selectedLocationIndex == 0)
-                                      .tooltip("Clone selected zone/radiation source"))) {
+                                      .tooltip("克隆选中的区域/辐射源"))) {
         onCloneLocation();
     }
 
     ImGui::SameLine();
     if (AlienImGui::ToolbarButton(
-            AlienImGui::ToolbarButtonParameters().text(ICON_FA_MINUS).disabled(_selectedLocationIndex == 0).tooltip("Delete selected zone/radiation source"))) {
+            AlienImGui::ToolbarButtonParameters().text(ICON_FA_MINUS).disabled(_selectedLocationIndex == 0).tooltip("删除选中的区域/辐射源"))) {
         onDeleteLocation();
     }
 
@@ -178,14 +177,14 @@ void SimulationParametersMainWindow::processToolbar()
     if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters()
                                       .text(ICON_FA_CHEVRON_UP)
                                       .disabled(_selectedLocationIndex <= 1)
-                                      .tooltip("Move selected zone/radiation source upward"))) {
+                                      .tooltip("将选中的区域/辐射源上移"))) {
         onDecreaseLocationIndex();
     }
 
     ImGui::SameLine();
     if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters()
                                       .text(ICON_FA_CHEVRON_DOWN)
-                                      .tooltip("Move selected zone/radiation source downward")
+                                      .tooltip("将选中的区域/辐射源下移")
                                       .disabled(_selectedLocationIndex >= _locations.size() - 1 || _selectedLocationIndex == 0))) {
         onIncreaseLocationIndex();
     }
@@ -196,7 +195,7 @@ void SimulationParametersMainWindow::processToolbar()
     ImGui::SameLine();
     if (AlienImGui::ToolbarButton(AlienImGui::ToolbarButtonParameters()
                                       .text(ICON_FA_EXTERNAL_LINK_SQUARE_ALT)
-                                      .tooltip("Open parameters for selected zone/radiation source in a new window"))) {
+                                      .tooltip("在新窗口中打开选中区域/辐射源的参数"))) {
         onOpenInLocationWindow();
     }
 
@@ -208,7 +207,7 @@ void SimulationParametersMainWindow::processMasterWidget()
     if (ImGui::BeginChild("##master", {0, getMasterWidgetHeight()})) {
 
         if (_masterWidgetOpen = AlienImGui::BeginTreeNode(
-                AlienImGui::TreeNodeParameters().name("Overview").rank(AlienImGui::TreeNodeRank::High).defaultOpen(_masterWidgetOpen))) {
+                AlienImGui::TreeNodeParameters().name("概览").rank(AlienImGui::TreeNodeRank::High).defaultOpen(_masterWidgetOpen))) {
             ImGui::Spacing();
             if (ImGui::BeginChild("##master2", {0, -ImGui::GetStyle().FramePadding.y})) {
                 processLocationTable();
@@ -230,7 +229,7 @@ void SimulationParametersMainWindow::processDetailWidget()
 {
     auto height = getDetailWidgetHeight();
     if (ImGui::BeginChild("##detail", {0, height})) {
-        auto title = _filter.empty() ? "Parameters" : "Parameters (filtered)";
+        auto title = _filter.empty() ? "参数" : "参数（已过滤）";
         if (_detailWidgetOpen = AlienImGui::BeginTreeNode(AlienImGui::TreeNodeParameters()
                                                               .name((std::string(title) + "###parameters").c_str())
                                                               .rank(AlienImGui::TreeNodeRank::High)
@@ -271,7 +270,7 @@ void SimulationParametersMainWindow::processExpertWidget()
 {
     if (ImGui::BeginChild("##expert", {0, 0})) {
         if (_expertWidgetOpen = AlienImGui::BeginTreeNode(
-                AlienImGui::TreeNodeParameters().name("Expert settings").rank(AlienImGui::TreeNodeRank::High).defaultOpen(_expertWidgetOpen))) {
+                AlienImGui::TreeNodeParameters().name("专家设置").rank(AlienImGui::TreeNodeRank::High).defaultOpen(_expertWidgetOpen))) {
             if (ImGui::BeginChild("##expert2", {0, 0}, ImGuiChildFlags_Border, ImGuiWindowFlags_HorizontalScrollbar)) {
                 processExpertSettings();
             }
@@ -285,7 +284,7 @@ void SimulationParametersMainWindow::processExpertWidget()
 void SimulationParametersMainWindow::processStatusBar()
 {
     std::vector<std::string> statusItems;
-    statusItems.emplace_back("CTRL + click on a slider to type in a precise value");
+    statusItems.emplace_back("在滑块上按住 CTRL 并点击以输入精确值");
 
     AlienImGui::StatusBar(statusItems);
 }
@@ -297,10 +296,10 @@ void SimulationParametersMainWindow::processLocationTable()
 
     if (ImGui::BeginTable("Locations", 4, flags, ImVec2(-1, -1), 0)) {
 
-        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
-        ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
-        ImGui::TableSetupColumn("Position", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(115.0f));
-        ImGui::TableSetupColumn("Strength", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(100.0f));
+        ImGui::TableSetupColumn("名称", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
+        ImGui::TableSetupColumn("类型", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, scale(140.0f));
+        ImGui::TableSetupColumn("位置", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(115.0f));
+        ImGui::TableSetupColumn("强度", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, scale(100.0f));
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableHeadersRow();
         ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, Const::TableHeaderColor);
@@ -331,11 +330,11 @@ void SimulationParametersMainWindow::processLocationTable()
                 // type
                 ImGui::TableNextColumn();
                 if (entry.type == LocationType::Base) {
-                    AlienImGui::Text("Base parameters");
+                    AlienImGui::Text("基础参数");
                 } else if (entry.type == LocationType::ParameterZone) {
-                    AlienImGui::Text("Zone");
+                    AlienImGui::Text("区域");
                 } else if (entry.type == LocationType::RadiationSource) {
-                    AlienImGui::Text("Radiation");
+                    AlienImGui::Text("辐射");
                 }
 
                 // position
@@ -367,78 +366,75 @@ void SimulationParametersMainWindow::processExpertSettings()
 
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Advanced absorption control")
+            .name("高级吸收控制")
             .textWidth(0)
             .defaultValue(origFeatures.advancedAbsorptionControl)
-            .tooltip("These settings offer extended possibilities for controlling the absorption of energy particles by cells."),
+            .tooltip("这些设置提供了控制细胞吸收能量粒子的扩展可能性。"),
         parameters.features.advancedAbsorptionControl);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Advanced attacker control")
+            .name("高级攻击者控制")
             .textWidth(0)
             .defaultValue(origFeatures.advancedAttackerControl)
-            .tooltip("It contains further settings that influence how much energy can be obtained from an attack by attacker cells."),
+            .tooltip("它包含进一步影响攻击细胞从攻击中获得多少能量的设置。"),
         parameters.features.advancedAttackerControl);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Cell age limiter")
+            .name("细胞年龄限制器")
             .textWidth(0)
             .defaultValue(origFeatures.cellAgeLimiter)
-            .tooltip("It enables additional possibilities to control the maximal cell age."),
+            .tooltip("它启用了控制最大细胞年龄的额外可能性。"),
         parameters.features.cellAgeLimiter);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Cell color transition rules")
+            .name("细胞颜色转换规则")
             .textWidth(0)
             .defaultValue(origFeatures.cellColorTransitionRules)
-            .tooltip("This can be used to define color transitions for cells depending on their age."),
+            .tooltip("这可以根据细胞的年龄定义细胞的颜色转换。"),
         parameters.features.cellColorTransitionRules);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Cell glow")
+            .name("细胞发光")
             .textWidth(0)
             .defaultValue(origFeatures.cellGlow)
-            .tooltip("It enables an additional rendering step that makes the cells glow."),
+            .tooltip("它启用一个额外的渲染步骤，使细胞发光。"),
         parameters.features.cellGlow);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Customize deletion mutations")
+            .name("自定义删除变异")
             .textWidth(0)
             .defaultValue(origFeatures.customizeDeletionMutations)
-            .tooltip("It enables further settings for deletion mutations. If disabled, defaults are used (displayed in the tooltip of the specific parameters)."),
+            .tooltip("它启用了删除变异的进一步设置。如果禁用，则使用默认值（显示在具体参数的工具提示中）。"),
         parameters.features.customizeDeletionMutations);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Customize neuron mutations")
+            .name("自定义神经元变异")
             .textWidth(0)
             .defaultValue(origFeatures.customizeNeuronMutations)
-            .tooltip("It enables further settings for neuron mutations. If disabled, defaults are used (displayed in the tooltip of the specific parameters)."),
+            .tooltip("它启用了神经元变异的进一步设置。如果禁用，则使用默认值（显示在具体参数的工具提示中）。"),
         parameters.features.customizeNeuronMutations);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("External energy control")
+            .name("外部能量控制")
             .textWidth(0)
             .defaultValue(origFeatures.externalEnergyControl)
             .tooltip(
-                "These settings are used to add and control an external energy source. Its energy can be gradually transferred to the constructor cells in the "
-                "simulation. Vice versa, the energy from radiation and dying cells can also be transferred back to the external source."),
+                "这些设置用于添加和控制外部能量源。其能量可以逐渐转移到模拟中的构建细胞。反之，辐射和垂死细胞的能量也可以转移回外部能量源。"),
         parameters.features.externalEnergyControl);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Genome complexity measurement")
+            .name("基因组复杂度测量")
             .textWidth(0)
             .defaultValue(origFeatures.genomeComplexityMeasurement)
-            .tooltip("Parameters for the calculation of genome complexity are activated here. This genome complexity can be used for 'Advanced "
-                     "absorption control' "
-                     "and 'Advanced attacker control' to favor more complex genomes in natural selection. If it is deactivated, default values are "
-                     "used that simply take the genome size into account."),
+            .tooltip("在这里激活基因组复杂度的计算参数。该基因组复杂度可用于“高级吸收控制”和“高级攻击者控制”，以在自然选择中青睐更复杂的基因组。"
+                     "如果停用，则使用仅考虑基因组大小的默认值。"),
         parameters.features.genomeComplexityMeasurement);
     AlienImGui::Checkbox(
         AlienImGui::CheckboxParameters()
-            .name("Legacy behavior")
+            .name("旧版行为")
             .textWidth(0)
             .defaultValue(origFeatures.legacyModes)
-            .tooltip("It contains features for compatibility with older versions."),
+            .tooltip("它包含用于与旧版本兼容的功能。"),
         parameters.features.legacyModes);
 
     if (parameters.features != lastFeatures) {
@@ -449,14 +445,14 @@ void SimulationParametersMainWindow::processExpertSettings()
 void SimulationParametersMainWindow::onOpenParameters()
 {
     GenericFileDialog::get().showOpenFileDialog(
-        "Open simulation parameters", "Simulation parameters (*.parameters){.parameters},.*", _fileDialogPath, [&](std::filesystem::path const& path) {
+        "打开模拟器参数", "Simulation parameters (*.parameters){.parameters},.*", _fileDialogPath, [&](std::filesystem::path const& path) {
             auto firstFilename = ifd::FileDialog::Instance().GetResult();
             auto firstFilenameCopy = firstFilename;
             _fileDialogPath = firstFilenameCopy.remove_filename().string();
 
             SimulationParameters parameters;
             if (!SerializerService::get().deserializeSimulationParametersFromFile(parameters, firstFilename.string())) {
-                GenericMessageDialog::get().information("Open simulation parameters", "The selected file could not be opened.");
+                GenericMessageDialog::get().information("打开模拟器参数", "所选文件无法打开。");
             } else {
                 _simulationFacade->setSimulationParameters(parameters);
                 _simulationFacade->setOriginalSimulationParameters(parameters);
@@ -467,14 +463,14 @@ void SimulationParametersMainWindow::onOpenParameters()
 void SimulationParametersMainWindow::onSaveParameters()
 {
     GenericFileDialog::get().showSaveFileDialog(
-        "Save simulation parameters", "Simulation parameters (*.parameters){.parameters},.*", _fileDialogPath, [&](std::filesystem::path const& path) {
+        "保存模拟器参数", "Simulation parameters (*.parameters){.parameters},.*", _fileDialogPath, [&](std::filesystem::path const& path) {
             auto firstFilename = ifd::FileDialog::Instance().GetResult();
             auto firstFilenameCopy = firstFilename;
             _fileDialogPath = firstFilenameCopy.remove_filename().string();
 
             auto parameters = _simulationFacade->getSimulationParameters();
             if (!SerializerService::get().serializeSimulationParametersToFile(firstFilename.string(), parameters)) {
-                GenericMessageDialog::get().information("Save simulation parameters", "The selected file could not be saved.");
+                GenericMessageDialog::get().information("保存模拟器参数", "所选文件无法保存。");
             }
         });
 }
@@ -725,7 +721,7 @@ void SimulationParametersMainWindow::updateLocations()
     _locations = std::vector<Location>(1 + parameters.numZones + parameters.numRadiationSources);
     auto strength = SimulationParametersEditService::get().getRadiationStrengths(parameters);
     auto pinnedString = strength.pinned.contains(0) ? ICON_FA_THUMBTACK " " : " ";
-    _locations.at(0) = Location{"Base", LocationType::Base, "-", pinnedString + StringHelper::format(strength.values.front() * 100 + 0.05f, 1) + "%"};
+    _locations.at(0) = Location{"基础", LocationType::Base, "-", pinnedString + StringHelper::format(strength.values.front() * 100 + 0.05f, 1) + "%"};
     for (int i = 0; i < parameters.numZones; ++i) {
         auto const& zone = parameters.zone[i];
         auto position = "(" + StringHelper::format(zone.posX, 0) + ", " + StringHelper::format(zone.posY, 0) + ")";
@@ -766,7 +762,7 @@ void SimulationParametersMainWindow::correctLayout(float origMasterHeight, float
 bool SimulationParametersMainWindow::checkNumZones(SimulationParameters const& parameters)
 {
     if (parameters.numZones == MAX_ZONES) {
-        showMessage("Error", "The maximum number of zones has been reached.");
+        showMessage("错误", "已达到区域的最大数量。");
         return false;
     }
     return true;
@@ -775,7 +771,7 @@ bool SimulationParametersMainWindow::checkNumZones(SimulationParameters const& p
 bool SimulationParametersMainWindow::checkNumSources(SimulationParameters const& parameters)
 {
     if (parameters.numRadiationSources == MAX_RADIATION_SOURCES) {
-        showMessage("Error", "The maximum number of radiation sources has been reached.");
+        showMessage("错误", "已达到辐射源的最大数量。");
         return false;
     }
     return true;

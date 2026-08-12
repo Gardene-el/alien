@@ -42,7 +42,7 @@ void GpuSettingsDialog::processIntern()
 
     AlienImGui::InputInt(
         AlienImGui::InputIntParameters()
-            .name("Blocks")
+            .name("线程块")
             .textWidth(RightColumnWidth)
             .defaultValue(origGpuSettings.numBlocks)
             .tooltip("此值指定 CUDA 线程块（blocks）的数量。如果您使用的是高端显卡，可以尝试增加块的数量。"),
